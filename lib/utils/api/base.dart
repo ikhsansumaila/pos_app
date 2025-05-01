@@ -1,16 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:pos_app/utils/api/response.dart';
+import 'package:requests_inspector/requests_inspector.dart';
 
 abstract class BaseRepository {
-  final Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://yourapi.com/api',
-    connectTimeout: Duration(seconds: 10),
-    receiveTimeout: Duration(seconds: 10),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  ));
-
+  final Dio dio;
+  BaseRepository()
+    : dio = Dio(BaseOptions(baseUrl: 'https://your-api.com/api/')) {
+    dio.interceptors.add(RequestsInspectorInterceptor());
+    // Add other interceptors like loggers or error handlers as needed
+  }
   Future<ApiResponse<T>> safeRequest<T>(
     Future<Response> Function() requestFn,
     T Function(dynamic data) fromJson,
@@ -22,7 +20,8 @@ abstract class BaseRepository {
         return ApiResponse.success(fromJson(response.data));
       } else {
         return ApiResponse.failure(
-            'Unexpected status code: ${response.statusCode}');
+          'Unexpected status code: ${response.statusCode}',
+        );
       }
     } on DioException catch (e) {
       final errorMsg = _handleDioError(e);
