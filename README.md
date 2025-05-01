@@ -32,7 +32,10 @@ _Add screenshots or a demo GIF here_
 1. Clone this repo:
    ```bash
    git clone git@github.com:ikhsansumaila/pos_app.git
-   cd pos_app
+   
+2. Go to project:
+    ```bash
+    cd pos_app
 
 2. Install dependencies:
     ```bash
