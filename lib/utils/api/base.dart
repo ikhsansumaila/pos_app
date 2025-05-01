@@ -1,0 +1,50 @@
+import 'package:dio/dio.dart';
+import 'package:pos_app/utils/api/response.dart';
+
+abstract class BaseRepository {
+  final Dio dio = Dio(BaseOptions(
+    baseUrl: 'https://yourapi.com/api',
+    connectTimeout: Duration(seconds: 10),
+    receiveTimeout: Duration(seconds: 10),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  ));
+
+  Future<ApiResponse<T>> safeRequest<T>(
+    Future<Response> Function() requestFn,
+    T Function(dynamic data) fromJson,
+  ) async {
+    try {
+      final response = await requestFn();
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ApiResponse.success(fromJson(response.data));
+      } else {
+        return ApiResponse.failure(
+            'Unexpected status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      final errorMsg = _handleDioError(e);
+      return ApiResponse.failure(errorMsg);
+    } catch (e) {
+      return ApiResponse.failure('Unknown error: $e');
+    }
+  }
+
+  String _handleDioError(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+        return 'Connection timed out';
+      case DioExceptionType.badResponse:
+        return 'Server error: ${e.response?.statusCode}';
+      case DioExceptionType.connectionError:
+        return 'No internet connection';
+      case DioExceptionType.cancel:
+        return 'Request cancelled';
+      default:
+        return 'Unexpected error occurred';
+    }
+  }
+}

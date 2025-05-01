@@ -1,0 +1,45 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_app/modules/product/product_models.dart';
+import 'package:pos_app/modules/product/product_repository.dart';
+
+class ProductController extends GetxController {
+  final ProductRepository repository = ProductRepository();
+
+  final products = <Product>[].obs;
+  final filteredProducts = <Product>[].obs;
+  final isLoading = false.obs;
+
+  final searchController = TextEditingController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchProducts();
+    searchController.addListener(() => filterProducts(searchController.text));
+  }
+
+  void fetchProducts() async {
+    isLoading(true);
+    final res = await repository.getAllProducts();
+    if (res.success && res.data != null) {
+      products.assignAll(res.data!);
+      filteredProducts.assignAll(res.data!);
+    } else {
+      Get.snackbar('Error', res.message ?? 'Failed to load products');
+    }
+    isLoading(false);
+  }
+
+  void filterProducts(String query) {
+    if (query.isEmpty) {
+      filteredProducts.assignAll(products);
+    } else {
+      final filtered =
+          products
+              .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
+              .toList();
+      filteredProducts.assignAll(filtered);
+    }
+  }
+}
