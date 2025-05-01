@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/pos/controller.dart';
 import 'package:pos_app/routes.dart';
 
-class HomeView extends StatelessWidget {
-  final POSController controller = Get.put(POSController());
-
+class HomePage extends StatelessWidget {
   final List<_MenuItem> menuItems = [
     _MenuItem(
       title: 'Products',
       icon: Icons.list_alt,
-      route: AppRoutes.products, // Use your product list route
+      route: AppRoutes.products,
     ),
     _MenuItem(title: 'Cart', icon: Icons.shopping_cart, route: AppRoutes.cart),
   ];

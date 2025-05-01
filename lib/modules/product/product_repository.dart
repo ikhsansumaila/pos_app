@@ -1,4 +1,4 @@
-import 'package:pos_app/modules/product/product_models.dart';
+import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/utils/api/base.dart';
 import 'package:pos_app/utils/api/response.dart';
 
@@ -7,6 +7,7 @@ class ProductRepository extends BaseRepository {
     return safeRequest<List<Product>>(
       () => dio.get('https://dummyjson.com/products'),
       (data) {
+        // log("data request $data");
         return (data['products'] as List).map((e) {
           Map<String, dynamic> map = e;
           return Product.fromJson(map);

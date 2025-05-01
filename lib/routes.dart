@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:pos_app/modules/cart/cart_page.dart';
 import 'package:pos_app/modules/cart/checkout_page.dart';
+import 'package:pos_app/modules/cart/view/cart_page.dart';
 import 'package:pos_app/modules/home/home.dart';
-import 'package:pos_app/modules/product/product_page.dart';
+import 'package:pos_app/modules/product/view/product_page.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -11,7 +11,7 @@ class AppRoutes {
   static const String checkout = '/checkout';
 
   static final routes = [
-    GetPage(name: home, page: () => HomeView()),
+    GetPage(name: home, page: () => HomePage()),
     GetPage(name: cart, page: () => CartPage()),
     GetPage(name: products, page: () => ProductPage()),
     GetPage(name: checkout, page: () => CheckoutPage()),

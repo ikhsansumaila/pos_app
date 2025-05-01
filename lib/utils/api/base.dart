@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:pos_app/utils/api/response.dart';
 import 'package:requests_inspector/requests_inspector.dart';
@@ -19,12 +21,13 @@ abstract class BaseRepository {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse.success(fromJson(response.data));
       } else {
-        return ApiResponse.failure(
-          'Unexpected status code: ${response.statusCode}',
-        );
+        return ApiResponse.failure('Error status code: ${response.statusCode}');
       }
     } on DioException catch (e) {
       final errorMsg = _handleDioError(e);
+
+      log("dio errorMsg $errorMsg");
+
       return ApiResponse.failure(errorMsg);
     } catch (e) {
       return ApiResponse.failure('Unknown error: $e');

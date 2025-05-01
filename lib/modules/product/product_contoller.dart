@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/product/product_models.dart';
+import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_repository.dart';
 
 class ProductController extends GetxController {
@@ -22,6 +22,7 @@ class ProductController extends GetxController {
   void fetchProducts() async {
     isLoading(true);
     final res = await repository.getAllProducts();
+
     if (res.success && res.data != null) {
       products.assignAll(res.data!);
       filteredProducts.assignAll(res.data!);
@@ -37,7 +38,7 @@ class ProductController extends GetxController {
     } else {
       final filtered =
           products
-              .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
+              .where((p) => p.title.toLowerCase().contains(query.toLowerCase()))
               .toList();
       filteredProducts.assignAll(filtered);
     }
