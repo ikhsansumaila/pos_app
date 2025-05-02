@@ -5,11 +5,16 @@ import 'package:pos_app/routes.dart';
 class HomePage extends StatelessWidget {
   final List<_MenuItem> menuItems = [
     _MenuItem(
-      title: 'Products',
+      title: 'Transaksi',
+      icon: Icons.add_circle,
+      route: AppRoutes.transactions,
+    ),
+    _MenuItem(
+      title: 'Produk',
       icon: Icons.list_alt,
       route: AppRoutes.products,
     ),
-    _MenuItem(title: 'Cart', icon: Icons.shopping_cart, route: AppRoutes.cart),
+    _MenuItem(title: 'Keranjang', icon: Icons.shopping_cart, route: AppRoutes.cart),
   ];
 
   @override
@@ -21,51 +26,68 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: GridView.builder(
-          itemCount: menuItems.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-            childAspectRatio: 1,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade800, Colors.blue.shade300],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          itemBuilder: (context, index) {
-            final item = menuItems[index];
-            return GestureDetector(
-              onTap: () => Get.toNamed(item.route),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 10,
-                      offset: Offset(4, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(item.icon, size: 48, color: Colors.blueAccent),
-                    SizedBox(height: 12),
-                    Text(
-                      item.title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
         ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+          child: GridView.builder(
+            itemCount: menuItems.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,  // Change this to 3 to display more items per row
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              childAspectRatio: 2,
+            ),
+            itemBuilder: (context, index) {
+              final item = menuItems[index];
+              return GestureDetector(
+                onTap: () => Get.toNamed(item.route),
+                child: _buildMenuItemCard(item),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuItemCard(_MenuItem item) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade100, Colors.blue.shade300],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 15,
+            offset: Offset(4, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(item.icon, size: 48, color: Colors.white),
+          SizedBox(height: 12),
+          Text(
+            item.title,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }

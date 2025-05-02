@@ -7,28 +7,40 @@ import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/routes.dart';
+import 'package:pos_app/utils/shared_preferences.dart';
 import 'package:requests_inspector/requests_inspector.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // init shared prefs
+  await sharedPrefs.init();
+
+
+  // init hive (local database)
+  await initHive();
+  
+  Get.put(CartController());
+  Get.put(ProductController());
+
+  final isLoggedIn = sharedPrefs.getBool('isLoggedIn');
+
+  runApp(
+    RequestsInspector(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: isLoggedIn ? AppRoutes.home : AppRoutes.login,
+        getPages: AppRoutes.routes,
+      ),
+    ),
+  );
+}
+
+Future<void> initHive() async {
   final dir = await getApplicationDocumentsDirectory();
 
   // Initialize Hivee
   Hive.init(dir.path);
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(CartItemModelAdapter());
-
-  Get.put(CartController());
-  Get.put(ProductController());
-
-  runApp(
-    RequestsInspector(
-      child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.home,
-        getPages: AppRoutes.routes,
-      ),
-    ),
-  );
 }
