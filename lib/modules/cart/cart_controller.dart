@@ -1,17 +1,21 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 
 class CartController extends GetxController {
   late Box<CartItemModel> _cartBox;
   var cartItems = <int, CartItemModel>{}.obs;
+  var totalItems = 0.obs;
+  var totalPrice = 0.obs;
 
   @override
   void onInit() async {
     super.onInit();
+    await Hive.deleteBoxFromDisk('cartBox');
+
     // Open the Hive box for CartItemModel
     _cartBox = await Hive.openBox<CartItemModel>('cartBox');
 
@@ -29,7 +33,7 @@ class CartController extends GetxController {
   // Load cart items from Hive
   void _loadCart() {
     for (var cartItem in _cartBox.values) {
-      cartItems[cartItem.product.id] = cartItem;
+      cartItems[cartItem.product.idBrg] = cartItem;
     }
   }
 
@@ -37,12 +41,12 @@ class CartController extends GetxController {
   void _saveCart() {
     for (var cartItem in cartItems.values) {
       log("save cart ${cartItem.toString()}");
-      _cartBox.put(cartItem.product.id, cartItem);
+      _cartBox.put(cartItem.product.idBrg, cartItem);
     }
   }
 
   void addToCart(Product product) {
-    final productId = product.id;
+    final productId = product.idBrg;
 
     if (cartItems.containsKey(productId)) {
       cartItems.update(
@@ -52,12 +56,14 @@ class CartController extends GetxController {
     } else {
       cartItems[productId] = CartItemModel(product: product, quantity: 1);
     }
+    _setTotalItems();
 
+    _setTotalPrice();
     _saveCart(); // Persist the cart to Hive
   }
 
   void removeFromCart(Product product) {
-    final productId = product.id;
+    final productId = product.idBrg;
 
     if (!cartItems.containsKey(productId)) return;
 
@@ -69,7 +75,8 @@ class CartController extends GetxController {
         (item) => item.copyWith(quantity: item.quantity - 1),
       );
     }
-
+    _setTotalItems();
+    _setTotalPrice();
     _saveCart(); // Persist the cart to Hive
   }
 
@@ -77,8 +84,17 @@ class CartController extends GetxController {
 
   List<CartItemModel> get items => cartItems.values.toList();
 
-  double get total => cartItems.values.fold(
-    0,
-    (sum, item) => sum + item.product.price * item.quantity,
-  );
+  _setTotalPrice() {
+    totalPrice.value = cartItems.values.fold(
+      0,
+      (sum, item) => sum + item.product.hargaJual * item.quantity,
+    );
+  }
+
+  _setTotalItems() {
+    totalItems.value = cartItems.values.fold(
+      0,
+      (sum, item) => sum + item.quantity,
+    );
+  }
 }

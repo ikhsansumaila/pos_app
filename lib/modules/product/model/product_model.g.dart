@@ -17,25 +17,52 @@ class ProductAdapter extends TypeAdapter<Product> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Product(
-      id: fields[0] as int,
-      title: fields[1] as String,
-      price: fields[2] as double,
-      imageUrl: fields[3] as String,
+      idBrg: fields[0] as int,
+      kodeBrg: fields[1] as String,
+      namaBrg: fields[2] as String,
+      satuan: fields[3] as String,
+      hargaBeli: fields[4] as int,
+      margin: fields[5] as int,
+      hargaJual: fields[6] as int,
+      gambar: fields[7] as String?,
+      status: fields[8] as String,
+      createdAt: fields[9] as String,
+      userid: fields[10] as int,
+      updatedAt: fields[11] as String,
+      updatedUserid: fields[12] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Product obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(13)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.idBrg)
       ..writeByte(1)
-      ..write(obj.title)
+      ..write(obj.kodeBrg)
       ..writeByte(2)
-      ..write(obj.price)
+      ..write(obj.namaBrg)
       ..writeByte(3)
-      ..write(obj.imageUrl);
+      ..write(obj.satuan)
+      ..writeByte(4)
+      ..write(obj.hargaBeli)
+      ..writeByte(5)
+      ..write(obj.margin)
+      ..writeByte(6)
+      ..write(obj.hargaJual)
+      ..writeByte(7)
+      ..write(obj.gambar)
+      ..writeByte(8)
+      ..write(obj.status)
+      ..writeByte(9)
+      ..write(obj.createdAt)
+      ..writeByte(10)
+      ..write(obj.userid)
+      ..writeByte(11)
+      ..write(obj.updatedAt)
+      ..writeByte(12)
+      ..write(obj.updatedUserid);
   }
 
   @override

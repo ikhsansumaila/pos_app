@@ -38,7 +38,9 @@ class ProductController extends GetxController {
     } else {
       final filtered =
           products
-              .where((p) => p.title.toLowerCase().contains(query.toLowerCase()))
+              .where(
+                (p) => p.namaBrg.toLowerCase().contains(query.toLowerCase()),
+              )
               .toList();
       filteredProducts.assignAll(filtered);
     }

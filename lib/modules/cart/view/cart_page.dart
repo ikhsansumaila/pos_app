@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
+import 'package:pos_app/modules/common/app_bar.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 
 class CartPage extends StatelessWidget {
@@ -9,12 +11,12 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Your Cart')),
+      appBar: MyAppBar(title: 'Keranjang'),
       body: Obx(() {
         final items = cartController.cartItems;
 
         if (items.isEmpty) {
-          return const Center(child: Text('Cart is empty.'));
+          return const Center(child: Text('Keranjang Kosong.'));
         }
 
         return ListView.builder(
@@ -31,9 +33,16 @@ class CartPage extends StatelessWidget {
             return Card(
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               child: ListTile(
-                leading: Image.network(product.imageUrl, width: 50, height: 50),
-                title: Text(product.title),
-                subtitle: Text('Price: \$${product.price.toStringAsFixed(2)}'),
+                leading: Image.network(
+                  product.gambar ?? "",
+                  width: 50,
+                  height: 50,
+                  errorBuilder: (c, e, s) => Icon(Icons.broken_image),
+                ),
+                title: Text(product.namaBrg),
+                subtitle: Text(
+                  'Harga: \$${product.hargaJual.toStringAsFixed(2)}',
+                ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -54,14 +63,15 @@ class CartPage extends StatelessWidget {
         );
       }),
       bottomNavigationBar: Obx(() {
-        final total = cartController.total;
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: () {
               // Handle checkout logic here
             },
-            child: Text('Checkout (\$${total.toStringAsFixed(2)})'),
+            child: Text(
+              'Checkout Rp${NumberFormat("#,##0", "id_ID").format(cartController.totalPrice.value)}',
+            ),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               textStyle: const TextStyle(fontSize: 18),

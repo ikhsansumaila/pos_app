@@ -1,45 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/routes.dart';
+import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/home/menu.dart';
 
 class HomePage extends StatelessWidget {
-  final List<_MenuItem> menuItems = [
-    _MenuItem(
-      title: 'Transaksi',
-      icon: Icons.add_circle,
-      route: AppRoutes.transactions,
-    ),
-    _MenuItem(
-      title: 'Produk',
-      icon: Icons.list_alt,
-      route: AppRoutes.products,
-    ),
-    _MenuItem(title: 'Keranjang', icon: Icons.shopping_cart, route: AppRoutes.cart),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('POS Home'),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-      ),
+      appBar: MyAppBar(title: 'Selamat Datang'),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade300],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
           child: GridView.builder(
             itemCount: menuItems.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,  // Change this to 3 to display more items per row
+              crossAxisCount:
+                  2, // Change this to 3 to display more items per row
               crossAxisSpacing: 20,
               mainAxisSpacing: 20,
               childAspectRatio: 2,
@@ -57,11 +35,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItemCard(_MenuItem item) {
+  Widget _buildMenuItemCard(MenuItem item) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue.shade100, Colors.blue.shade300],
+          colors: [Colors.blue.shade600, Colors.blue.shade300],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -91,12 +69,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-class _MenuItem {
-  final String title;
-  final IconData icon;
-  final String route;
-
-  _MenuItem({required this.title, required this.icon, required this.route});
 }

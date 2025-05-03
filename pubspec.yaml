@@ -13,6 +13,9 @@ dependencies:
 
   #design
   cupertino_icons: ^1.0.8
+
+  # price/date formatting
+  intl: ^0.17.0
   
   #state management
   get: ^4.6.6  # Use latest version if available
@@ -26,6 +29,16 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.1.2
   shared_preferences: ^2.2.2
+
+  #camera & barcode scanner
+  # camera: ^0.11.0+1
+  # google_mlkit_barcode_scanning: ^0.10.0
+  mobile_scanner: ^3.5.2
+  permission_handler: ^11.3.1
+
+  #choose image
+  image_picker: ^1.0.7
+
 
 
 dev_dependencies:

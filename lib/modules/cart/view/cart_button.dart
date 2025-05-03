@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
+import 'package:pos_app/routes.dart';
 
 class CartButton extends StatelessWidget {
   final cartController = Get.find<CartController>();
@@ -18,7 +19,7 @@ class CartButton extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.shopping_cart),
-            onPressed: () => Get.toNamed('/cart'),
+            onPressed: () => Get.toNamed(AppRoutes.cart),
           ),
           if (count > 0)
             Positioned(

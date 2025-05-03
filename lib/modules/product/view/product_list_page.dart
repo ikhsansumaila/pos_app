@@ -1,35 +1,35 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/cart/cart_controller.dart';
-import 'package:pos_app/modules/cart/view/cart_button.dart';
+import 'package:intl/intl.dart';
+import 'package:pos_app/modules/common/app_bar.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
+import 'package:pos_app/routes.dart';
+import 'package:pos_app/utils/constants/colors.dart';
 
 class ProductPage extends StatelessWidget {
-  final cartController = Get.find<CartController>();
   final productController = Get.find<ProductController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Products',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Get.toNamed(AppRoutes.addProduct),
+      ),
+      appBar: MyAppBar(
+        title: 'List Barang',
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert), // Icon untuk menu
+            onPressed: () => {}, //_showMenuBottomSheet(context),
           ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade400, Colors.blue.shade100],
+            colors: AppColors.primaryGradient,
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -60,10 +60,7 @@ class ProductPage extends StatelessWidget {
                   ),
                   itemBuilder: (context, index) {
                     final product = productController.filteredProducts[index];
-                    final quantity = cartController.getQuantity(product.id);
-                    log(quantity.toString());
-
-                    return _buildProductCard(product, quantity);
+                    return _buildProductCard(product);
                   },
                 );
               }),
@@ -84,9 +81,10 @@ class ProductPage extends StatelessWidget {
         controller: productController.searchController,
         style: TextStyle(color: Colors.black, fontSize: 16),
         decoration: InputDecoration(
-          hintText: 'Search products...',
+          hintText: 'Cari Barang...',
           hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 16),
           prefixIcon: Icon(Icons.search, color: Colors.blueAccent),
+          // suffixIcon: BarcodeScanner(),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         ),
@@ -94,7 +92,7 @@ class ProductPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(Product product, int quantity) {
+  Widget _buildProductCard(Product product) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final cardHeight = 280.0; // You can tweak this height as needed
@@ -122,7 +120,7 @@ class ProductPage extends StatelessWidget {
                     height: imageHeight,
                     width: double.infinity,
                     child: Image.network(
-                      product.imageUrl,
+                      product.gambar ?? "https://loremflickr.com/320/240",
                       fit: BoxFit.contain,
                       errorBuilder:
                           (context, error, stackTrace) => Container(
@@ -147,10 +145,10 @@ class ProductPage extends StatelessWidget {
                       children: [
                         // Title
                         Text(
-                          product.title,
+                          product.namaBrg,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 16,
                             color: Colors.black87,
                           ),
                           maxLines: 2,
@@ -160,10 +158,11 @@ class ProductPage extends StatelessWidget {
 
                         // Price
                         Text(
-                          '\$${product.price.toStringAsFixed(2)}',
+                          'Rp${NumberFormat("#,##0", "id_ID").format(product.hargaJual)}',
                           style: TextStyle(
-                            color: Colors.orange[400],
-                            fontSize: 25,
+                            color: AppColors.priceColor,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -172,51 +171,36 @@ class ProductPage extends StatelessWidget {
                     // Price
                     Text(
                       'Stok : 100',
-                      style: TextStyle(color: Colors.blueGrey, fontSize: 25),
+                      style: TextStyle(color: Colors.blueGrey, fontSize: 20),
                     ),
                   ],
                 ),
-
-                Spacer(),
-
-                // Quantity control
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Row(
-                //       children: [
-                //         IconButton(
-                //           onPressed: quantity > 0
-                //               ? () => cartController.removeFromCart(product)
-                //               : null,
-                //           icon:
-                //               Icon(Icons.remove_circle, color: Colors.redAccent),
-                //         ),
-                //         Text(
-                //           quantity.toString(),
-                //           style: TextStyle(
-                //               fontSize: 16, fontWeight: FontWeight.w500),
-                //         ),
-                //         IconButton(
-                //           onPressed: () {
-                //             cartController.addToCart(product);
-                //             Get.snackbar(
-                //               'Added to Cart',
-                //               '${product.title} added',
-                //               snackPosition: SnackPosition.BOTTOM,
-                //               duration: Duration(milliseconds: 800),
-                //             );
-                //           },
-                //           icon: Icon(Icons.add_circle, color: Colors.green),
-                //         ),
-                //       ],
-                //     ),
-                //     Icon(Icons.shopping_cart_outlined,
-                //         color: Colors.blueAccent),
-                //   ],
-                // ),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showMenuBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      // isScrollControlled:
+      //     true, // Allows you to control the height of the BottomSheet
+      builder: (context) {
+        return Container(
+          width: double.infinity, // Make the container full width
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Tambah Barang'),
+                onTap: () => Get.toNamed(AppRoutes.addProduct),
+              ),
+            ],
           ),
         );
       },
