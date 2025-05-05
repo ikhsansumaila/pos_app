@@ -5,8 +5,9 @@ import 'package:pos_app/modules/home/home.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
 import 'package:pos_app/modules/product/view/stock_mutation_page.dart';
-import 'package:pos_app/modules/transaction/view/checkout_page.dart';
-import 'package:pos_app/modules/transaction/view/transaction_page.dart';
+import 'package:pos_app/modules/transaction/checkout/checkout_page.dart';
+import 'package:pos_app/modules/transaction/purchase_order/order_page.dart';
+import 'package:pos_app/modules/transaction/select_item/view/transaction_page.dart';
 
 class AppRoutes {
   static const String login = '/login';
@@ -20,6 +21,7 @@ class AppRoutes {
   // transaction
   static const String transactions = '/transactions';
   static const String checkout = '/checkout';
+  static const String orders = '/orders';
   static const String cart = '/cart';
 
   static final routes = [
@@ -34,7 +36,7 @@ class AppRoutes {
     //transaction
     GetPage(name: transactions, page: () => TransactionPage()),
     GetPage(name: checkout, page: () => CheckoutPage()),
-
+    GetPage(name: orders, page: () => OrdersPage()),
     GetPage(name: cart, page: () => CartPage()),
   ];
 }

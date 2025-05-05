@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 
 class CartPage extends StatelessWidget {
@@ -33,12 +34,7 @@ class CartPage extends StatelessWidget {
             return Card(
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               child: ListTile(
-                leading: Image.network(
-                  product.gambar ?? "",
-                  width: 50,
-                  height: 50,
-                  errorBuilder: (c, e, s) => Icon(Icons.broken_image),
-                ),
+                leading: AppImage(url: product.gambar),
                 title: Text(product.namaBrg),
                 subtitle: Text(
                   'Harga: \$${product.hargaJual.toStringAsFixed(2)}',

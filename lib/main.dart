@@ -6,7 +6,7 @@ import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
-import 'package:pos_app/modules/transaction/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/themes.dart';
 import 'package:pos_app/utils/shared_preferences.dart';

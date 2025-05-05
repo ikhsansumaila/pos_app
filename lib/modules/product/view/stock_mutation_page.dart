@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
@@ -234,11 +235,9 @@ class _StockMutationPageState extends State<StockMutationPage> {
   Widget _buildProductImage(String? url) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
-      child: Image.network(
-        url ?? '',
+      child: AppImage(
         width: 70,
         height: 70,
-        fit: BoxFit.cover,
         errorBuilder:
             (context, error, stackTrace) => Container(
               color: Colors.grey.shade200,

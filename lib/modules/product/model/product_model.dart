@@ -37,11 +37,11 @@ class Product extends HiveObject {
   @HiveField(10)
   int userid;
 
-  @HiveField(11)
-  String updatedAt;
+  // @HiveField(11)
+  // String updatedAt;
 
-  @HiveField(12)
-  int updatedUserid;
+  // @HiveField(12)
+  // int updatedUserid;
 
   Product({
     required this.idBrg,
@@ -55,8 +55,8 @@ class Product extends HiveObject {
     required this.status,
     required this.createdAt,
     required this.userid,
-    required this.updatedAt,
-    required this.updatedUserid,
+    // required this.updatedAt,
+    // required this.updatedUserid,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -71,7 +71,7 @@ class Product extends HiveObject {
     status: json['status'] as String,
     createdAt: json['created_at'] as String,
     userid: json['userid'] as int,
-    updatedAt: json['updated_at'] as String,
-    updatedUserid: json['updated_userid'] as int,
+    // updatedAt: json['updated_at'] as String,
+    // updatedUserid: json['updated_userid'] as int,
   );
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/routes.dart';
@@ -50,18 +52,21 @@ class ProductPage extends StatelessWidget {
                   );
                 }
 
-                return GridView.builder(
-                  itemCount: productController.filteredProducts.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Two columns per row
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                    childAspectRatio: 2, // Aspect ratio for card size
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: GridView.builder(
+                    itemCount: productController.filteredProducts.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Two columns per row
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                      childAspectRatio: 2, // Aspect ratio for card size
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = productController.filteredProducts[index];
+                      return _buildProductCard(product);
+                    },
                   ),
-                  itemBuilder: (context, index) {
-                    final product = productController.filteredProducts[index];
-                    return _buildProductCard(product);
-                  },
                 );
               }),
             ),
@@ -119,22 +124,24 @@ class ProductPage extends StatelessWidget {
                   child: Container(
                     height: imageHeight,
                     width: double.infinity,
-                    child: Image.network(
-                      product.gambar ?? "https://loremflickr.com/320/240",
-                      fit: BoxFit.contain,
-                      errorBuilder:
-                          (context, error, stackTrace) => Container(
-                            color: Colors.grey.shade200,
-                            child: Icon(
-                              Icons.broken_image,
-                              size: 40,
-                              color: Colors.grey,
-                            ),
-                          ),
-                    ),
+                    child: AppImage(url: product.gambar, fit: BoxFit.contain),
+
+                    // Image.network(
+                    //   product.gambar ?? "https://loremflickr.com/320/240",
+                    //   fit: BoxFit.contain,
+                    //   errorBuilder:
+                    //       (context, error, stackTrace) => Container(
+                    //         color: Colors.grey.shade200,
+                    //         child: Icon(
+                    //           Icons.broken_image,
+                    //           size: 40,
+                    //           color: Colors.grey,
+                    //         ),
+                    //       ),
+                    // ),
                   ),
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 15),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

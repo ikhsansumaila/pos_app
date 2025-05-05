@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_app/modules/transaction/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
+import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
 class TransactionDetailSheet extends StatefulWidget {
@@ -172,25 +173,31 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                   }),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Get.snackbar(
-                          'Checkout',
-                          'Fitur checkout belum tersedia',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.orange,
-                          colorText: Colors.white,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                    child: Obx(() {
+                      return ElevatedButton(
+                        onPressed:
+                            trxController.totalItems.value == 0
+                                ? null
+                                : () {
+                                  // Get.snackbar(
+                                  //   'Checkout',
+                                  //   'Fitur checkout belum tersedia',
+                                  //   snackPosition: SnackPosition.BOTTOM,
+                                  //   backgroundColor: Colors.orange,
+                                  //   colorText: Colors.white,
+                                  // );
+                                  Get.toNamed(AppRoutes.checkout);
+                                },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                      ),
-                      child: Text('Checkout'),
-                    ),
+                        child: Text('Checkout'),
+                      );
+                    }),
                   ),
                 ],
               ),

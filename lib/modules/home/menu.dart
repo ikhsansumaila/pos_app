@@ -20,9 +20,9 @@ final List<MenuItem> menuItems = [
     icon: Icons.list_alt,
     route: AppRoutes.products,
   ),
-  // MenuItem(
-  //   title: 'Keranjang',
-  //   icon: Icons.shopping_cart,
-  //   route: AppRoutes.cart,
-  // ),
+  MenuItem(
+    title: 'Pesanan',
+    icon: Icons.receipt_long,
+    route: AppRoutes.orders, // order from customer (online)
+  ),
 ];

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
-import 'package:pos_app/modules/transaction/transaction_controller.dart';
-import 'package:pos_app/modules/transaction/view/transaction_button.dart';
+import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/select_item/view/transaction_button.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
@@ -120,13 +121,7 @@ class TransactionPage extends StatelessWidget {
             children: [
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: Image.network(
-                  product.gambar ?? "https://loremflickr.com/320/240",
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  errorBuilder: (c, e, s) => Icon(Icons.broken_image),
-                ),
+                leading: AppImage(url: product.gambar),
                 title: Text(
                   product.namaBrg,
                   style: TextStyle(
