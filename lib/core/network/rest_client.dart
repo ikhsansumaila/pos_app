@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:pos_app/data/repository/utils/response.dart';
+import 'package:pos_app/core/network/response.dart';
 
 abstract class RestClient {
   // final Dio dio;
