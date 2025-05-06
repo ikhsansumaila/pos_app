@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:pos_app/core/network/dio_interceptor.dart';
 import 'package:pos_app/utils/constants/constant.dart';
 import 'package:requests_inspector/requests_inspector.dart';
 
@@ -20,23 +21,7 @@ class DioClient {
 
     // Interceptor untuk logging / error handling
     dio.interceptors.add(RequestsInspectorInterceptor());
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          // Tambah token kalau perlu
-          // options.headers['Authorization'] = 'Bearer your_token';
-          return handler.next(options);
-        },
-        onResponse: (response, handler) {
-          return handler.next(response);
-        },
-        onError: (error, handler) {
-          // Bisa tambahkan retry / log error
-          print('Dio Error: ${error.message}');
-          return handler.next(error);
-        },
-      ),
-    );
+    dio.interceptors.add(RequestsInterceptor());
   }
 
   Future<Response> get(String path, {Map<String, dynamic>? query}) async {
@@ -55,7 +40,7 @@ class DioClient {
     return await dio.delete(path);
   }
 
-  String _handleDioError(DioException e) {
+  String getErrorMessage(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.receiveTimeout:
@@ -67,7 +52,7 @@ class DioClient {
       case DioExceptionType.cancel:
         return 'Request cancelled';
       default:
-        return 'Unexpected error occurred';
+        return 'Unexpected error occurred: $e';
     }
   }
 }

@@ -1,16 +1,16 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:pos_app/utils/api/response.dart';
-import 'package:requests_inspector/requests_inspector.dart';
+import 'package:pos_app/data/repository/utils/response.dart';
 
-abstract class BaseRepository {
-  final Dio dio;
-  BaseRepository()
-    : dio = Dio(BaseOptions(baseUrl: 'https://your-api.com/api/')) {
-    dio.interceptors.add(RequestsInspectorInterceptor());
-    // Add other interceptors like loggers or error handlers as needed
-  }
+abstract class RestClient {
+  // final Dio dio;
+  // RestClient(this.dio);
+  // RestClient()
+  //   : dio = Dio(BaseOptions(baseUrl: 'https://your-api.com/api/')) {
+  //   dio.interceptors.add(RequestsInspectorInterceptor());
+  // Add other interceptors like loggers or error handlers as needed
+  // }
   Future<ApiResponse<T>> safeRequest<T>(
     Future<Response> Function() requestFn,
     T Function(dynamic data) fromJson,
