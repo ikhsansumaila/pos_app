@@ -5,6 +5,8 @@ import 'package:pos_app/utils/constants/hive_key.dart';
 class OrderLocalDataSource {
   final Box box;
   OrderLocalDataSource(this.box);
+  // OrderLocalDataSource() : box = Hive.box(ORDER_BOX_KEY);
+  // final Box box;
 
   List<Order> getCachedOrders() {
     final data = box.get(ORDER_BOX_KEY, defaultValue: []);

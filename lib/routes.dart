@@ -4,6 +4,7 @@ import 'package:pos_app/bindings/transaction_binding.dart';
 import 'package:pos_app/modules/auth/login_page.dart';
 import 'package:pos_app/modules/cart/view/cart_page.dart';
 import 'package:pos_app/modules/home/home.dart';
+import 'package:pos_app/modules/home/splash_page.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
 import 'package:pos_app/modules/stock/stock_mutation_page.dart';
@@ -12,6 +13,7 @@ import 'package:pos_app/modules/transaction/purchase_order/order_page.dart';
 import 'package:pos_app/modules/transaction/select_item/view/transaction_page.dart';
 
 class AppRoutes {
+  static const String splash = '/splash';
   static const String login = '/login';
   static const String home = '/';
 
@@ -27,6 +29,7 @@ class AppRoutes {
   static const String cart = '/cart';
 
   static final routes = [
+    GetPage(name: splash, page: () => SplashPage()),
     GetPage(name: login, page: () => LoginPage()),
     GetPage(name: home, page: () => HomePage()),
 

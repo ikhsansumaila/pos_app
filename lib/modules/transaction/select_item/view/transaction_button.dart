@@ -14,40 +14,46 @@ class TransactionDetailSheet extends StatefulWidget {
 class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
   final trxController = Get.find<TransactionController>();
 
-  double sheetSize = 0.27;
-  final double minSize = 0.27;
-  late double maxSize;
+  final baseSheetSize = 0.27;
+  late final DraggableScrollableController draggableController;
 
-  late DraggableScrollableController draggableController;
+  late bool isTabletLandscape;
   bool isExpanded = false;
 
   @override
   void initState() {
     super.initState();
+
     draggableController = DraggableScrollableController();
-
-    maxSize = minSize + 0.2;
-
-    // Dengarkan perubahan extent saat drag
     draggableController.addListener(() {
       final extent = draggableController.size;
-      setState(() {
-        isExpanded = extent >= 0.35;
-        // isExpanded = extent >= maxSize - 0.05; // Toleransi sedikit
-      });
+      if (mounted) {
+        setState(() {
+          isExpanded = extent > getMinSheetSize();
+        });
+      }
     });
+  }
+
+  /// Hitung ukuran sheet minimum tergantung orientasi/tablet
+  double getMinSheetSize() {
+    return isTabletLandscape ? baseSheetSize + 0.1 : baseSheetSize;
+  }
+
+  double getMaxSheetSize() {
+    return getMinSheetSize() + 0.2;
   }
 
   void toggleSheetSize() {
     if (isExpanded) {
       draggableController.animateTo(
-        minSize,
+        getMinSheetSize(),
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     } else {
       draggableController.animateTo(
-        maxSize,
+        getMaxSheetSize(),
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -57,12 +63,13 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    isTabletLandscape = responsive.isTablet && responsive.isLandscape;
 
     return DraggableScrollableSheet(
       controller: draggableController,
-      initialChildSize: sheetSize,
-      minChildSize: minSize,
-      maxChildSize: maxSize,
+      initialChildSize: getMinSheetSize(),
+      minChildSize: getMinSheetSize(),
+      maxChildSize: getMaxSheetSize(),
       builder: (context, scrollController) {
         return Container(
           padding: EdgeInsets.all(20),
@@ -79,7 +86,6 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
           ),
           child: Column(
             children: [
-              // Konten scrollable (pakai Expanded)
               Expanded(
                 child: CustomScrollView(
                   controller: scrollController,
@@ -87,21 +93,17 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          Container(
-                            width: double.infinity, // Tambahkan ini
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: IconButton(
-                                icon: Icon(
-                                  isExpanded
-                                      ? Icons.expand_more
-                                      : Icons.expand_less,
-                                ),
-                                onPressed: toggleSheetSize,
+                          Align(
+                            alignment: Alignment.center,
+                            child: IconButton(
+                              icon: Icon(
+                                isExpanded
+                                    ? Icons.expand_more
+                                    : Icons.expand_less,
                               ),
+                              onPressed: toggleSheetSize,
                             ),
                           ),
-
                           if (trxController.items.isNotEmpty && isExpanded)
                             ...trxController.items.map(
                               (item) => Padding(
@@ -152,8 +154,6 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                   ],
                 ),
               ),
-
-              // Tombol Checkout tetap di bawah
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -189,16 +189,7 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                         onPressed:
                             trxController.totalItems.value == 0
                                 ? null
-                                : () {
-                                  // Get.snackbar(
-                                  //   'Checkout',
-                                  //   'Fitur checkout belum tersedia',
-                                  //   snackPosition: SnackPosition.BOTTOM,
-                                  //   backgroundColor: Colors.orange,
-                                  //   colorText: Colors.white,
-                                  // );
-                                  Get.toNamed(AppRoutes.checkout);
-                                },
+                                : () => Get.toNamed(AppRoutes.checkout),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           padding: EdgeInsets.symmetric(vertical: 16),

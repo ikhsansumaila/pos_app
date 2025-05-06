@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/data/repository/product/product_repository.dart';
-import 'package:pos_app/data/source/product/local.dart';
-import 'package:pos_app/data/source/product/remote.dart';
+import 'package:pos_app/data/repository/product/source/product_local.dart';
+import 'package:pos_app/data/repository/product/source/product_remote.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remote;
@@ -16,30 +16,32 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<Product>> getProducts() async {
-    List<Product> result = [];
     if (await connectivity.isConnected()) {
       log("Internet is on");
-      final products = await remote.fetchProducts();
-      log("products $products");
-      // local.cacheProducts(products);
-      return products;
+      try {
+        final products = await remote.fetchProducts();
+        local.cacheProducts(products);
+        log("after caching ${products.length} products");
+        return products;
+      } catch (e) {
+        log("Error fetching products: $e");
+        return local.getCachedProducts();
+      }
     } else {
       log("Internet is off");
-      // return local.getCachedProducts();
+      return local.getCachedProducts();
     }
-    // var test = []<List<Product>>[];
-    // return test;
-    return result;
   }
 
   @override
   Future<void> postProduct(Product product) async {
-    if (await connectivity.isConnected()) {
-      await remote.postProduct(product);
-      await processQueue(); // send pending posts
-    } else {
-      local.queueProductPost(product); // simpan queue lokal
-    }
+    // if (await connectivity.isConnected()) {
+    //   await remote.postProduct(product);
+    //   await processQueue(); // send pending posts
+    // } else {
+    //   local.queueProductPost(product); // simpan queue lokal
+    // }
+    local.queueProductPost(product);
   }
 
   @override

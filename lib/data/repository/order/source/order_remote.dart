@@ -1,9 +1,9 @@
 // data/datasources/product_remote_datasource.dart
-import 'package:dio/dio.dart';
+import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/data/models/order_model.dart';
 
 class OrderRemoteDataSource {
-  final Dio dio;
+  final DioClient dio;
   OrderRemoteDataSource(this.dio);
 
   Future<List<Order>> fetchOrders() async {

@@ -207,21 +207,6 @@ class TabletLayout extends StatelessWidget {
                   },
                 ),
               ),
-
-              // Tombol Pecah Stok
-              // Align(
-              //   alignment: Alignment.centerRight,
-              //   child: TextButton.icon(
-              //     onPressed: () {
-              //       Get.toNamed('/pecah-stok', arguments: product);
-              //     },
-              //     icon: Icon(Icons.call_split, color: AppColors.primary),
-              //     label: Text(
-              //       'Pecah Stok',
-              //       style: TextStyle(color: AppColors.primary),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),

@@ -8,6 +8,7 @@ import 'package:pos_app/core/services/sync_log_service.dart';
 import 'package:pos_app/data/models/sync_log_model.dart';
 import 'package:pos_app/data/repository/order/order_repository.dart';
 import 'package:pos_app/data/repository/product/product_repository.dart';
+import 'package:pos_app/utils/constants/constant.dart';
 
 class SyncService {
   final ProductRepository productRepo;
@@ -35,7 +36,7 @@ class SyncService {
       barrierDismissible: false,
     );
 
-    final success = await _syncWithTimeout(Duration(seconds: 10));
+    final success = await _syncWithTimeout(TIMEOUT_DURATION);
     Get.back();
     isSyncing = false;
 
@@ -80,7 +81,7 @@ class SyncService {
 
   void _scheduleRetry() {
     _retryTimer?.cancel();
-    _retryTimer = Timer(Duration(minutes: 10), () {
+    _retryTimer = Timer(RETRY_SYNC_INTERVAL, () {
       if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
         syncAllWithDialog();
       }

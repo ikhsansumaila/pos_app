@@ -3,6 +3,7 @@
 import 'package:pos_app/data/models/order_model.dart';
 
 abstract class OrderRepository {
+  // Future<void> initLocalDataSource();
   Future<List<Order>> getOrders();
   Future<void> postOrder(Order product);
   Future<bool> processQueue();

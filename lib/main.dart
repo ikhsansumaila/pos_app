@@ -21,10 +21,6 @@ void main() async {
   await initHive();
   // await Hive.deleteFromDisk();
 
-  // Get.put(CartController());
-  // Get.put(ProductController());
-  // Get.put(TransactionController());
-
   final isLoggedIn = sharedPrefs.getBool('isLoggedIn');
 
   runApp(
@@ -49,6 +45,8 @@ Future<void> initHive() async {
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(CartItemModelAdapter());
 
-  await Hive.openBox(PRODUCT_BOX_KEY);
-  // Get.put(productBox, tag: 'productBox');
+  // Open Hive Boxes (MUST BE WAITED ON INIT)
+  await Hive.openBox(PRODUCT_BOX_KEY); // will use on AppBinding
+  await Hive.openBox(ORDER_BOX_KEY); // will use on AppBinding
+  await Hive.openBox(SYNC_LOG_BOX_KEY); // will use on AppBinding
 }
