@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:pos_app/bindings/product_binding.dart';
+import 'package:pos_app/bindings/transaction_binding.dart';
 import 'package:pos_app/modules/auth/login_page.dart';
 import 'package:pos_app/modules/cart/view/cart_page.dart';
 import 'package:pos_app/modules/home/home.dart';
@@ -29,12 +31,20 @@ class AppRoutes {
     GetPage(name: home, page: () => HomePage()),
 
     // product
-    GetPage(name: products, page: () => ProductPage()),
+    GetPage(
+      name: products,
+      page: () => ProductPage(),
+      binding: ProductBinding(),
+    ),
     GetPage(name: addProduct, page: () => AddProductPage()),
     GetPage(name: stockMutation, page: () => StockMutationPage()),
 
     //transaction
-    GetPage(name: transactions, page: () => TransactionPage()),
+    GetPage(
+      name: transactions,
+      page: () => TransactionPage(),
+      binding: TransactionBinding(),
+    ),
     GetPage(name: checkout, page: () => CheckoutPage()),
     GetPage(name: orders, page: () => OrdersPage()),
     GetPage(name: cart, page: () => CartPage()),

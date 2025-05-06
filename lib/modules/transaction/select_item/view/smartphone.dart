@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_app/modules/common/icon_button.dart';
+import 'package:pos_app/data/models/product_model.dart';
+import 'package:pos_app/modules/common/widgets/icon_button.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
-import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
 import 'package:pos_app/modules/transaction/select_item/view/transaction_button.dart';
@@ -55,7 +55,7 @@ class SmartphoneLayout extends StatelessWidget {
                     child: GridView.builder(
                       itemCount: productController.filteredProducts.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: responsive.crossAxisCount,
+                        crossAxisCount: 2,
                         crossAxisSpacing: 0.1,
                         mainAxisSpacing: 0.1,
                         childAspectRatio: 1.5,

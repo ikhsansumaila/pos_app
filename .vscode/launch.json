@@ -6,8 +6,10 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "args": ["--no-enable-impeller"]
+            "args": ["--enable-software-rendering", "--no-enable-impeller"]
         },
+        // buka emulator cmd : emulator -avd Medium_Phone_API_36 -gpu swiftshader_indirect
+        //flutter run -d emulator-5554 --enable-software-rendering --no-enable-impeller
         {
             "name": "Run on Smartphone Emulator",
             "request": "launch",
@@ -15,6 +17,8 @@
             "program": "lib/main.dart",
             "deviceId": "emulator-5554"
         },
+        // buka emulator cmd : emulator -avd Tab_10inch_-_API_36_Android_16 -gpu swiftshader_indirect
+        //flutter run -d emulator-5556 --enable-software-rendering --no-enable-impeller
         {
             "name": "Run on Tab Emulator (10 inch)",
             "request": "launch",
@@ -22,6 +26,7 @@
             "program": "lib/main.dart",
             "deviceId": "emulator-5556"
         },
+        //flutter run -d R9RX8018G1V --enable-software-rendering --no-enable-impeller
         {
             "name": "Run on Tablet Real Device (7 inch)",
             "request": "launch",
@@ -31,3 +36,28 @@
         }
     ]
 }
+// run all emulator : flutter run -d all --hot(gabisa)
+
+// {
+//     "version": "0.2.0",
+//     "configurations": [
+//       {
+//         "name": "Debug Emulator - Smartphone",
+//         "request": "launch",
+//         "type": "dart",
+//         "preLaunchTask": "Start Emulator Smartphone (API 36)",
+//         "deviceId": "emulator-5554",  // ID Emulator 1
+//         "flutterMode": "debug"
+//       },
+//       {
+//         "name": "Debug Emulator - Tab 10inch",
+//         "request": "launch",
+//         "type": "dart",
+//         "preLaunchTask": "Start Emulator Tab 10inch (API 36)",
+//         "deviceId": "emulator-5556",  // ID Emulator 2
+//         "flutterMode": "debug"
+//       }
+//     ]
+//   }
+
+

@@ -39,6 +39,9 @@ dependencies:
   #choose image
   image_picker: ^1.0.7
 
+  #check connectivity
+  connectivity_plus: ^6.0.3
+
 
 
 dev_dependencies:

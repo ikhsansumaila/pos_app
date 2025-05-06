@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
-import 'package:pos_app/modules/product/model/product_model.dart';
 
 class TransactionController extends GetxController {
-  late Box<CartItemModel> _cartBox;
+  Box<CartItemModel>? _cartBox;
   var trxItems = <int, CartItemModel>{}.obs;
   var totalItems = 0.obs;
   var totalPrice = 0.obs;
@@ -26,12 +26,12 @@ class TransactionController extends GetxController {
   void onClose() {
     super.onClose();
     // Close the Hive box when the controller is disposed
-    _cartBox.close();
+    _cartBox?.close();
   }
 
   // Load cart items from Hive
   // void _loadCart() {
-  //   for (var cartItem in _cartBox.values) {
+  //   for (var cartItem in _cartBox?.values) {
   //     cartItems[cartItem.product.idBrg] = cartItem;
   //   }
   // }
@@ -40,7 +40,7 @@ class TransactionController extends GetxController {
   // void _saveCart() {
   //   for (var cartItem in cartItems.values) {
   //     log("save cart ${cartItem.toString()}");
-  //     _cartBox.put(cartItem.product.idBrg, cartItem);
+  //     _cartBox?.put(cartItem.product.idBrg, cartItem);
   //   }
   // }
 

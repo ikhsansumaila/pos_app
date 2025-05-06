@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:pos_app/modules/product/model/product_model.dart';
+import 'package:pos_app/data/models/product_model.dart';
 
 part 'cart_item_model.g.dart'; // The generated adapter file
 

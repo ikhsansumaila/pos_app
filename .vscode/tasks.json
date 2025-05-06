@@ -1,0 +1,38 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start Emulator Smartphone (API 36)",
+        "type": "shell",
+        "command": "emulator -avd Medium_Phone_API_36 -gpu swiftshader_indirect",
+    
+        // "command": "emulator",
+        // "args": [
+        //   "-avd", "Medium_Phone_API_36",
+        //   "-gpu", "on"
+        // ],
+        "problemMatcher": [],
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "isBackground": true
+      },
+      {
+        "label": "Start Emulator Tab 10inch (API 36)",
+        "type": "shell",
+        "command": "emulator -avd Tab_10inch_-_API_36_Android_16 -gpu swiftshader_indirect",
+        "args": [
+          "-avd", "Tab_10inch_-_API_36_Android_16",
+          "-gpu", "on"
+        ],
+        "problemMatcher": [],
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "isBackground": true
+      }
+    ]
+  }
+  

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/product/model/product_model.dart';
-import 'package:pos_app/modules/product/product_repository.dart';
+import 'package:pos_app/data/models/product_model.dart';
+import 'package:pos_app/data/repository/product/product_repository.dart';
 
 class ProductController extends GetxController {
-  final ProductRepository repository = ProductRepository();
+  final ProductRepository repository;
+  ProductController(this.repository);
 
   final products = <Product>[].obs;
   final filteredProducts = <Product>[].obs;
@@ -21,14 +22,16 @@ class ProductController extends GetxController {
 
   void fetchProducts() async {
     isLoading(true);
-    final res = await repository.getAllProducts();
+    final res = await repository.getProducts();
+    products.assignAll(res);
+    filteredProducts.assignAll(res);
 
-    if (res.success && res.data != null) {
-      products.assignAll(res.data!);
-      filteredProducts.assignAll(res.data!);
-    } else {
-      Get.snackbar('Error', res.message ?? 'Failed to load products');
-    }
+    // if (res.success && res.data != null) {
+    //   products.assignAll(res);
+    //   filteredProducts.assignAll(res.data!);
+    // } else {
+    //   Get.snackbar('Error', res.message ?? 'Failed to load products');
+    // }
     isLoading(false);
   }
 

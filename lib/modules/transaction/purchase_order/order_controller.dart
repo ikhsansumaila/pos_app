@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pos_app/modules/transaction/purchase_order/order_model.dart';
+import 'package:pos_app/data/models/order_model.dart';
 
 class OrdersController extends GetxController {
   final orders = <Order>[].obs;

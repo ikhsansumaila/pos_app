@@ -74,4 +74,20 @@ class Product extends HiveObject {
     // updatedAt: json['updated_at'] as String,
     // updatedUserid: json['updated_userid'] as int,
   );
+
+  Map<String, dynamic> toJson() => {
+    'id_brg': idBrg,
+    'kode_brg': kodeBrg,
+    'nama_brg': namaBrg,
+    'satuan': satuan,
+    'harga_beli': hargaBeli,
+    'margin': margin,
+    'harga_jual': hargaJual,
+    'gambar': gambar,
+    'status': status,
+    'created_at': createdAt,
+    'userid': userid,
+    // 'updated_at': updatedAt,
+    // 'updated_userid': updatedUserid,
+  };
 }

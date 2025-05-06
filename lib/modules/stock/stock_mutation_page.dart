@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
 import 'package:pos_app/modules/common/scrollable_page.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
-import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
@@ -27,45 +27,43 @@ class _StockMutationPageState extends State<StockMutationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppBasePage(
       appBar: MyAppBar(title: "Pecah Stok"),
-      body: AppBasePage(
-        mainWidget: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProductCard(
-              title: "Barang Asal",
-              product: sourceProduct,
-              includeInput: true,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Center(
-                child: Icon(
-                  Icons.swap_vert_rounded,
-                  size: 48,
-                  color: const Color.fromARGB(255, 24, 142, 30),
-                ),
-              ),
-            ),
-            _buildTargetProductCard(),
-          ],
-        ),
-        fixedBottomWidget: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(16),
-          child: ElevatedButton(
-            onPressed: () {
-              // Handle checkout logic here
-            },
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
-              ),
-            ),
-            child: Text('Pecah Stok'),
+      mainWidget: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildProductCard(
+            title: "Barang Asal",
+            product: sourceProduct,
+            includeInput: true,
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Center(
+              child: Icon(
+                Icons.swap_vert_rounded,
+                size: 48,
+                color: const Color.fromARGB(255, 24, 142, 30),
+              ),
+            ),
+          ),
+          _buildTargetProductCard(),
+        ],
+      ),
+      fixedBottomWidget: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(16),
+        child: ElevatedButton(
+          onPressed: () {
+            // Handle checkout logic here
+          },
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
+          child: Text('Pecah Stok'),
         ),
       ),
     );

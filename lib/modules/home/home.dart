@@ -22,10 +22,10 @@ class HomePage extends StatelessWidget {
         child: GridView.builder(
           itemCount: menuItems.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: responsive.crossAxisCount,
+            crossAxisCount: 2,
             crossAxisSpacing: responsive.isTablet ? 20 : 10,
             mainAxisSpacing: responsive.isTablet ? 20 : 10,
-            childAspectRatio: responsive.childAspectRatio,
+            childAspectRatio: 2,
           ),
           itemBuilder: (context, index) {
             final item = menuItems[index];
@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(responsive.isTablet ? 30 : 10),
         boxShadow: [
           BoxShadow(
             color: Colors.black26,
@@ -59,15 +59,13 @@ class HomePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(item.icon, size: 48, color: Colors.white),
+          Icon(item.icon, size: responsive.fontSize(48), color: Colors.white),
           SizedBox(height: 12),
           Text(
             item.title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: responsive.fontSize(
-                16,
-              ), // Adjusted for better layout on smaller screens
+              fontSize: responsive.fontSize(16), //
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
-import 'package:pos_app/modules/product/model/product_model.dart';
 
 class CartController extends GetxController {
   late Box<CartItemModel> _cartBox;
