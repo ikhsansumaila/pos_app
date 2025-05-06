@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pos_app/modules/common/app_bar.dart';
 import 'package:pos_app/modules/transaction/purchase_order/order_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
@@ -10,7 +11,7 @@ class OrdersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Daftar Pesanan')),
+      appBar: MyAppBar(title: 'Daftar Pesanan'),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -39,7 +40,7 @@ class OrdersPage extends StatelessWidget {
                   child: ListTile(
                     contentPadding: EdgeInsets.all(16),
                     title: Text(
-                      order.customerName,
+                      'Pemesan : ${order.customerName}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(

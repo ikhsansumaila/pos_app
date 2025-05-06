@@ -7,6 +7,27 @@
             "request": "launch",
             "program": "lib/main.dart",
             "args": ["--no-enable-impeller"]
+        },
+        {
+            "name": "Run on Smartphone Emulator",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "emulator-5554"
+        },
+        {
+            "name": "Run on Tab Emulator (10 inch)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "emulator-5556"
+        },
+        {
+            "name": "Run on Tablet Real Device (7 inch)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "R9RX8018G1V"  // ID tablet hanif
         }
     ]
 }

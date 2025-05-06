@@ -4,7 +4,7 @@ import 'package:pos_app/modules/cart/view/cart_page.dart';
 import 'package:pos_app/modules/home/home.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
-import 'package:pos_app/modules/product/view/stock_mutation_page.dart';
+import 'package:pos_app/modules/stock/stock_mutation_page.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_page.dart';
 import 'package:pos_app/modules/transaction/purchase_order/order_page.dart';
 import 'package:pos_app/modules/transaction/select_item/view/transaction_page.dart';

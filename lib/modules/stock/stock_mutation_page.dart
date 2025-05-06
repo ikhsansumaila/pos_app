@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/scrollable_page.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/model/product_model.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
@@ -28,15 +29,9 @@ class _StockMutationPageState extends State<StockMutationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(title: "Pecah Stok"),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade400, Colors.blue.shade100],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Column(
+      body: AppBasePage(
+        mainWidget: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildProductCard(
               title: "Barang Asal",
@@ -45,25 +40,32 @@ class _StockMutationPageState extends State<StockMutationPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Icon(
-                Icons.arrow_downward_rounded,
-                size: 56,
-                color: const Color.fromARGB(255, 24, 142, 30),
+              child: Center(
+                child: Icon(
+                  Icons.swap_vert_rounded,
+                  size: 48,
+                  color: const Color.fromARGB(255, 24, 142, 30),
+                ),
               ),
             ),
-            SizedBox(height: 5),
             _buildTargetProductCard(),
           ],
         ),
-      ),
-      bottomNavigationBar: ElevatedButton(
-        onPressed: () {
-          // Handle checkout logic here
-        },
-        child: Text('Pecah Stok'),
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          textStyle: const TextStyle(fontSize: 18),
+        fixedBottomWidget: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(16),
+          child: ElevatedButton(
+            onPressed: () {
+              // Handle checkout logic here
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+            ),
+            child: Text('Pecah Stok'),
+          ),
         ),
       ),
     );
@@ -218,6 +220,16 @@ class _StockMutationPageState extends State<StockMutationPage> {
                             color: AppColors.priceColor,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        SizedBox(height: 12),
+                        TextField(
+                          controller: jumlahController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: "Jumlah yang akan dipecah",
+                            border: OutlineInputBorder(),
                           ),
                         ),
                       ],

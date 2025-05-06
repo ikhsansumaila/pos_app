@@ -82,6 +82,11 @@ class _AddProductPageState extends State<AddProductPage> {
           child: ListView(
             children: [
               TextFormField(
+                // controller: _namaController,
+                decoration: const InputDecoration(labelText: 'Kode Barang'),
+                validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+              ),
+              TextFormField(
                 controller: _namaController,
                 decoration: const InputDecoration(labelText: 'Nama Barang'),
                 validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
@@ -100,6 +105,12 @@ class _AddProductPageState extends State<AddProductPage> {
               TextFormField(
                 controller: _hargaJualController,
                 decoration: const InputDecoration(labelText: 'Harga Jual'),
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+              ),
+              TextFormField(
+                // controller: _hargaJualController,
+                decoration: const InputDecoration(labelText: 'Stok'),
                 keyboardType: TextInputType.number,
                 validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
               ),

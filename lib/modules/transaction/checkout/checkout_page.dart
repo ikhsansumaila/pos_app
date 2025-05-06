@@ -6,6 +6,7 @@ import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_controller.dart';
 import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/responsive_helper.dart';
 
 class CheckoutPage extends StatelessWidget {
   final checkoutController = Get.put(CheckoutController());
@@ -13,6 +14,7 @@ class CheckoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
     return Scaffold(
       appBar: MyAppBar(title: 'Checkout'),
       body: Obx(() {
@@ -38,9 +40,9 @@ class CheckoutPage extends StatelessWidget {
                         children: [
                           AppImage(
                             url: cartItem.product.gambar,
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.contain,
+                            width: responsive.imageSize(100),
+                            height: responsive.imageSize(100),
+                            fit: BoxFit.cover,
                           ),
                           SizedBox(width: 12),
                           Expanded(
@@ -48,29 +50,34 @@ class CheckoutPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 // Nama + Qty
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      cartItem.product.namaBrg,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        cartItem.product.namaBrg,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: responsive.fontSize(18),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Qty: ${cartItem.quantity} x Rp${NumberFormat("#,##0", "id_ID").format(cartItem.product.hargaJual)}',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  ],
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Qty: ${cartItem.quantity} x Rp${NumberFormat("#,##0", "id_ID").format(cartItem.product.hargaJual)}',
+                                        style: TextStyle(
+                                          fontSize: responsive.fontSize(16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 // Harga di kanan bawah
                                 Text(
                                   'Rp${NumberFormat("#,##0", "id_ID").format(cartItem.quantity * cartItem.product.hargaJual)}',
                                   style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: responsive.fontSize(18),
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.priceColor,
                                   ),
@@ -98,8 +105,9 @@ class CheckoutPage extends StatelessWidget {
                       Text(
                         'Rp${NumberFormat("#,##0", "id_ID").format(checkoutController.totalHarga)}',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: responsive.fontSize(22),
                           fontWeight: FontWeight.bold,
+                          color: AppColors.priceColor,
                         ),
                       ),
                     ],
@@ -113,10 +121,15 @@ class CheckoutPage extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 48),
+                      // backgroundColor: AppColors.primary,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
                     child: Text(
                       'Bayar Sekarang',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: responsive.fontSize(18)),
                     ),
                   ),
                 ],

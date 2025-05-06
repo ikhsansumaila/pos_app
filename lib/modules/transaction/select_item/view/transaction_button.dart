@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/responsive_helper.dart';
 
 class TransactionDetailSheet extends StatefulWidget {
   @override
@@ -55,6 +56,8 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+
     return DraggableScrollableSheet(
       controller: draggableController,
       initialChildSize: sheetSize,
@@ -118,6 +121,11 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                                             TextSpan(
                                               text:
                                                   '${item.product.namaBrg} (${item.quantity}) - ',
+                                              style: TextStyle(
+                                                fontSize: responsive.fontSize(
+                                                  14,
+                                                ),
+                                              ),
                                             ),
                                             TextSpan(
                                               text:
@@ -125,6 +133,9 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black54,
+                                                fontSize: responsive.fontSize(
+                                                  14,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -155,14 +166,14 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                           Text(
                             'Total Item: (${trxController.totalItems.value})',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: responsive.fontSize(14),
                               color: Colors.black54,
                             ),
                           ),
                           Text(
                             'Total Harga: Rp${NumberFormat("#,##0", "id_ID").format(trxController.totalPrice.value)}',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: responsive.fontSize(18),
                               fontWeight: FontWeight.bold,
                               color: AppColors.priceColor,
                             ),
