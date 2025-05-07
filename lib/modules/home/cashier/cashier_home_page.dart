@@ -3,8 +3,34 @@ import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/confirmation_dialog.dart';
-import 'package:pos_app/modules/home/cashier/cashier_home_menu.dart';
+import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
+
+class MenuItem {
+  final String title;
+  final IconData icon;
+  final String route;
+
+  MenuItem({required this.title, required this.icon, required this.route});
+}
+
+final List<MenuItem> _menuItems = [
+  MenuItem(
+    title: 'Buat Transaksi',
+    icon: Icons.monetization_on,
+    route: AppRoutes.transactions,
+  ),
+  MenuItem(
+    title: 'Atur Barang',
+    icon: Icons.list_alt,
+    route: AppRoutes.products,
+  ),
+  MenuItem(
+    title: 'Pesanan',
+    icon: Icons.receipt_long,
+    route: AppRoutes.orders, // order from customer (online)
+  ),
+];
 
 class CashierHomePage extends StatelessWidget {
   const CashierHomePage({super.key});
@@ -32,7 +58,7 @@ class CashierHomePage extends StatelessWidget {
       body: Padding(
         padding: padding,
         child: GridView.builder(
-          itemCount: menuItems.length,
+          itemCount: _menuItems.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: responsive.isTablet ? 20 : 10,
@@ -40,7 +66,7 @@ class CashierHomePage extends StatelessWidget {
             childAspectRatio: 2,
           ),
           itemBuilder: (context, index) {
-            final item = menuItems[index];
+            final item = _menuItems[index];
             return GestureDetector(
               onTap: () => Get.toNamed(item.route),
               child: _buildMenuItemCard(item, responsive),

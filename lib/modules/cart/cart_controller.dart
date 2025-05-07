@@ -17,7 +17,7 @@ class CartController extends GetxController {
     await Hive.deleteBoxFromDisk('cartBox');
 
     // Open the Hive box for CartItemModel
-    _cartBox = await Hive.openBox('cartBox');
+    // _cartBox = await Hive.openBox('cartBox');
 
     // Load cart from Hive
     _loadCart();
@@ -27,21 +27,21 @@ class CartController extends GetxController {
   void onClose() {
     super.onClose();
     // Close the Hive box when the controller is disposed
-    _cartBox.close();
+    _cartBox?.close();
   }
 
   // Load cart items from Hive
   void _loadCart() {
-    for (var cartItem in _cartBox.values) {
-      cartItems[cartItem.product.idBrg] = cartItem;
-    }
+    // for (var cartItem in _cartBox.values) {
+    //   cartItems[cartItem.product.idBrg] = cartItem;
+    // }
   }
 
   // Save cart items to Hive
   void _saveCart() {
     for (var cartItem in cartItems.values) {
       log("save cart ${cartItem.toString()}");
-      _cartBox.put(cartItem.product.idBrg, cartItem);
+      // _cartBox.put(cartItem.product.idBrg, cartItem);
     }
   }
 
@@ -57,9 +57,10 @@ class CartController extends GetxController {
       cartItems[productId] = CartItemModel(product: product, quantity: 1);
     }
     _setTotalItems();
-
     _setTotalPrice();
-    _saveCart(); // Persist the cart to Hive
+    // _saveCart(); // Persist the cart to Hive
+
+    update();
   }
 
   void removeFromCart(Product product) {
@@ -67,17 +68,20 @@ class CartController extends GetxController {
 
     if (!cartItems.containsKey(productId)) return;
 
-    if (cartItems[productId]!.quantity <= 1) {
-      cartItems.remove(productId);
-    } else {
+    if (cartItems[productId]!.quantity > 1) {
       cartItems.update(
         productId,
         (item) => item.copyWith(quantity: item.quantity - 1),
       );
+    } else {
+      cartItems.remove(productId);
     }
+
     _setTotalItems();
     _setTotalPrice();
-    _saveCart(); // Persist the cart to Hive
+    // _saveCart(); // Persist the cart to Hive
+
+    update();
   }
 
   int getQuantity(int id) => cartItems[id]?.quantity ?? 0;

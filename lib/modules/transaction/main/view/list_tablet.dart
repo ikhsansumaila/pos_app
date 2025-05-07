@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
-import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
-import 'package:pos_app/modules/transaction/transaction_cashier/view/transaction_button.dart';
+import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/main/view/transaction_button.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
@@ -124,7 +124,7 @@ class TabletLayout extends StatelessWidget {
                   init: trxController,
                   builder: (data) {
                     final quantity = data.getQuantity(product.idBrg);
-                    int stock = 10;
+                    int stock = product.stok;
 
                     bool buttonAddEnabled = stock > 0 && quantity < stock;
                     bool buttonRemoveEnabled = stock > 0 && quantity > 0;

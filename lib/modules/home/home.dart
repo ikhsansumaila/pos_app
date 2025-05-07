@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/auth/login_page.dart';
-import 'package:pos_app/modules/home/cashier/cashier_home.dart';
-import 'package:pos_app/modules/home/customer/customer_home.dart';
+import 'package:pos_app/modules/home/cashier/cashier_home_page.dart';
+import 'package:pos_app/modules/home/customer/customer_home_page.dart';
 import 'package:pos_app/utils/shared_preferences.dart';
 
 class Home extends StatelessWidget {

@@ -1,16 +1,18 @@
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_page.dart';
+import 'package:pos_app/modules/cart/view/cart_detail_page.dart';
 import 'package:pos_app/modules/cart/view/cart_page.dart';
-import 'package:pos_app/modules/home/cashier/cashier_home.dart';
-import 'package:pos_app/modules/home/customer/customer_home.dart';
+import 'package:pos_app/modules/home/cashier/cashier_home_page.dart';
+import 'package:pos_app/modules/home/customer/customer_binding.dart';
+import 'package:pos_app/modules/home/customer/customer_home_page.dart';
 import 'package:pos_app/modules/home/home.dart';
 import 'package:pos_app/modules/home/splash_page.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
 import 'package:pos_app/modules/stock/stock_mutation_page.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_page.dart';
+import 'package:pos_app/modules/transaction/main/view/transaction_page.dart';
 import 'package:pos_app/modules/transaction/purchase_order/order_page.dart';
-import 'package:pos_app/modules/transaction/transaction_cashier/view/transaction_page.dart';
 
 class AppRoutes {
   static const String splash = '/splash';
@@ -31,6 +33,7 @@ class AppRoutes {
   static const String checkout = '/checkout';
   static const String orders = '/orders';
   static const String cart = '/cart';
+  static const String cartDetail = '/cart/detail';
 
   static final routes = [
     GetPage(name: splash, page: () => SplashPage()),
@@ -39,7 +42,11 @@ class AppRoutes {
     // home
     GetPage(name: home, page: () => Home()),
     GetPage(name: cashierHome, page: () => CashierHomePage()),
-    GetPage(name: customerHome, page: () => CustomerHomePage()),
+    GetPage(
+      name: customerHome,
+      page: () => CustomerHomePage(),
+      binding: CustomerHomeBinding(),
+    ),
 
     // product
     GetPage(name: products, page: () => ProductPage()),
@@ -51,5 +58,6 @@ class AppRoutes {
     GetPage(name: checkout, page: () => CheckoutPage()),
     GetPage(name: orders, page: () => OrdersPage()),
     GetPage(name: cart, page: () => CartPage()),
+    GetPage(name: cartDetail, page: () => CartDetailPage()),
   ];
 }

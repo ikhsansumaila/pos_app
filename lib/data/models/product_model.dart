@@ -38,6 +38,15 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
   @HiveField(10)
   int userid;
 
+  @HiveField(11)
+  int stok;
+
+  @HiveField(12)
+  int storeId;
+
+  @HiveField(13)
+  String storeName;
+
   Product({
     required this.idBrg,
     required this.kodeBrg,
@@ -50,6 +59,9 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
     required this.status,
     required this.createdAt,
     required this.userid,
+    required this.stok,
+    required this.storeId,
+    required this.storeName,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -64,6 +76,9 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
     status: json['status'] as String,
     createdAt: json['created_at'] as String,
     userid: json['userid'] as int,
+    stok: json['stok'] as int,
+    storeId: json['store_id'] as int,
+    storeName: json['store_name'] as String,
   );
 
   Map<String, dynamic> toJson() => {
@@ -78,6 +93,9 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
     'status': status,
     'created_at': createdAt,
     'userid': userid,
+    'stok': stok,
+    'store_id': storeId,
+    'store_name': storeName,
   };
 
   @override
@@ -94,6 +112,9 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
         gambar != other.gambar ||
         status != other.status ||
         createdAt != other.createdAt ||
-        userid != other.userid;
+        userid != other.userid ||
+        stok != other.stok ||
+        storeId != other.storeId ||
+        storeName != other.storeName;
   }
 }

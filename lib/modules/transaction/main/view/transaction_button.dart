@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/responsive_helper.dart';

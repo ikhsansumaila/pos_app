@@ -45,14 +45,16 @@ class TransactionController extends GetxController {
   // }
 
   void addItem(Product product) {
-    if (trxItems.containsKey(product.idBrg)) {
+    final productId = product.idBrg;
+
+    if (trxItems.containsKey(productId)) {
       trxItems.update(
-        product.idBrg,
+        productId,
         (item) => item.copyWith(quantity: item.quantity + 1),
       );
     } else {
       // new item
-      trxItems[product.idBrg] = CartItemModel(product: product, quantity: 1);
+      trxItems[productId] = CartItemModel(product: product, quantity: 1);
     }
 
     _updateTotal();
@@ -61,17 +63,19 @@ class TransactionController extends GetxController {
   }
 
   void removeItem(Product product) {
-    // if not contain item
-    if (!trxItems.containsKey(product.idBrg)) return;
+    final productId = product.idBrg;
 
-    if (trxItems[product.idBrg]!.quantity > 1) {
+    // if not contain item
+    if (!trxItems.containsKey(productId)) return;
+
+    if (trxItems[productId]!.quantity > 1) {
       trxItems.update(
-        product.idBrg,
+        productId,
         (item) => item.copyWith(quantity: item.quantity - 1),
       );
     } else {
       //1 item left
-      trxItems.remove(product.idBrg);
+      trxItems.remove(productId);
     }
 
     _updateTotal();

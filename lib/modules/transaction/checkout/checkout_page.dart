@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_controller.dart';
-import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
+import 'package:pos_app/modules/cart/view/cart_page.dart';
 import 'package:pos_app/modules/common/widgets/confirmation_dialog.dart';
-import 'package:pos_app/modules/home/customer/customer_listing.dart';
+import 'package:pos_app/modules/home/customer/customer_listing_product_widget.dart';
+import 'package:pos_app/utils/constants/colors.dart';
 // Import halaman lain kalau ada
 // import 'package:pos_app/modules/transaction/view.dart';
 // import 'package:pos_app/modules/report/view.dart';
@@ -19,8 +21,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   final List<Widget> _pages = [
     CustomerListing(),
-    Center(child: Text("Transaksi")), // Ganti dengan halaman sebenarnya
-    Center(child: Text("Laporan")), // Ganti dengan halaman sebenarnya
+    CartPage(), // Ganti dengan halaman sebenarnya
+    Center(child: Text("Settings")), // Ganti dengan halaman sebenarnya
   ];
 
   void _onNavTapped(int index) {
@@ -66,8 +68,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         Get.find<AuthController>().logout();
                         Get.back();
                       }
-                      // Get.back(); // tutup bottom sheet
-                      // Get.snackbar("Logout", "Anda telah logout.");
                     },
                   ),
                 ],
@@ -89,6 +89,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         child: IndexedStack(index: _selectedIndex, children: _pages),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: AppColors.primary, // warna aktif
+        unselectedItemColor: Colors.grey, // warna tidak aktif
         currentIndex: _selectedIndex,
         onTap: _onNavTapped,
         items: const [

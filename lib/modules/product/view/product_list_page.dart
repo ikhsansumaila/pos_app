@@ -109,7 +109,6 @@ class ProductPage extends StatelessWidget {
   }
 
   Widget _buildProductCard(Product product, ResponsiveHelper responsive) {
-    int stock = 100;
     double imageSize = responsive.imageSize(100);
 
     return ProductListCard(
@@ -149,7 +148,7 @@ class ProductPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '(Stok: $stock)',
+                      'Stok: ${product.stok}',
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: responsive.fontSize(16),
@@ -165,7 +164,7 @@ class ProductPage extends StatelessWidget {
             children: [
               InkWell(
                 onTap:
-                    stock == 0
+                    product.stok == 0
                         ? null
                         : () {
                           Get.toNamed(
@@ -178,14 +177,16 @@ class ProductPage extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.call_split,
-                      color: stock == 0 ? Colors.grey : AppColors.primary,
+                      color:
+                          product.stok == 0 ? Colors.grey : AppColors.primary,
                       size: responsive.fontSize(16),
                     ),
                     const SizedBox(width: 2), // spasi minimal
                     Text(
                       'Pecah Stok',
                       style: TextStyle(
-                        color: stock == 0 ? Colors.grey : AppColors.primary,
+                        color:
+                            product.stok == 0 ? Colors.grey : AppColors.primary,
                         fontSize: responsive.fontSize(16),
                       ),
                     ),

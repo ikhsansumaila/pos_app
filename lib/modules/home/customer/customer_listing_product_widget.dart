@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/data/models/product_model.dart';
+import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/common/widgets/icon_button.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
-import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
+import 'package:pos_app/modules/product/view/product_detail_page.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class CustomerListing extends StatelessWidget {
   CustomerListing({super.key});
 
-  final trxController = Get.find<TransactionController>();
+  final cartController = Get.find<CartController>();
   final productController = Get.find<ProductController>();
 
   @override
@@ -109,88 +110,97 @@ class CustomerListing extends StatelessWidget {
         elevation: 8,
         shadowColor: Colors.black26,
         child: GetBuilder(
-          init: trxController,
+          init: cartController,
           builder: (data) {
             final quantity = data.getQuantity(product.idBrg);
-            int stock = 10;
+            int stock = product.stok;
 
             bool buttonAddEnabled = stock > 0 && quantity < stock;
             bool buttonRemoveEnabled = stock > 0 && quantity > 0;
 
-            return // Konten bawah (nama, harga, stok, tombol)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppImage(
-                    url: product.gambar,
-                    width: double.infinity,
-                    height: 130,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    product.namaBrg,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                      color: Colors.black87,
+            // Konten bawah (nama, harga, stok, tombol)
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => ProductDetailPage(product: product));
+              },
+
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppImage(
+                      url: product.gambar,
+                      width: double.infinity,
+                      height: 130,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                  Text(
-                    'Rp${NumberFormat("#,##0", "id_ID").format(product.hargaJual)}',
-                    style: TextStyle(
-                      color: AppColors.priceColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '(Stok: $stock)',
-                        style: TextStyle(color: Colors.black87, fontSize: 10),
+                    SizedBox(height: 8),
+                    Text(
+                      product.namaBrg,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Colors.black87,
                       ),
-                      Row(
-                        children: [
-                          AppIconButton(
-                            onPressed:
-                                buttonRemoveEnabled
-                                    ? () => data.removeItem(product)
-                                    : null,
-                            icon: Icons.remove_circle,
-                            color:
-                                buttonRemoveEnabled ? Colors.red : Colors.grey,
-                            size: 14,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            quantity.toString(),
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: stock == 0 ? Colors.grey : Colors.black87,
+                    ),
+                    Text(
+                      'Rp${NumberFormat("#,##0", "id_ID").format(product.hargaJual)}',
+                      style: TextStyle(
+                        color: AppColors.priceColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '(Stok: $stock)',
+                          style: TextStyle(color: Colors.black87, fontSize: 10),
+                        ),
+                        Row(
+                          children: [
+                            AppIconButton(
+                              onPressed:
+                                  buttonRemoveEnabled
+                                      ? () => data.removeFromCart(product)
+                                      : null,
+                              icon: Icons.remove_circle,
+                              color:
+                                  buttonRemoveEnabled
+                                      ? Colors.red
+                                      : Colors.grey,
+                              size: 14,
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          AppIconButton(
-                            onPressed:
-                                buttonAddEnabled
-                                    ? () => data.addItem(product)
-                                    : null,
-                            icon: Icons.add_circle,
-                            color:
-                                buttonAddEnabled
-                                    ? AppColors.primary
-                                    : Colors.grey,
-                            size: 14,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                            const SizedBox(width: 8),
+                            Text(
+                              quantity.toString(),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color:
+                                    stock == 0 ? Colors.grey : Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            AppIconButton(
+                              onPressed:
+                                  buttonAddEnabled
+                                      ? () => data.addToCart(product)
+                                      : null,
+                              icon: Icons.add_circle,
+                              color:
+                                  buttonAddEnabled
+                                      ? AppColors.primary
+                                      : Colors.grey,
+                              size: 14,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },

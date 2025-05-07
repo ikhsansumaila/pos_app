@@ -109,7 +109,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    "Stok: 100",
+                    'Stok: ${product.stok}',
                     style: TextStyle(fontSize: 16),
                   ), // TODO: pakai stok aktual
                   Text(
@@ -211,7 +211,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          "Stok: 100",
+                          'Stok: ${selectedTargetProduct!.stok}',
                           style: TextStyle(fontSize: 16),
                         ), // TODO: pakai stok aktual
                         Text(

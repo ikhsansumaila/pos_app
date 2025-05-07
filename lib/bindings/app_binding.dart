@@ -13,9 +13,10 @@ import 'package:pos_app/data/repository/product/product_repository_impl.dart';
 import 'package:pos_app/data/repository/product/source/product_local.dart';
 import 'package:pos_app/data/repository/product/source/product_remote.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
+import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
+import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
 import 'package:pos_app/modules/transaction/purchase_order/order_controller.dart';
-import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class AppBinding extends Bindings {
@@ -47,6 +48,7 @@ class AppBinding extends Bindings {
     Get.put(ProductController(Get.find()));
     Get.put(OrdersController());
     Get.put(TransactionController());
+    Get.put(CartController());
 
     // Syncronization data to server, run in background
     Get.lazyPut(
