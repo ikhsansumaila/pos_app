@@ -22,14 +22,12 @@ class ProductLocalDataSource {
   //   log("caching ${products.length} products");
   //   box.put(PRODUCT_BOX_KEY, products.map((e) => e.toJson()).toList());
   // }
-  Future<void> syncApiResponse(List<Product> products) async {
+  Future<void> updateCache(List<Product> products) async {
     // add/update/remove cached products
-    await SyncApiService.syncHiveBox<Product>(
+    await SyncHive.updateFromRemote<Product>(
       boxName: PRODUCT_BOX_KEY,
       apiData: products,
     );
-
-    log("after caching ${products.length} products");
   }
 
   void queueProductPost(Product product) {

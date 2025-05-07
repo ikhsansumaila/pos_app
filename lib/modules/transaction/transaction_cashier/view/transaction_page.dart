@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
-import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
-import 'package:pos_app/modules/transaction/select_item/view/smartphone.dart';
-import 'package:pos_app/modules/transaction/select_item/view/tablet.dart';
+import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/transaction_cashier/view/smartphone.dart';
+import 'package:pos_app/modules/transaction/transaction_cashier/view/tablet.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class TransactionPage extends StatelessWidget {

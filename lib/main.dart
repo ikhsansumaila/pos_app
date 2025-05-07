@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pos_app/bindings/app_binding.dart';
+import 'package:pos_app/data/models/order_model.dart';
 import 'package:pos_app/data/models/product_model.dart';
-import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 import 'package:pos_app/utils/constants/themes.dart';
@@ -43,7 +43,11 @@ Future<void> initHive() async {
   // Initialize Hivee
   Hive.init(dir.path);
   Hive.registerAdapter(ProductAdapter());
-  Hive.registerAdapter(CartItemModelAdapter());
+  Hive.registerAdapter(OrderAdapter());
+
+  // await Hive.deleteBoxFromDisk(PRODUCT_BOX_KEY);
+  // await Hive.deleteBoxFromDisk(ORDER_BOX_KEY);
+  // await Hive.deleteBoxFromDisk(SYNC_LOG_BOX_KEY);
 
   // Open Hive Boxes (MUST BE WAITED ON INIT)
   await Hive.openBox(PRODUCT_BOX_KEY); // will use on AppBinding

@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/services/sync_api_service.dart';
 
-part './order_model.g.dart';
+part 'order_model.g.dart';
 
 @HiveType(typeId: 1)
 class Order extends HiveObject implements SyncableHiveObject<Order> {

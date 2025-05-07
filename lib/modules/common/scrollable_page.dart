@@ -4,16 +4,18 @@ import 'package:pos_app/utils/constants/colors.dart';
 class AppBasePage extends StatefulWidget {
   const AppBasePage({
     super.key,
-    required this.appBar,
+    this.appBar,
     required this.mainWidget,
     // this.mainWidgetPadding = const EdgeInsets.all(0),
     this.fixedBottomWidget,
+    this.bottomNavigationBar,
   });
 
-  final PreferredSizeWidget appBar;
+  final PreferredSizeWidget? appBar;
   final Widget mainWidget;
   // final EdgeInsetsGeometry mainWidgetPadding;
   final Widget? fixedBottomWidget;
+  final Widget? bottomNavigationBar;
 
   @override
   State<AppBasePage> createState() => _AppBasePageState();
@@ -78,6 +80,7 @@ class _AppBasePageState extends State<AppBasePage> {
           ],
         ),
       ),
+      bottomNavigationBar: widget.bottomNavigationBar,
     );
   }
 }

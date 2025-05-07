@@ -20,9 +20,9 @@ class OrderLocalDataSource {
   //   box.put(ORDER_BOX_KEY, orders.map((e) => e.toJson()).toList());
   // }
 
-  Future<void> syncApiResponse(List<Order> orders) async {
-    // add/update/remove cached products
-    await SyncApiService.syncHiveBox<Order>(
+  Future<void> update(List<Order> orders) async {
+    // add/update/remove cached orders
+    await SyncHive.updateFromRemote<Order>(
       boxName: ORDER_BOX_KEY,
       apiData: orders,
     );

@@ -6,8 +6,8 @@ import 'package:pos_app/modules/common/widgets/confirmation_dialog.dart';
 import 'package:pos_app/modules/home/cashier/cashier_home_menu.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class CashierHomePage extends StatelessWidget {
+  const CashierHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class HomePage extends StatelessWidget {
               constraints: BoxConstraints(
                 minWidth: double.infinity, // full width
                 minHeight:
-                    MediaQuery.of(context).size.height * 0.3 +
+                    MediaQuery.of(context).size.height * 0.1 +
                     30, // tinggi dinamis + 30
               ),
               child: Column(

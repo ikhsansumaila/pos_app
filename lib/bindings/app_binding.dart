@@ -15,6 +15,7 @@ import 'package:pos_app/data/repository/product/source/product_remote.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/modules/transaction/purchase_order/order_controller.dart';
+import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class AppBinding extends Bindings {
@@ -24,10 +25,10 @@ class AppBinding extends Bindings {
     Get.put(DioClient());
     Get.put(ConnectivityService());
 
-    // Inject Local Storage
-    Get.put(ProductLocalDataSource(Hive.box(PRODUCT_BOX_KEY))); // open in main
-    Get.put(OrderLocalDataSource(Hive.box(ORDER_BOX_KEY))); // open in main.dart
-    Get.put(SyncLogService(Hive.box(SYNC_LOG_BOX_KEY))); // open in main.dart
+    // Inject Local Storage, Hive box is open in main
+    Get.put(ProductLocalDataSource(Hive.box(PRODUCT_BOX_KEY)));
+    Get.put(OrderLocalDataSource(Hive.box(ORDER_BOX_KEY)));
+    Get.put(SyncLogService(Hive.box(SYNC_LOG_BOX_KEY)));
 
     // Inject Remote Storage
     Get.put(ProductRemoteDataSource(Get.find()));
@@ -45,6 +46,7 @@ class AppBinding extends Bindings {
     Get.put(AuthController());
     Get.put(ProductController(Get.find()));
     Get.put(OrdersController());
+    Get.put(TransactionController());
 
     // Syncronization data to server, run in background
     Get.lazyPut(

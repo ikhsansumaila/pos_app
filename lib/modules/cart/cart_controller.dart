@@ -17,7 +17,7 @@ class CartController extends GetxController {
     await Hive.deleteBoxFromDisk('cartBox');
 
     // Open the Hive box for CartItemModel
-    _cartBox = await Hive.openBox<CartItemModel>('cartBox');
+    _cartBox = await Hive.openBox('cartBox');
 
     // Load cart from Hive
     _loadCart();

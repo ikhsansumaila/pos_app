@@ -20,7 +20,7 @@ class ProductRepositoryImpl implements ProductRepository {
       log("Internet is on");
       try {
         final products = await remote.fetchProducts();
-        await local.syncApiResponse(products);
+        await local.updateCache(products);
         return products;
       } catch (e) {
         log("Error fetching products: $e");

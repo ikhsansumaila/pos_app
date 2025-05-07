@@ -1,21 +1,25 @@
 import 'package:get/get.dart';
-import 'package:pos_app/bindings/product_binding.dart';
-import 'package:pos_app/bindings/transaction_binding.dart';
 import 'package:pos_app/modules/auth/login_page.dart';
 import 'package:pos_app/modules/cart/view/cart_page.dart';
 import 'package:pos_app/modules/home/cashier/cashier_home.dart';
+import 'package:pos_app/modules/home/customer/customer_home.dart';
+import 'package:pos_app/modules/home/home.dart';
 import 'package:pos_app/modules/home/splash_page.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
 import 'package:pos_app/modules/stock/stock_mutation_page.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_page.dart';
 import 'package:pos_app/modules/transaction/purchase_order/order_page.dart';
-import 'package:pos_app/modules/transaction/select_item/view/transaction_page.dart';
+import 'package:pos_app/modules/transaction/transaction_cashier/view/transaction_page.dart';
 
 class AppRoutes {
   static const String splash = '/splash';
   static const String login = '/login';
-  static const String home = '/';
+
+  // home
+  static const String home = '/home';
+  static const String cashierHome = '/home/cashier';
+  static const String customerHome = '/home/customer';
 
   // product
   static const String products = '/products';
@@ -31,23 +35,19 @@ class AppRoutes {
   static final routes = [
     GetPage(name: splash, page: () => SplashPage()),
     GetPage(name: login, page: () => LoginPage()),
-    GetPage(name: home, page: () => HomePage()),
+
+    // home
+    GetPage(name: home, page: () => Home()),
+    GetPage(name: cashierHome, page: () => CashierHomePage()),
+    GetPage(name: customerHome, page: () => CustomerHomePage()),
 
     // product
-    GetPage(
-      name: products,
-      page: () => ProductPage(),
-      binding: ProductBinding(),
-    ),
+    GetPage(name: products, page: () => ProductPage()),
     GetPage(name: addProduct, page: () => AddProductPage()),
     GetPage(name: stockMutation, page: () => StockMutationPage()),
 
     //transaction
-    GetPage(
-      name: transactions,
-      page: () => TransactionPage(),
-      binding: TransactionBinding(),
-    ),
+    GetPage(name: transactions, page: () => TransactionPage()),
     GetPage(name: checkout, page: () => CheckoutPage()),
     GetPage(name: orders, page: () => OrdersPage()),
     GetPage(name: cart, page: () => CartPage()),

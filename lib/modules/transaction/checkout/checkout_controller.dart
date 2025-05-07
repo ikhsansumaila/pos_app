@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pos_app/modules/transaction/select_item/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/transaction_cashier/transaction_controller.dart';
 
 class CheckoutController extends GetxController {
   final trxController = Get.find<TransactionController>();
