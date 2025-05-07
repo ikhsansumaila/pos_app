@@ -1,9 +1,10 @@
 import 'package:hive/hive.dart';
+import 'package:pos_app/core/services/sync_api_service.dart';
 
 part 'product_model.g.dart';
 
 @HiveType(typeId: 0)
-class Product extends HiveObject {
+class Product extends HiveObject implements SyncableHiveObject<Product> {
   @HiveField(0)
   int idBrg;
 
@@ -37,12 +38,6 @@ class Product extends HiveObject {
   @HiveField(10)
   int userid;
 
-  // @HiveField(11)
-  // String updatedAt;
-
-  // @HiveField(12)
-  // int updatedUserid;
-
   Product({
     required this.idBrg,
     required this.kodeBrg,
@@ -55,8 +50,6 @@ class Product extends HiveObject {
     required this.status,
     required this.createdAt,
     required this.userid,
-    // required this.updatedAt,
-    // required this.updatedUserid,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -71,8 +64,6 @@ class Product extends HiveObject {
     status: json['status'] as String,
     createdAt: json['created_at'] as String,
     userid: json['userid'] as int,
-    // updatedAt: json['updated_at'] as String,
-    // updatedUserid: json['updated_userid'] as int,
   );
 
   Map<String, dynamic> toJson() => {
@@ -87,7 +78,22 @@ class Product extends HiveObject {
     'status': status,
     'created_at': createdAt,
     'userid': userid,
-    // 'updated_at': updatedAt,
-    // 'updated_userid': updatedUserid,
   };
+
+  @override
+  int get modelId => idBrg;
+
+  @override
+  bool isDifferent(Product other) {
+    return kodeBrg != other.kodeBrg ||
+        namaBrg != other.namaBrg ||
+        satuan != other.satuan ||
+        hargaBeli != other.hargaBeli ||
+        margin != other.margin ||
+        hargaJual != other.hargaJual ||
+        gambar != other.gambar ||
+        status != other.status ||
+        createdAt != other.createdAt ||
+        userid != other.userid;
+  }
 }

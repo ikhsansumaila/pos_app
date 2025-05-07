@@ -10,12 +10,14 @@ class OrdersController extends GetxController {
     // Dummy data
     orders.assignAll([
       Order(
+        id: 1,
         customerName: 'Budi',
         orderDate: DateTime.now(),
         totalItems: 3,
         totalPrice: 150000,
       ),
       Order(
+        id: 2,
         customerName: 'Siti',
         orderDate: DateTime.now().subtract(Duration(days: 1)),
         totalItems: 5,

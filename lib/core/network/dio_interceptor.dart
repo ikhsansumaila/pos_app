@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 class RequestsInterceptor extends InterceptorsWrapper {
@@ -16,7 +18,7 @@ class RequestsInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // Bisa tambahkan retry / log error
-    print('Dio Error: ${err.message}');
+    log('Dio Error: ${err.message}');
     return handler.next(err);
   }
 }

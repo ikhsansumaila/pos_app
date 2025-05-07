@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pos_app/data/models/product_model.dart';
-import 'package:pos_app/utils/responsive_helper.dart';
 
 class ProductListCard extends StatelessWidget {
   const ProductListCard({
@@ -14,7 +13,6 @@ class ProductListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper responsive = ResponsiveHelper(MediaQuery.of(context).size);
     double circularRadius = 14;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pos_app/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginController extends GetxController {
+class AuthController extends GetxController {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 

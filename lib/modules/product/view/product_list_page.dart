@@ -13,6 +13,8 @@ import 'package:pos_app/utils/responsive_helper.dart';
 class ProductPage extends StatelessWidget {
   final productController = Get.find<ProductController>();
 
+  ProductPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveHelper(MediaQuery.of(context).size);
@@ -83,7 +85,7 @@ class ProductPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withOpacity(0.9),
+        color: Colors.white.withValues(alpha: 0.9),
       ),
       child: TextField(
         controller: productController.searchController,
@@ -194,122 +196,6 @@ class ProductPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-  // Widget _buildProductCard(Product product) {
-  //   return LayoutBuilder(
-  //     builder: (context, constraints) {
-  //       final cardHeight = 280.0; // You can tweak this height as needed
-  //       final imageHeight = cardHeight * 0.7;
-
-  //       return Card(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(20),
-  //         ),
-  //         elevation: 6,
-  //         child: Container(
-  //           height: cardHeight,
-  //           decoration: BoxDecoration(
-  //             borderRadius: BorderRadius.circular(20),
-  //             color: Colors.white,
-  //           ),
-  //           padding: const EdgeInsets.symmetric(horizontal: 39, vertical: 12),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               // Product Image
-  //               ClipRRect(
-  //                 borderRadius: BorderRadius.circular(12),
-  //                 child: Container(
-  //                   height: imageHeight,
-  //                   width: double.infinity,
-  //                   child: AppImage(url: product.gambar, fit: BoxFit.contain),
-
-  //                   // Image.network(
-  //                   //   product.gambar ?? "https://loremflickr.com/320/240",
-  //                   //   fit: BoxFit.contain,
-  //                   //   errorBuilder:
-  //                   //       (context, error, stackTrace) => Container(
-  //                   //         color: Colors.grey.shade200,
-  //                   //         child: Icon(
-  //                   //           Icons.broken_image,
-  //                   //           size: 40,
-  //                   //           color: Colors.grey,
-  //                   //         ),
-  //                   //       ),
-  //                   // ),
-  //                 ),
-  //               ),
-  //               SizedBox(height: 15),
-
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 crossAxisAlignment: CrossAxisAlignment.end,
-  //                 children: [
-  //                   Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       // Title
-  //                       Text(
-  //                         product.namaBrg,
-  //                         style: TextStyle(
-  //                           fontWeight: FontWeight.bold,
-  //                           fontSize: 16,
-  //                           color: Colors.black87,
-  //                         ),
-  //                         maxLines: 2,
-  //                         overflow: TextOverflow.ellipsis,
-  //                       ),
-  //                       SizedBox(height: 4),
-
-  //                       // Price
-  //                       Text(
-  //                         'Rp${NumberFormat("#,##0", "id_ID").format(product.hargaJual)}',
-  //                         style: TextStyle(
-  //                           color: AppColors.priceColor,
-  //                           fontSize: 22,
-  //                           fontWeight: FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-
-  //                   // Price
-  //                   Text(
-  //                     'Stok : 100',
-  //                     style: TextStyle(color: Colors.blueGrey, fontSize: 20),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  void _showMenuBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      // isScrollControlled:
-      //     true, // Allows you to control the height of the BottomSheet
-      builder: (context) {
-        return Container(
-          width: double.infinity, // Make the container full width
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: Icon(Icons.add),
-                title: Text('Tambah Barang'),
-                onTap: () => Get.toNamed(AppRoutes.addProduct),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

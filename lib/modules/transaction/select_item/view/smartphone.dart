@@ -83,7 +83,7 @@ class SmartphoneLayout extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withOpacity(0.9),
+        color: Colors.white.withValues(alpha: 0.9),
       ),
       child: TextField(
         controller: productController.searchController,
@@ -255,30 +255,4 @@ class SmartphoneLayout extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<bool> _showExitConfirmationDialog(BuildContext context) async {
-  var result =
-      await showDialog<bool>(
-        context: context,
-        builder:
-            (context) => AlertDialog(
-              title: const Text('Keluar Halaman'),
-              content: const Text(
-                'Data akan terhapus, Anda yakin ingin meninggalkan halaman ini?',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Tidak'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Ya'),
-                ),
-              ],
-            ),
-      ) ??
-      false;
-  return result;
 }

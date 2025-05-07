@@ -10,17 +10,17 @@ class TransactionController extends GetxController {
   var totalPrice = 0.obs;
   // var isUpdate = false.obs;
 
-  @override
-  void onInit() async {
-    super.onInit();
-    // await Hive.deleteBoxFromDisk('cartBox');
+  // @override
+  // void onInit() async {
+  //   super.onInit();
+  //   // await Hive.deleteBoxFromDisk('cartBox');
 
-    // Open the Hive box for CartItemModel
-    // _cartBox = await Hive.openBox<CartItemModel>('cartBox');
+  //   // Open the Hive box for CartItemModel
+  //   // _cartBox = await Hive.openBox<CartItemModel>('cartBox');
 
-    // Load cart from Hive
-    // _loadCart();
-  }
+  //   // Load cart from Hive
+  //   // _loadCart();
+  // }
 
   @override
   void onClose() {

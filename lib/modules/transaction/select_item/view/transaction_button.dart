@@ -7,6 +7,8 @@ import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class TransactionDetailSheet extends StatefulWidget {
+  const TransactionDetailSheet({super.key});
+
   @override
   _TransactionDetailSheetState createState() => _TransactionDetailSheetState();
 }

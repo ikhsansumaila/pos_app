@@ -2,14 +2,13 @@
 import 'dart:developer';
 
 import 'package:hive/hive.dart';
+import 'package:pos_app/core/services/sync_api_service.dart';
 import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class ProductLocalDataSource {
   final Box box;
   ProductLocalDataSource(this.box);
-  // ProductLocalDataSource() : box = Hive.box(PRODUCT_BOX_KEY);
-  // final Box box;
 
   List<Product> getCachedProducts() {
     log("get products from cache");
@@ -19,9 +18,18 @@ class ProductLocalDataSource {
         .toList();
   }
 
-  void cacheProducts(List<Product> products) {
-    log("caching ${products.length} products");
-    box.put(PRODUCT_BOX_KEY, products.map((e) => e.toJson()).toList());
+  // void cacheProducts(List<Product> products) {
+  //   log("caching ${products.length} products");
+  //   box.put(PRODUCT_BOX_KEY, products.map((e) => e.toJson()).toList());
+  // }
+  Future<void> syncApiResponse(List<Product> products) async {
+    // add/update/remove cached products
+    await SyncApiService.syncHiveBox<Product>(
+      boxName: PRODUCT_BOX_KEY,
+      apiData: products,
+    );
+
+    log("after caching ${products.length} products");
   }
 
   void queueProductPost(Product product) {

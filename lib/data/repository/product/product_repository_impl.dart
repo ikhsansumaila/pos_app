@@ -20,8 +20,7 @@ class ProductRepositoryImpl implements ProductRepository {
       log("Internet is on");
       try {
         final products = await remote.fetchProducts();
-        local.cacheProducts(products);
-        log("after caching ${products.length} products");
+        await local.syncApiResponse(products);
         return products;
       } catch (e) {
         log("Error fetching products: $e");
@@ -35,13 +34,12 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<void> postProduct(Product product) async {
-    // if (await connectivity.isConnected()) {
-    //   await remote.postProduct(product);
-    //   await processQueue(); // send pending posts
-    // } else {
-    //   local.queueProductPost(product); // simpan queue lokal
-    // }
-    local.queueProductPost(product);
+    if (await connectivity.isConnected()) {
+      await remote.postProduct(product);
+      await processQueue(); // send pending posts
+    } else {
+      local.queueProductPost(product); // simpan queue lokal
+    }
   }
 
   @override

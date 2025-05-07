@@ -16,7 +16,8 @@ class OrderRepositoryImpl implements OrderRepository {
   Future<List<Order>> getOrders() async {
     if (await connectivity.isConnected()) {
       final orders = await remote.fetchOrders();
-      local.cacheOrders(orders);
+      await local.syncApiResponse(orders);
+
       return orders;
     } else {
       return local.getCachedOrders();

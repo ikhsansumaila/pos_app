@@ -8,6 +8,8 @@ import 'package:pos_app/utils/constants/colors.dart';
 class OrdersPage extends StatelessWidget {
   final controller = Get.put(OrdersController());
 
+  OrdersPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

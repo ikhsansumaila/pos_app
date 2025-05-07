@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pos_app/modules/common/app_bar.dart';
 
 class AddProductPage extends StatefulWidget {
+  const AddProductPage({super.key});
+
   @override
   State<AddProductPage> createState() => _AddProductPageState();
 }
@@ -36,6 +39,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   if (picked != null) {
                     setState(() => _imageFile = File(picked.path));
                   }
+
                   Navigator.pop(context);
                 },
               ),
@@ -62,11 +66,11 @@ class _AddProductPageState extends State<AddProductPage> {
   void _submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
       // Simpan data produk di controller atau ke database
-      print('Nama: ${_namaController.text}');
-      print('Satuan: ${_satuanController.text}');
-      print('Harga Beli: ${_hargaBeliController.text}');
-      print('Harga Jual: ${_hargaJualController.text}');
-      print('Gambar: ${_imageFile?.path}');
+      log('Nama: ${_namaController.text}');
+      log('Satuan: ${_satuanController.text}');
+      log('Harga Beli: ${_hargaBeliController.text}');
+      log('Harga Jual: ${_hargaJualController.text}');
+      log('Gambar: ${_imageFile?.path}');
       Get.back(); // Kembali ke halaman sebelumnya
     }
   }

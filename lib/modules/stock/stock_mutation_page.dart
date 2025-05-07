@@ -9,6 +9,8 @@ import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
 class StockMutationPage extends StatefulWidget {
+  const StockMutationPage({super.key});
+
   @override
   State<StockMutationPage> createState() => _StockMutationPageState();
 }
@@ -75,7 +77,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
     bool includeInput = false,
   }) {
     return Card(
-      color: Colors.white.withOpacity(0.95),
+      color: Colors.white.withValues(alpha: 0.95),
       elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
@@ -103,7 +105,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    "Satuan: ${product.satuan ?? '-'}",
+                    "Satuan: ${product.satuan}",
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
@@ -140,7 +142,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
 
   Widget _buildTargetProductCard() {
     return Card(
-      color: Colors.white.withOpacity(0.95),
+      color: Colors.white.withValues(alpha: 0.95),
       elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
@@ -205,7 +207,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          "Satuan: ${selectedTargetProduct!.satuan ?? '-'}",
+                          "Satuan: ${selectedTargetProduct!.satuan}",
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(

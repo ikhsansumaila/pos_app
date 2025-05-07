@@ -9,6 +9,8 @@ import 'package:pos_app/modules/common/widgets/image.dart';
 class CartPage extends StatelessWidget {
   final cartController = Get.find<CartController>();
 
+  CartPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,12 +67,12 @@ class CartPage extends StatelessWidget {
             onPressed: () {
               // Handle checkout logic here
             },
-            child: Text(
-              'Checkout Rp${NumberFormat("#,##0", "id_ID").format(cartController.totalPrice.value)}',
-            ),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               textStyle: const TextStyle(fontSize: 18),
+            ),
+            child: Text(
+              'Checkout Rp${NumberFormat("#,##0", "id_ID").format(cartController.totalPrice.value)}',
             ),
           ),
         );

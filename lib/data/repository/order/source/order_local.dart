@@ -1,12 +1,13 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
+import 'package:pos_app/core/services/sync_api_service.dart';
 import 'package:pos_app/data/models/order_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class OrderLocalDataSource {
   final Box box;
   OrderLocalDataSource(this.box);
-  // OrderLocalDataSource() : box = Hive.box(ORDER_BOX_KEY);
-  // final Box box;
 
   List<Order> getCachedOrders() {
     final data = box.get(ORDER_BOX_KEY, defaultValue: []);
@@ -15,8 +16,17 @@ class OrderLocalDataSource {
         .toList();
   }
 
-  void cacheOrders(List<Order> orders) {
-    box.put(ORDER_BOX_KEY, orders.map((e) => e.toJson()).toList());
+  // void cacheOrders(List<Order> orders) {
+  //   box.put(ORDER_BOX_KEY, orders.map((e) => e.toJson()).toList());
+  // }
+
+  Future<void> syncApiResponse(List<Order> orders) async {
+    // add/update/remove cached products
+    await SyncApiService.syncHiveBox<Order>(
+      boxName: ORDER_BOX_KEY,
+      apiData: orders,
+    );
+    log("after caching ${orders.length} orders");
   }
 
   void queueOrderPost(Order orders) {

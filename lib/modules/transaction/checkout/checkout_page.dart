@@ -12,6 +12,8 @@ class CheckoutPage extends StatelessWidget {
   final checkoutController = Get.put(CheckoutController());
   final trxController = Get.find<TransactionController>();
 
+  CheckoutPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveHelper(MediaQuery.of(context).size);

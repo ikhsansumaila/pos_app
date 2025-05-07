@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'login_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  final controller = Get.put(LoginController());
+  final controller = Get.find<AuthController>();
+
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,11 +14,7 @@ class LoginPage extends StatelessWidget {
       body: Stack(
         children: [
           // Futuristic background with abstract curves
-          Positioned.fill(
-            child: CustomPaint(
-              painter: _BackgroundPainter(),
-            ),
-          ),
+          Positioned.fill(child: CustomPaint(painter: _BackgroundPainter())),
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -50,30 +49,32 @@ class LoginPage extends StatelessWidget {
                   Obx(() {
                     return controller.isLoading.value
                         ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.white70),
-                          )
+                          valueColor: AlwaysStoppedAnimation(Colors.white70),
+                        )
                         : ElevatedButton(
-                            onPressed: controller.login,
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.cyanAccent.shade700,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 100, vertical: 18),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              elevation: 12,
-                              shadowColor: Colors.black54,
+                          onPressed: controller.login,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.cyanAccent.shade700,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 100,
+                              vertical: 18,
                             ),
-                            child: Text(
-                              "LOGIN",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.1,
-                              ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                          );
+                            elevation: 12,
+                            shadowColor: Colors.black54,
+                          ),
+                          child: Text(
+                            "LOGIN",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.1,
+                            ),
+                          ),
+                        );
                   }),
                 ],
               ),
@@ -93,13 +94,9 @@ class LoginPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          ),
+          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
       child: TextField(
@@ -134,17 +131,29 @@ class _BackgroundPainter extends CustomPainter {
     canvas.drawRect(rect, paint);
 
     // Abstract curves
-    Path path = Path()
-      ..moveTo(0, size.height * 0.4)
-      ..quadraticBezierTo(
-          size.width * 0.25, size.height * 0.35, size.width * 0.5, size.height * 0.5)
-      ..quadraticBezierTo(
-          size.width * 0.75, size.height * 0.65, size.width, size.height * 0.6)
-      ..lineTo(size.width, 0)
-      ..lineTo(0, 0)
-      ..close();
+    Path path =
+        Path()
+          ..moveTo(0, size.height * 0.4)
+          ..quadraticBezierTo(
+            size.width * 0.25,
+            size.height * 0.35,
+            size.width * 0.5,
+            size.height * 0.5,
+          )
+          ..quadraticBezierTo(
+            size.width * 0.75,
+            size.height * 0.65,
+            size.width,
+            size.height * 0.6,
+          )
+          ..lineTo(size.width, 0)
+          ..lineTo(0, 0)
+          ..close();
     paint.shader = LinearGradient(
-      colors: [Colors.white.withOpacity(0.2), Colors.white.withOpacity(0.05)],
+      colors: [
+        Colors.white.withValues(alpha: 0.2),
+        Colors.white.withValues(alpha: 0.05),
+      ],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     ).createShader(rect);

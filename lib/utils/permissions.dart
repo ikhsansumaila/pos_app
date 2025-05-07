@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:permission_handler/permission_handler.dart';
 
 Future<void> requestCameraPermission() async {
@@ -5,10 +7,10 @@ Future<void> requestCameraPermission() async {
 
   if (status.isGranted) {
     // Permission granted
-    print('Camera permission granted');
+    log('Camera permission granted');
   } else if (status.isDenied) {
     // Denied sementara
-    print('Camera permission denied');
+    log('Camera permission denied');
   } else if (status.isPermanentlyDenied) {
     // Permanent, go to settings
     openAppSettings();

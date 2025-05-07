@@ -3,7 +3,7 @@ import 'package:pos_app/bindings/product_binding.dart';
 import 'package:pos_app/bindings/transaction_binding.dart';
 import 'package:pos_app/modules/auth/login_page.dart';
 import 'package:pos_app/modules/cart/view/cart_page.dart';
-import 'package:pos_app/modules/home/home.dart';
+import 'package:pos_app/modules/home/cashier/cashier_home.dart';
 import 'package:pos_app/modules/home/splash_page.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';

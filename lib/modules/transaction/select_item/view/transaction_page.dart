@@ -11,6 +11,8 @@ class TransactionPage extends StatelessWidget {
   final trxController = Get.find<TransactionController>();
   final productController = Get.find<ProductController>();
 
+  TransactionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveHelper(MediaQuery.of(context).size);

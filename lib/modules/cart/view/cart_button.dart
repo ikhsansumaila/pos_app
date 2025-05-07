@@ -6,6 +6,8 @@ import 'package:pos_app/routes.dart';
 class CartButton extends StatelessWidget {
   final cartController = Get.find<CartController>();
 
+  CartButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {

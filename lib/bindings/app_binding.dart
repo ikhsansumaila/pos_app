@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/core/services/sync_log_service.dart';
-import 'package:pos_app/core/services/sync_service.dart';
+import 'package:pos_app/core/services/sync_queue_service.dart';
 import 'package:pos_app/data/repository/order/order_repository.dart';
 import 'package:pos_app/data/repository/order/order_repository_impl.dart';
 import 'package:pos_app/data/repository/order/source/order_local.dart';
@@ -12,6 +12,7 @@ import 'package:pos_app/data/repository/product/product_repository.dart';
 import 'package:pos_app/data/repository/product/product_repository_impl.dart';
 import 'package:pos_app/data/repository/product/source/product_local.dart';
 import 'package:pos_app/data/repository/product/source/product_remote.dart';
+import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
 import 'package:pos_app/modules/transaction/purchase_order/order_controller.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
@@ -41,12 +42,13 @@ class AppBinding extends Bindings {
     );
 
     // Inject Controller
+    Get.put(AuthController());
     Get.put(ProductController(Get.find()));
     Get.put(OrdersController());
 
     // Syncronization data to server, run in background
     Get.lazyPut(
-      () => SyncService(
+      () => SyncQueueService(
         productRepo: Get.find(),
         orderRepo: Get.find(),
         logService: Get.find(),

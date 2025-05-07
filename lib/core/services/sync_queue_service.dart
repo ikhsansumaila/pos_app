@@ -10,7 +10,7 @@ import 'package:pos_app/data/repository/order/order_repository.dart';
 import 'package:pos_app/data/repository/product/product_repository.dart';
 import 'package:pos_app/utils/constants/constant.dart';
 
-class SyncService {
+class SyncQueueService {
   final ProductRepository productRepo;
   final OrderRepository orderRepo;
   final SyncLogService logService;
@@ -20,7 +20,7 @@ class SyncService {
   DateTime? lastFailedSync;
   Timer? _retryTimer;
 
-  SyncService({
+  SyncQueueService({
     required this.productRepo,
     required this.orderRepo,
     required this.logService,
