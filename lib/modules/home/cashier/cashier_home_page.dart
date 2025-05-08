@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
-import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/confirmation_dialog.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
@@ -17,7 +17,7 @@ class MenuItem {
 final List<MenuItem> _menuItems = [
   MenuItem(
     title: 'Buat Transaksi',
-    icon: Icons.monetization_on,
+    icon: Icons.point_of_sale,
     route: AppRoutes.transactions,
   ),
   MenuItem(
@@ -146,8 +146,6 @@ class CashierHomePage extends StatelessWidget {
                         Get.find<AuthController>().logout();
                         Get.back();
                       }
-                      // Get.back(); // tutup bottom sheet
-                      // Get.snackbar("Logout", "Anda telah logout.");
                     },
                   ),
                 ],

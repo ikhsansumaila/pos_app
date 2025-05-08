@@ -42,6 +42,9 @@ dependencies:
   #check connectivity
   connectivity_plus: ^6.0.3
 
+  #barcode generator
+  barcode: ^2.2.9
+  flutter_svg: ^2.1.0
 
 
 dev_dependencies:

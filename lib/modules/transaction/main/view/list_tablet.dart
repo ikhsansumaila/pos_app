@@ -30,7 +30,10 @@ class TabletLayout extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: _buildSearchBar(),
+                child: SearchBar(
+                  controller: productController.searchController,
+                  hintText: 'Cari Barang...',
+                ),
               ),
               Expanded(
                 child: Obx(() {
@@ -62,26 +65,6 @@ class TabletLayout extends StatelessWidget {
         // Draggable Bottom Sheet
         TransactionDetailSheet(),
       ],
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withValues(alpha: 0.9),
-      ),
-      child: TextField(
-        controller: productController.searchController,
-        style: TextStyle(color: Colors.black, fontSize: 16),
-        decoration: InputDecoration(
-          hintText: 'Cari Barang...',
-          hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 16),
-          prefixIcon: Icon(Icons.search, color: Colors.blueAccent),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-        ),
-      ),
     );
   }
 

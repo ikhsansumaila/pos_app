@@ -6,14 +6,16 @@ class AppBasePage extends StatefulWidget {
     super.key,
     this.appBar,
     required this.mainWidget,
-    // this.mainWidgetPadding = const EdgeInsets.all(0),
+    this.bodyColor,
+    this.bodyDecoration,
     this.fixedBottomWidget,
     this.bottomNavigationBar,
   });
 
   final PreferredSizeWidget? appBar;
   final Widget mainWidget;
-  // final EdgeInsetsGeometry mainWidgetPadding;
+  final Color? bodyColor;
+  final Decoration? bodyDecoration;
   final Widget? fixedBottomWidget;
   final Widget? bottomNavigationBar;
 
@@ -46,41 +48,45 @@ class _AppBasePageState extends State<AppBasePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final EdgeInsetsGeometry effectivePadding = widget.mainWidgetPadding.add(
-    //   EdgeInsets.only(bottom: _bottomHeight),
-    // );
-    return Scaffold(
-      appBar: widget.appBar,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: AppColors.primaryGradient,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(bottom: _bottomHeight + 20),
-                child: widget.mainWidget,
-              ),
-            ),
-            if (widget.fixedBottomWidget != null)
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: KeyedSubtree(
-                  key: _bottomKey,
-                  child: widget.fixedBottomWidget!,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: widget.appBar,
+        body: Container(
+          color: widget.bodyColor,
+          decoration:
+              widget.bodyColor != null
+                  ? null
+                  : const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: AppColors.primaryGradient,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: _bottomHeight + 20),
+                  child: widget.mainWidget,
                 ),
               ),
-          ],
+              if (widget.fixedBottomWidget != null)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: KeyedSubtree(
+                    key: _bottomKey,
+                    child: widget.fixedBottomWidget!,
+                  ),
+                ),
+            ],
+          ),
         ),
+        bottomNavigationBar: widget.bottomNavigationBar,
       ),
-      bottomNavigationBar: widget.bottomNavigationBar,
     );
   }
 }

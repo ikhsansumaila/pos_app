@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/data/models/product_model.dart';
-import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/common/widgets/product_list_card.dart';
 import 'package:pos_app/modules/product/product_contoller.dart';
@@ -45,7 +45,10 @@ class ProductPage extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(12),
-              child: _buildSearchBar(responsive),
+              child: SearchBar(
+                controller: productController.searchController,
+                hintText: 'Cari Barang...',
+              ),
             ),
             Expanded(
               child: Obx(() {
@@ -76,33 +79,6 @@ class ProductPage extends StatelessWidget {
               }),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSearchBar(ResponsiveHelper responsive) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withValues(alpha: 0.9),
-      ),
-      child: TextField(
-        controller: productController.searchController,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: responsive.fontSize(20),
-        ),
-        decoration: InputDecoration(
-          hintText: 'Cari Barang...',
-          hintStyle: TextStyle(
-            color: Colors.blueGrey,
-            fontSize: responsive.fontSize(20),
-          ),
-          prefixIcon: Icon(Icons.search, color: Colors.blueAccent),
-          // suffixIcon: BarcodeScanner(),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
         ),
       ),
     );

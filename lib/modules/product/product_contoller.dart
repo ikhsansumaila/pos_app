@@ -22,16 +22,11 @@ class ProductController extends GetxController {
 
   void fetchProducts() async {
     isLoading(true);
+
     final res = await repository.getProducts();
     products.assignAll(res);
     filteredProducts.assignAll(res);
 
-    // if (res.success && res.data != null) {
-    //   products.assignAll(res);
-    //   filteredProducts.assignAll(res.data!);
-    // } else {
-    //   Get.snackbar('Error', res.message ?? 'Failed to load products');
-    // }
     isLoading(false);
   }
 
@@ -47,5 +42,15 @@ class ProductController extends GetxController {
               .toList();
       filteredProducts.assignAll(filtered);
     }
+  }
+
+  Future<bool> addProduct(Product product) async {
+    isLoading(true);
+
+    // return repository.postProduct(product);
+    var result = Future.delayed(Duration(seconds: 2)).then((value) => true);
+
+    isLoading(false);
+    return result;
   }
 }

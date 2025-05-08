@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
-import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 

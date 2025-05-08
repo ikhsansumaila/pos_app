@@ -34,7 +34,10 @@ class SmartphoneLayout extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: _buildSearchBar(responsive),
+                child: SearchBar(
+                  controller: productController.searchController,
+                  hintText: 'Cari Barang...',
+                ),
               ),
               Expanded(
                 child: Obx(() {
@@ -76,32 +79,6 @@ class SmartphoneLayout extends StatelessWidget {
         // Draggable Bottom Sheet
         TransactionDetailSheet(),
       ],
-    );
-  }
-
-  Widget _buildSearchBar(ResponsiveHelper responsive) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white.withValues(alpha: 0.9),
-      ),
-      child: TextField(
-        controller: productController.searchController,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: responsive.fontSize(16),
-        ),
-        decoration: InputDecoration(
-          hintText: 'Cari Barang...',
-          hintStyle: TextStyle(
-            color: Colors.blueGrey,
-            fontSize: responsive.fontSize(16),
-          ),
-          prefixIcon: Icon(Icons.search, color: Colors.blueAccent),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-        ),
-      ),
     );
   }
 

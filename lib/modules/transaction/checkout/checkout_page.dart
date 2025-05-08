@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_app/modules/common/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_controller.dart';
 import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
