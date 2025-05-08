@@ -4,6 +4,7 @@ import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/responsive_helper.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
@@ -12,6 +13,8 @@ class ProductDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+
     return Scaffold(
       appBar: MyAppBar(title: 'Detail Barang'),
       body: Padding(
@@ -22,8 +25,8 @@ class ProductDetailPage extends StatelessWidget {
             AppImage(
               url: product.gambar,
               width: double.infinity,
-              height: 200,
-              fit: BoxFit.cover,
+              height: responsive.getProductImageSize(300),
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 16),
             Text(

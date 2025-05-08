@@ -70,8 +70,9 @@ class TabletLayout extends StatelessWidget {
   }
 
   Widget _buildProductCard(Product product) {
+    double imageSize = 100;
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       elevation: 8,
       shadowColor: Colors.black26,
@@ -81,13 +82,18 @@ class TabletLayout extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: AppImage(url: product.gambar),
+                leading: AppImage(
+                  url: product.gambar,
+                  height: imageSize,
+                  width: imageSize,
+                  fit: BoxFit.contain,
+                ),
                 title: Text(
                   product.namaBrg,
                   style: TextStyle(
