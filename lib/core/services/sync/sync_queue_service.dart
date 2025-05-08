@@ -4,10 +4,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/core/services/sync_log_service.dart';
-import 'package:pos_app/data/models/sync_log_model.dart';
-import 'package:pos_app/data/repository/order/order_repository.dart';
-import 'package:pos_app/data/repository/product/product_repository.dart';
+import 'package:pos_app/core/services/sync/models/sync_log_model.dart';
+import 'package:pos_app/core/services/sync/sync_log_service.dart';
+import 'package:pos_app/modules/product/data/repository/product_repository.dart';
+import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
 import 'package:pos_app/utils/constants/constant.dart';
 
 class SyncQueueService {

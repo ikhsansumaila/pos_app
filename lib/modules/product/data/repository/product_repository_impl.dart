@@ -2,10 +2,10 @@
 import 'dart:developer';
 
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/data/models/product_model.dart';
-import 'package:pos_app/data/repository/product/product_repository.dart';
-import 'package:pos_app/data/repository/product/source/product_local.dart';
-import 'package:pos_app/data/repository/product/source/product_remote.dart';
+import 'package:pos_app/modules/product/data/models/product_model.dart';
+import 'package:pos_app/modules/product/data/repository/product_repository.dart';
+import 'package:pos_app/modules/product/data/source/product_local.dart';
+import 'package:pos_app/modules/product/data/source/product_remote.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remote;

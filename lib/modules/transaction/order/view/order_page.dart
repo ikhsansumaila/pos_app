@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
-import 'package:pos_app/modules/transaction/purchase_order/order_controller.dart';
+import 'package:pos_app/modules/transaction/order/order_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
 class OrdersPage extends StatelessWidget {

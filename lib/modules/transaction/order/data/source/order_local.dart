@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:hive/hive.dart';
-import 'package:pos_app/core/services/sync_api_service.dart';
-import 'package:pos_app/data/models/order_model.dart';
+import 'package:pos_app/core/services/sync/sync_api_service.dart';
+import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class OrderLocalDataSource {

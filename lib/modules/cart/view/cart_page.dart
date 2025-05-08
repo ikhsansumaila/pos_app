@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
-import 'package:pos_app/routes.dart';
+import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
 class CartPage extends StatelessWidget {
@@ -57,7 +57,7 @@ class CartPage extends StatelessWidget {
                         InkWell(
                           onTap:
                               () => Get.toNamed(
-                                AppRoutes.cartDetail,
+                                AppRoutes.cartDetail.url,
                                 arguments: items,
                               ),
                           child: Column(

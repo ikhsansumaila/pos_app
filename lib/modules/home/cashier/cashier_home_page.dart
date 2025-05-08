@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/confirmation_dialog.dart';
-import 'package:pos_app/routes.dart';
+import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class MenuItem {
@@ -18,17 +18,17 @@ final List<MenuItem> _menuItems = [
   MenuItem(
     title: 'Buat Transaksi',
     icon: Icons.point_of_sale,
-    route: AppRoutes.transactions,
+    route: AppRoutes.transactions.url,
   ),
   MenuItem(
     title: 'Atur Barang',
     icon: Icons.list_alt,
-    route: AppRoutes.products,
+    route: AppRoutes.products.url,
   ),
   MenuItem(
     title: 'Pesanan',
     icon: Icons.receipt_long,
-    route: AppRoutes.orders, // order from customer (online)
+    route: AppRoutes.orders.url, // order from customer (online)
   ),
 ];
 

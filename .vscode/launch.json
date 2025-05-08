@@ -26,9 +26,17 @@
             "program": "lib/main.dart",
             "deviceId": "emulator-5556"
         },
-        //flutter run -d R9RX8018G1V --enable-software-rendering --no-enable-impeller
+        //flutter run -d R9RX8018G1V
         {
             "name": "Run on Tablet Real Device (7 inch)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "R9RX8018G1V"  // ID tablet hanif
+        },
+        //flutter run -d RR8TA05T5HW
+        {
+            "name": "Run on Samsung Galaxy A13",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",

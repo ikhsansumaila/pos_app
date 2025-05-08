@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:pos_app/core/services/sync_api_service.dart';
+import 'package:pos_app/core/services/sync/sync_api_service.dart';
 
 part 'product_model.g.dart';
 

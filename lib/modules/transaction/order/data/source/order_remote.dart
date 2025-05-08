@@ -1,6 +1,6 @@
 // data/datasources/product_remote_datasource.dart
 import 'package:pos_app/core/network/dio_client.dart';
-import 'package:pos_app/data/models/order_model.dart';
+import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
 
 class OrderRemoteDataSource {
   final DioClient dio;

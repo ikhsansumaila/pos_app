@@ -1,9 +1,9 @@
 // data/repository/product_repository_impl.dart
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/data/models/order_model.dart';
-import 'package:pos_app/data/repository/order/order_repository.dart';
-import 'package:pos_app/data/repository/order/source/order_local.dart';
-import 'package:pos_app/data/repository/order/source/order_remote.dart';
+import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
+import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
+import 'package:pos_app/modules/transaction/order/data/source/order_local.dart';
+import 'package:pos_app/modules/transaction/order/data/source/order_remote.dart';
 
 class OrderRepositoryImpl implements OrderRepository {
   final OrderRemoteDataSource remote;

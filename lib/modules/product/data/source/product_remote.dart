@@ -2,7 +2,7 @@
 import 'dart:developer';
 
 import 'package:pos_app/core/network/dio_client.dart';
-import 'package:pos_app/data/models/product_model.dart';
+import 'package:pos_app/modules/product/data/models/product_model.dart';
 
 class ProductRemoteDataSource {
   final DioClient dio;

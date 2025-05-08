@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/modules/common/scrollable_page.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
-import 'package:pos_app/modules/product/product_contoller.dart';
+import 'package:pos_app/modules/product/controller/product_contoller.dart';
+import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
 class StockMutationPage extends StatefulWidget {

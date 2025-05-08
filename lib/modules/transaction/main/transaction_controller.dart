@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
+import 'package:pos_app/modules/product/data/models/product_model.dart';
 
 class TransactionController extends GetxController {
   Box<CartItemModel>? _cartBox;

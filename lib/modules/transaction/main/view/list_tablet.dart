@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_app/data/models/product_model.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
-import 'package:pos_app/modules/product/product_contoller.dart';
+import 'package:pos_app/modules/common/widgets/search_bar_widget.dart';
+import 'package:pos_app/modules/product/controller/product_contoller.dart';
+import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
 import 'package:pos_app/modules/transaction/main/view/transaction_button.dart';
-import 'package:pos_app/routes.dart';
+import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
 class TabletLayout extends StatelessWidget {
@@ -30,7 +31,7 @@ class TabletLayout extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: SearchBar(
+                child: AppSearchBar(
                   controller: productController.searchController,
                   hintText: 'Cari Barang...',
                 ),
@@ -123,7 +124,7 @@ class TabletLayout extends StatelessWidget {
                                     ? null
                                     : () {
                                       Get.toNamed(
-                                        AppRoutes.stockMutation,
+                                        AppRoutes.stockMutation.url,
                                         arguments: product,
                                       );
                                     },

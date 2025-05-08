@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/routes.dart';
+import 'package:pos_app/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
@@ -17,9 +17,9 @@ class AuthController extends GetxController {
   var isLoading = false.obs;
 
   final Map<String, UserData> userData = {
-    "admin": UserData(role: "admin", route: AppRoutes.home),
-    "pelanggan": UserData(role: "pelanggan", route: AppRoutes.home),
-    "kasir": UserData(role: "kasir", route: AppRoutes.home),
+    "admin": UserData(role: "admin", route: AppRoutes.home.url),
+    "pelanggan": UserData(role: "pelanggan", route: AppRoutes.home.url),
+    "kasir": UserData(role: "kasir", route: AppRoutes.home.url),
   };
 
   Future<void> login() async {
@@ -46,7 +46,7 @@ class AuthController extends GetxController {
     await prefs.setBool("isLoggedIn", true); // Save login flag
     await prefs.setString("role", role);
 
-    Get.offAllNamed(AppRoutes.home);
+    Get.offAllNamed(AppRoutes.home.url);
 
     isLoading.value = false;
   }
@@ -57,6 +57,6 @@ class AuthController extends GetxController {
     await prefs.setBool("isLoggedIn", false);
     await prefs.remove("role");
 
-    Get.offAllNamed(AppRoutes.login);
+    Get.offAllNamed(AppRoutes.login.url);
   }
 }

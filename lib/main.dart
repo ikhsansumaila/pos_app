@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pos_app/bindings/app_binding.dart';
-import 'package:pos_app/data/models/order_model.dart';
-import 'package:pos_app/data/models/product_model.dart';
-import 'package:pos_app/routes.dart';
+import 'package:pos_app/modules/product/data/models/product_model.dart';
+import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
+import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 import 'package:pos_app/utils/constants/themes.dart';
 import 'package:pos_app/utils/shared_preferences.dart';
@@ -29,7 +29,7 @@ void main() async {
       child: GetMaterialApp(
         initialBinding: AppBinding(),
         debugShowCheckedModeBanner: false,
-        initialRoute: isLoggedIn ? AppRoutes.home : AppRoutes.login,
+        initialRoute: isLoggedIn ? AppRoutes.home.url : AppRoutes.login.url,
         getPages: AppRoutes.routes,
         theme: themes,
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
-import 'package:pos_app/routes.dart';
+import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
@@ -191,7 +191,7 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                         onPressed:
                             trxController.totalItems.value == 0
                                 ? null
-                                : () => Get.toNamed(AppRoutes.checkout),
+                                : () => Get.toNamed(AppRoutes.checkout.url),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           padding: EdgeInsets.symmetric(vertical: 16),

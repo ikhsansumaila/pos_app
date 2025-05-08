@@ -1,7 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:pos_app/modules/product/data/models/product_model.dart';
+import 'package:pos_app/modules/product/data/source/product_local.dart';
+import 'package:pos_app/utils/constants/hive_key.dart';
 
 class BarcodeScanner extends StatefulWidget {
   const BarcodeScanner({super.key});
@@ -24,8 +26,23 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     _isDialogShown = true;
     _controller.stop();
 
-    log("barccode $code");
+    print("barcode $code");
 
+    final local = ProductLocalDataSource(Hive.box(PRODUCT_BOX_KEY));
+    final data = local.getCachedProducts();
+
+    print('data runtime ${data.runtimeType}');
+    print('data  $data');
+    Product? product = data.firstWhere(
+      (product) => product.idBrg.toString() == '1',
+      orElse: () => throw Exception("Product with ID $code not found!"),
+    );
+    print("Hasil scan product: ${product.toJson()}");
+
+    _showScanResultDialog(code);
+  }
+
+  void _showScanResultDialog(String code) {
     showDialog(
       context: context,
       builder:
@@ -34,23 +51,25 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
             content: Text(code),
             actions: [
               TextButton(
-                onPressed: () {
-                  _isDialogShown = false;
-                  Navigator.of(context).pop();
-                  _controller.start();
-                },
+                onPressed: _onScanAgain,
                 child: const Text("Scan Again"),
               ),
-              TextButton(
-                onPressed:
-                    () => Navigator.of(
-                      context,
-                    ).popUntil((route) => route.isFirst),
-                child: const Text("Close"),
-              ),
+              TextButton(onPressed: _onCloseDialog, child: const Text("Close")),
             ],
           ),
     );
+  }
+
+  void _onScanAgain() {
+    setState(() {
+      _isDialogShown = false;
+    });
+    Navigator.of(context).pop();
+    _controller.start();
+  }
+
+  void _onCloseDialog() {
+    Navigator.of(context).pop();
   }
 
   void _toggleTorch() async {
@@ -64,6 +83,17 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        MobileScanner(controller: _controller, onDetect: _onDetect),
+        _buildOverlay(),
+        _buildFlashlightButton(),
+      ],
+    );
   }
 
   Widget _buildOverlay() {
@@ -94,17 +124,6 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
           ),
         ),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        MobileScanner(controller: _controller, onDetect: _onDetect),
-        _buildOverlay(),
-        _buildFlashlightButton(),
-      ],
     );
   }
 }

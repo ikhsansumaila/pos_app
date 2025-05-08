@@ -28,8 +28,8 @@ class ResponsiveHelper {
   double fontSize(double size) {
     if (isTablet && isLandscape) return size; // tablet (landscape)
     if (isTablet) return size - 2; // tablet (portrait)
-    if (isLandscape) return size - 6; // smartphone (landscape)
-    return size - 8; // smartphone (portrait)
+    if (isLandscape) return size - 4; // smartphone (landscape)
+    return size - 6; // smartphone (portrait)
   }
 
   double imageSize(double size) {
