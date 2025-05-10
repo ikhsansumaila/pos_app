@@ -31,20 +31,25 @@ dependencies:
   shared_preferences: ^2.2.2
 
   #camera & barcode scanner
-  # camera: ^0.11.0+1
-  # google_mlkit_barcode_scanning: ^0.10.0
-  mobile_scanner: ^3.5.2
+  mobile_scanner: ^7.0.0
   permission_handler: ^11.3.1
+
+  #barcode generator
+  barcode: ^2.2.9
+  flutter_svg: ^2.1.0
+
+  # print
+  # blue_thermal_printer: ^1.1.5
+  pdf: ^3.10.4
+  printing: ^5.11.0
+
+
 
   #choose image
   image_picker: ^1.0.7
 
   #check connectivity
   connectivity_plus: ^6.0.3
-
-  #barcode generator
-  barcode: ^2.2.9
-  flutter_svg: ^2.1.0
 
 
 dev_dependencies:

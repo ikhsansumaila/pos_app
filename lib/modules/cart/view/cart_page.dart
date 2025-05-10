@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/formatter.dart';
 
 class CartPage extends StatelessWidget {
   CartPage({super.key});
 
   final cartController = Get.find<CartController>();
-  final currencyFormatter = NumberFormat("#,##0", "id_ID");
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +78,7 @@ class CartPage extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Subtotal: Rp${currencyFormatter.format(subtotal)}',
+                                'Subtotal: ${AppFormatter.currency(subtotal.toDouble())}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.priceColor,

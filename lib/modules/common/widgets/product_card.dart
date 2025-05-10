@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/formatter.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.product});
@@ -56,7 +56,7 @@ class ProductCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'Rp${NumberFormat("#,##0", "id_ID").format(product.hargaJual)}',
+              AppFormatter.currency(product.hargaJual.toDouble()),
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,

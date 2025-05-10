@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/transaction/order/order_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/formatter.dart';
 
 class OrdersPage extends StatelessWidget {
   final controller = Get.put(OrdersController());
@@ -49,14 +49,12 @@ class OrdersPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 4),
-                        Text(
-                          'Tanggal: ${DateFormat('dd MMM yyyy').format(order.orderDate)}',
-                        ),
+                        Text('Tanggal: ${AppFormatter.date(order.orderDate)}'),
                         Text('Jumlah Item: ${order.totalItems}'),
                       ],
                     ),
                     trailing: Text(
-                      'Rp${NumberFormat("#,##0", "id_ID").format(order.totalPrice)}',
+                      AppFormatter.currency(order.totalPrice.toDouble()),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

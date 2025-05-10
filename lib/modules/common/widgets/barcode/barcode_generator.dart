@@ -16,10 +16,7 @@ class BarcodeImage extends StatelessWidget {
     final svg = bc.toSvg(barcodeId, width: 300, height: 100);
 
     return Column(
-      children: [
-        Text('Barcode: $barcodeId'),
-        Center(child: SvgPicture.string(svg)),
-      ],
+      children: [SizedBox(height: 10), Center(child: SvgPicture.string(svg))],
     );
   }
 }

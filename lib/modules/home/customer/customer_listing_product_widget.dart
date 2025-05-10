@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/common/widgets/icon_button.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
@@ -9,6 +8,7 @@ import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/modules/product/view/product_detail_page.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/formatter.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class CustomerListing extends StatelessWidget {
@@ -123,7 +123,7 @@ class CustomerListing extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Rp${NumberFormat("#,##0", "id_ID").format(product.hargaJual)}',
+                      AppFormatter.currency(product.hargaJual.toDouble()),
                       style: TextStyle(
                         color: AppColors.priceColor,
                         fontSize: 14,

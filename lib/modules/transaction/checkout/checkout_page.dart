@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
+import 'package:pos_app/modules/common/widgets/print.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_controller.dart';
 import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/formatter.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class CheckoutPage extends StatelessWidget {
@@ -67,7 +68,7 @@ class CheckoutPage extends StatelessWidget {
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        'Qty: ${cartItem.quantity} x Rp${NumberFormat("#,##0", "id_ID").format(cartItem.product.hargaJual)}',
+                                        'Qty: ${cartItem.quantity} x ${AppFormatter.currency(cartItem.product.hargaJual.toDouble())}',
                                         style: TextStyle(
                                           fontSize: responsive.fontSize(16),
                                         ),
@@ -77,7 +78,11 @@ class CheckoutPage extends StatelessWidget {
                                 ),
                                 // Harga di kanan bawah
                                 Text(
-                                  'Rp${NumberFormat("#,##0", "id_ID").format(cartItem.quantity * cartItem.product.hargaJual)}',
+                                  AppFormatter.currency(
+                                    (cartItem.quantity *
+                                            cartItem.product.hargaJual)
+                                        .toDouble(),
+                                  ),
                                   style: TextStyle(
                                     fontSize: responsive.fontSize(18),
                                     fontWeight: FontWeight.bold,
@@ -105,7 +110,7 @@ class CheckoutPage extends StatelessWidget {
                     children: [
                       Text('Total', style: TextStyle(fontSize: 18)),
                       Text(
-                        'Rp${NumberFormat("#,##0", "id_ID").format(checkoutController.totalHarga)}',
+                        AppFormatter.currency(checkoutController.totalHarga),
                         style: TextStyle(
                           fontSize: responsive.fontSize(22),
                           fontWeight: FontWeight.bold,
@@ -116,11 +121,17 @@ class CheckoutPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      // Proses pembayaran
-                      checkoutController.clear();
-                      Get.back(); // atau Get.offAllNamed('/home');
-                    },
+                    onPressed:
+                        () async => await cetakStrukPDF(
+                          items,
+                          checkoutController.totalHarga,
+                        ),
+                    //() {
+                    // Proses pembayaran
+                    // checkoutController.clear();
+                    // Get.back();
+
+                    // },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 48),
                       // backgroundColor: AppColors.primary,

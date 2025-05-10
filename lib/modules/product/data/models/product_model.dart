@@ -47,6 +47,8 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
   @HiveField(13)
   String storeName;
 
+  String? barcodeUrl = '';
+
   Product({
     required this.idBrg,
     required this.kodeBrg,
@@ -62,6 +64,7 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
     required this.stok,
     required this.storeId,
     required this.storeName,
+    this.barcodeUrl,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -79,6 +82,7 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
     stok: json['stok'] as int,
     storeId: json['store_id'] as int,
     storeName: json['store_name'] as String,
+    barcodeUrl: json['barcode_url'] as String?,
   );
 
   Map<String, dynamic> toJson() => {
@@ -96,6 +100,7 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
     'stok': stok,
     'store_id': storeId,
     'store_name': storeName,
+    'barcode_url': barcodeUrl,
   };
 
   @override

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pos_app/modules/common/scrollable_page.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
-import 'package:pos_app/modules/common/widgets/barcode/barcode_generator.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 
@@ -181,9 +180,22 @@ class _AddProductPageState extends State<AddProductPage> {
                               ),
                             ),
                   ),
-                  const SizedBox(height: 20),
-                  BarcodeImage(barcodeId: '1234567890'),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 20),
+                  // Text('Barcode hasil generate :'),
+                  // BarcodeImage(barcodeId: data.products[0].kodeBrg),
+                  // const SizedBox(height: 20),
+
+                  // Text('Barcode dari API :'),
+                  // Text(data.products[0].barcodeUrl ?? 'invalid barcode'),
+                  // Container(
+                  //   color: Colors.red,
+                  //   child: AppImage(
+                  //     width: 400,
+                  //     height: 400,
+                  //     url: productController.products[0].barcodeUrl,
+                  //     fit: BoxFit.contain,
+                  //   ),
+                  // ),
                 ],
               ),
             );

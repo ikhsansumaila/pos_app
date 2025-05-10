@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
-import 'package:pos_app/modules/product/data/source/product_local.dart';
-import 'package:pos_app/utils/constants/hive_key.dart';
+import 'package:pos_app/modules/product/view/product_detail_page.dart';
 
 class BarcodeScanner extends StatefulWidget {
   const BarcodeScanner({super.key});
@@ -28,33 +28,42 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
 
     print("barcode $code");
 
-    final local = ProductLocalDataSource(Hive.box(PRODUCT_BOX_KEY));
-    final data = local.getCachedProducts();
+    final local = Get.find<ProductController>();
+    final data = local.products;
+    // final data = local.getCachedProducts();
 
     print('data runtime ${data.runtimeType}');
     print('data  $data');
-    Product? product = data.firstWhere(
-      (product) => product.idBrg.toString() == '1',
-      orElse: () => throw Exception("Product with ID $code not found!"),
-    );
-    print("Hasil scan product: ${product.toJson()}");
+    try {
+      Product? product = data.firstWhere(
+        (product) => product.kodeBrg.toString() == code,
+        orElse: () => throw Exception("Product with ID $code not found!"),
+      );
 
-    _showScanResultDialog(code);
+      print("Hasil scan product: ${product.toJson()}");
+      Get.back();
+      Get.to(() => ProductDetailPage(product: product));
+    } catch (e) {
+      _showInvalidScanResultDialog(code);
+    }
   }
 
-  void _showScanResultDialog(String code) {
+  void _showInvalidScanResultDialog(String code) {
     showDialog(
       context: context,
       builder:
           (_) => AlertDialog(
-            title: const Text("Scan Result"),
-            content: Text(code),
+            title: Text("Barcode Invalid:"),
+            content: Text('$code tidak terdaftar di database'),
             actions: [
               TextButton(
                 onPressed: _onScanAgain,
-                child: const Text("Scan Again"),
+                child: const Text("Scan Ulang"),
               ),
-              TextButton(onPressed: _onCloseDialog, child: const Text("Close")),
+              TextButton(
+                onPressed: _onCloseDialog,
+                child: const Text("Kembali"),
+              ),
             ],
           ),
     );
@@ -69,6 +78,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
   }
 
   void _onCloseDialog() {
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 

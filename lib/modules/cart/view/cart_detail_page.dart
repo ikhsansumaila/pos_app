@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
+import 'package:pos_app/utils/formatter.dart';
 
 class CartDetailPage extends StatefulWidget {
   const CartDetailPage({super.key});
@@ -15,8 +15,6 @@ class CartDetailPage extends StatefulWidget {
 
 class _CartDetailPageState extends State<CartDetailPage> {
   final cartController = Get.find<CartController>();
-
-  final currencyFormatter = NumberFormat("#,##0", "id_ID");
 
   late List<CartItemModel> cartItems;
 
@@ -55,10 +53,12 @@ class _CartDetailPageState extends State<CartDetailPage> {
                           ),
                           title: Text(product.namaBrg),
                           subtitle: Text(
-                            'Rp${currencyFormatter.format(product.hargaJual)} x ${item.quantity}',
+                            '${AppFormatter.currency(product.hargaJual.toDouble())} x ${item.quantity}',
                           ),
                           trailing: Text(
-                            'Rp${currencyFormatter.format(product.hargaJual * item.quantity)}',
+                            AppFormatter.currency(
+                              (product.hargaJual * item.quantity).toDouble(),
+                            ),
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         );

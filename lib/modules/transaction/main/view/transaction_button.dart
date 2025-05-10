@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
 import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/formatter.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class TransactionDetailSheet extends StatefulWidget {
@@ -132,8 +132,11 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                                               ),
                                             ),
                                             TextSpan(
-                                              text:
-                                                  'Rp${NumberFormat("#,##0", "id_ID").format(item.product.hargaJual * item.quantity)}',
+                                              text: AppFormatter.currency(
+                                                (item.product.hargaJual *
+                                                        item.quantity)
+                                                    .toDouble(),
+                                              ),
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black54,
@@ -173,7 +176,7 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                             ),
                           ),
                           Text(
-                            'Total Harga: Rp${NumberFormat("#,##0", "id_ID").format(trxController.totalPrice.value)}',
+                            'Total Harga: ${AppFormatter.currency(trxController.totalPrice.value.toDouble())}',
                             style: TextStyle(
                               fontSize: responsive.fontSize(18),
                               fontWeight: FontWeight.bold,
@@ -199,7 +202,10 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                             borderRadius: BorderRadius.circular(50),
                           ),
                         ),
-                        child: Text('Checkout'),
+                        child: Text(
+                          'Checkout',
+                          style: TextStyle(fontSize: responsive.fontSize(18)),
+                        ),
                       );
                     }),
                   ),

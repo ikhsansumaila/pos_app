@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pos_app/modules/common/scrollable_page.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/colors.dart';
+import 'package:pos_app/utils/formatter.dart';
 
 class StockMutationPage extends StatefulWidget {
   const StockMutationPage({super.key});
@@ -113,7 +113,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
                     style: TextStyle(fontSize: 16),
                   ), // TODO: pakai stok aktual
                   Text(
-                    "Harga: Rp${NumberFormat("#,##0", "id_ID").format(product.hargaJual)}",
+                    "Harga: ${AppFormatter.currency(product.hargaJual.toDouble())}",
                     style: TextStyle(
                       color: AppColors.priceColor,
                       fontSize: 16,
@@ -215,7 +215,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
                           style: TextStyle(fontSize: 16),
                         ), // TODO: pakai stok aktual
                         Text(
-                          "Harga: Rp${NumberFormat("#,##0", "id_ID").format(selectedTargetProduct!.hargaJual)}",
+                          "Harga: ${AppFormatter.currency(selectedTargetProduct!.hargaJual.toDouble())}",
                           style: TextStyle(
                             color: AppColors.priceColor,
                             fontSize: 16,
