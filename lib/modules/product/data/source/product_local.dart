@@ -2,13 +2,23 @@
 import 'dart:developer';
 
 import 'package:hive/hive.dart';
+import 'package:pos_app/core/services/sync/queue/sync_queue_helper.dart';
 import 'package:pos_app/core/services/sync/sync_api_service.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class ProductLocalDataSource {
   final Box box;
-  ProductLocalDataSource(this.box);
+  late final SyncQueueDataHelper<Product> syncHelper;
+
+  ProductLocalDataSource(this.box) {
+    syncHelper = SyncQueueDataHelper<Product>(
+      box: box,
+      key: QUEUE_PRODUCT_KEY,
+      fromJson: Product.fromJson,
+      toJson: (e) => e.toJson(),
+    );
+  }
 
   List<Product> getCachedProducts() {
     log("get products from cache");
@@ -18,10 +28,6 @@ class ProductLocalDataSource {
         .toList();
   }
 
-  // void cacheProducts(List<Product> products) {
-  //   log("caching ${products.length} products");
-  //   box.put(PRODUCT_BOX_KEY, products.map((e) => e.toJson()).toList());
-  // }
   Future<void> updateCache(List<Product> products) async {
     // add/update/remove cached products
     await SyncHive.updateFromRemote<Product>(
@@ -30,23 +36,15 @@ class ProductLocalDataSource {
     );
   }
 
-  void queueProductPost(Product product) {
-    log("queue product post");
-    final queue = box.get(POST_QUEUE_KEY, defaultValue: []);
-    queue.add(product.toJson());
-    box.put(POST_QUEUE_KEY, queue);
+  void addToQueue(Product item) {
+    syncHelper.addToQueue(item);
   }
 
-  List<Product> getQueuedPosts() {
-    log("get queued posts");
-    final data = box.get(POST_QUEUE_KEY, defaultValue: []);
-    return (data as List)
-        .map((e) => Product.fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+  List<Product> getQueuedItems() {
+    return syncHelper.getQueuedItems();
   }
 
   void clearQueue() {
-    log("clear queue");
-    box.put(POST_QUEUE_KEY, []);
+    syncHelper.clearQueue();
   }
 }

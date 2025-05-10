@@ -30,14 +30,14 @@ class OrderRepositoryImpl implements OrderRepository {
       await remote.postOrder(order);
       await processQueue(); // send pending posts
     } else {
-      local.queueOrderPost(order); // simpan queue lokal
+      local.addToQueue(order); // simpan queue lokal
     }
   }
 
   @override
   Future<bool> processQueue() async {
     try {
-      final queue = local.getQueuedPosts(); // dari Hive
+      final queue = local.getQueuedItems(); // dari Hive
       for (final item in queue) {
         await remote.postOrder(item);
       }

@@ -38,14 +38,14 @@ class ProductRepositoryImpl implements ProductRepository {
       await remote.postProduct(product);
       await processQueue(); // send pending posts
     } else {
-      local.queueProductPost(product); // simpan queue lokal
+      local.addToQueue(product); // simpan queue lokal
     }
   }
 
   @override
   Future<bool> processQueue() async {
     try {
-      final queue = local.getQueuedPosts(); // dari Hive
+      final queue = local.getQueuedItems(); // dari Hive
       for (final item in queue) {
         await remote.postProduct(item);
       }

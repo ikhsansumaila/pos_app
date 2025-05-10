@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
-import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/main/controller/transaction_controller.dart';
 import 'package:pos_app/modules/transaction/main/view/list_smartphone.dart';
 import 'package:pos_app/modules/transaction/main/view/list_tablet.dart';
 import 'package:pos_app/utils/responsive_helper.dart';

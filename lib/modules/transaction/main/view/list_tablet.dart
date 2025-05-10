@@ -4,7 +4,7 @@ import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/common/widgets/search_bar_widget.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
-import 'package:pos_app/modules/transaction/main/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/main/controller/transaction_controller.dart';
 import 'package:pos_app/modules/transaction/main/view/transaction_button.dart';
 import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
