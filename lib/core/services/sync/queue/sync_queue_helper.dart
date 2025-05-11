@@ -8,12 +8,21 @@ class SyncQueueDataHelper<T> {
   final T Function(Map<String, dynamic>) fromJson;
   final Map<String, dynamic> Function(T) toJson;
 
-  SyncQueueDataHelper({required this.box, required this.key, required this.fromJson, required this.toJson});
+  SyncQueueDataHelper({
+    required this.box,
+    required this.key,
+    required this.fromJson,
+    required this.toJson,
+  });
 
   List<T> getQueuedItems() {
     log('get queued items for $key');
     final data = box.get(key, defaultValue: []);
-    final result = (data as List).map((e) => fromJson(Map<String, dynamic>.from(e))).toList();
+    final result =
+        (data as List)
+            .map((e) => fromJson(Map<String, dynamic>.from(e)))
+            .toList();
+    log('result queued items for $key, $result');
     return result;
   }
 

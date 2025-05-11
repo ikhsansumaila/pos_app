@@ -1,80 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/store/store_model.dart';
 import 'package:pos_app/modules/user/controller/user_controller.dart';
+import 'package:pos_app/modules/user/view/search_store_widget.dart';
 
 class CreateUserPage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
+  CreateUserPage({super.key});
 
-  final TextEditingController namaController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final RxInt roleId = 2.obs; // default: admin
-  final RxInt status = 1.obs;
-
-  CreateUserPage({super.key}); // aktif
+  final UserController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Buat User Baru')),
+      appBar: AppBar(title: const Text('Buat User Baru')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: namaController,
-                decoration: InputDecoration(labelText: 'Nama'),
-                validator:
-                    (value) => value!.isEmpty ? 'Nama wajib diisi' : null,
-              ),
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator:
-                    (value) => value!.isEmpty ? 'Email wajib diisi' : null,
-              ),
-              Obx(
-                () => DropdownButtonFormField<int>(
-                  value: roleId.value,
-                  decoration: InputDecoration(labelText: 'Role'),
-                  items: const [
-                    DropdownMenuItem(value: 1, child: Text('User')),
-                    DropdownMenuItem(value: 2, child: Text('Admin')),
-                  ],
-                  onChanged: (val) => roleId.value = val!,
+          key: controller.formKey,
+          child: Obx(
+            () => ListView(
+              children: [
+                const SizedBox(height: 8),
+                Text(
+                  "Informasi User",
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ),
-              Obx(
-                () => DropdownButtonFormField<int>(
-                  value: status.value,
-                  decoration: InputDecoration(labelText: 'Status'),
+                const SizedBox(height: 12),
+
+                _buildTextField(controller.namaController, 'Nama'),
+                const SizedBox(height: 12),
+                _buildTextField(controller.emailController, 'Email'),
+                const SizedBox(height: 12),
+
+                DropdownButtonFormField<int>(
+                  value: controller.selectedRoleId.value,
+                  decoration: const InputDecoration(labelText: 'Role'),
+                  items: const [
+                    DropdownMenuItem(value: 1, child: Text('Admin')),
+                    DropdownMenuItem(value: 2, child: Text('Customer')),
+                    DropdownMenuItem(value: 3, child: Text('Kasir')),
+                  ],
+                  onChanged: (val) => controller.selectedRoleId.value = val!,
+                ),
+                const SizedBox(height: 12),
+
+                if (controller.selectedRoleId.value == 3)
+                  StoreSearchDropdown(
+                    items: [
+                      StoreModel(id: 1, name: 'Toko A'),
+                      StoreModel(id: 2, name: 'Toko B'),
+                      StoreModel(id: 3, name: 'Toko C'),
+                    ],
+                    selectedItem: controller.selectedStore.value,
+                    onChanged:
+                        (store) => controller.selectedStore.value = store,
+                  ),
+
+                const SizedBox(height: 12),
+                DropdownButtonFormField<int>(
+                  value: controller.selectedStatus.value,
+                  decoration: const InputDecoration(labelText: 'Status'),
                   items: const [
                     DropdownMenuItem(value: 1, child: Text('Aktif')),
                     DropdownMenuItem(value: 0, child: Text('Nonaktif')),
                   ],
-                  onChanged: (val) => status.value = val!,
+                  onChanged: (val) => controller.selectedStatus.value = val!,
                 ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Kirim ke controller untuk disimpan
-                    Get.find<UserController>().createUser({
-                      'nama': namaController.text,
-                      'email': emailController.text,
-                      'role_id': roleId.value,
-                      'status': status.value,
-                    });
-                  }
-                },
-                child: Text('Simpan'),
-              ),
-            ],
+
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.save),
+                  label: const Text('Simpan'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  onPressed:
+                      controller.isFormValid
+                          ? controller.createUserIfValid
+                          : null,
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(labelText: label),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) => value!.isEmpty ? '$label wajib diisi' : null,
     );
   }
 }

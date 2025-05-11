@@ -43,13 +43,14 @@ dependencies:
   pdf: ^3.10.4
   printing: ^5.11.0
 
-
-
   #choose image
   image_picker: ^1.0.7
 
   #check connectivity
   connectivity_plus: ^6.0.3
+
+  #dropdown search
+  dropdown_search: ^6.0.2
 
 
 dev_dependencies:

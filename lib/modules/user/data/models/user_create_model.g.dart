@@ -22,15 +22,14 @@ class UserCreateModelAdapter extends TypeAdapter<UserCreateModel> {
       roleId: fields[2] as int,
       storeId: fields[3] as int,
       status: fields[4] as int,
-      createdAt: fields[5] as String,
-      userid: fields[6] as int,
+      userid: fields[5] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserCreateModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.nama)
       ..writeByte(1)
@@ -42,8 +41,6 @@ class UserCreateModelAdapter extends TypeAdapter<UserCreateModel> {
       ..writeByte(4)
       ..write(obj.status)
       ..writeByte(5)
-      ..write(obj.createdAt)
-      ..writeByte(6)
       ..write(obj.userid);
   }
 

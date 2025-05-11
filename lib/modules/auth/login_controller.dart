@@ -28,7 +28,7 @@ class AuthController extends GetxController {
     final role = userData[username]!.role;
 
     if (username.isEmpty || password.isEmpty) {
-      Get.snackbar("Error", "Username and password must not be empty");
+      Get.snackbar("Error", "Username dan password tidak boleh kosong");
       return;
     }
 
@@ -37,7 +37,7 @@ class AuthController extends GetxController {
     await Future.delayed(Duration(seconds: 1)); // simulate API delay
 
     if (!userData.containsKey(username)) {
-      Get.snackbar("Login Failed", "Invalid credentials");
+      Get.snackbar("Login Failed", "Invalid username/password");
       isLoading.value = false;
       return;
     }

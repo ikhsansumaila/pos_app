@@ -11,11 +11,11 @@ class UserLocalDataSource {
   final Box cacheBox;
   final Box queueBox;
 
-  late final SyncQueueDataHelper<UserCreateModel> syncHelper;
+  late final SyncQueueDataHelper<UserCreateModel> queueHelper;
 
   UserLocalDataSource(this.cacheBox, this.queueBox) {
     // this sync only for create user
-    syncHelper = SyncQueueDataHelper<UserCreateModel>(
+    queueHelper = SyncQueueDataHelper<UserCreateModel>(
       box: queueBox,
       key: QUEUE_USER_KEY,
       fromJson: UserCreateModel.fromJson,
@@ -26,27 +26,32 @@ class UserLocalDataSource {
   List<UserModel> getCachedUsers() {
     log("get products from cache");
     final data = cacheBox.get(USER_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => UserModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return (data as List)
+        .map((e) => UserModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
   Future<void> updateCache(List<UserModel> users) async {
     // add/update/remove cached
-    await SyncHive.updateFromRemote<UserModel>(boxName: USER_BOX_KEY, apiData: users);
+    await SyncHive.updateFromRemote<UserModel>(
+      boxName: USER_BOX_KEY,
+      apiData: users,
+    );
   }
 
   void addToQueue(UserCreateModel item) {
-    syncHelper.addToQueue(item);
+    queueHelper.addToQueue(item);
   }
 
   List<UserCreateModel> getQueuedItems() {
-    return syncHelper.getQueuedItems();
+    return queueHelper.getQueuedItems();
   }
 
   void clearQueue() {
-    syncHelper.clearAllQueue();
+    queueHelper.clearAllQueue();
   }
 
   Future<void> deleteQueueAt(int index) async {
-    syncHelper.deleteQueueAt(index);
+    queueHelper.deleteQueueAt(index);
   }
 }

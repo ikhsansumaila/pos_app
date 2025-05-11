@@ -10,9 +10,13 @@ import 'package:pos_app/modules/home/splash_page.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
 import 'package:pos_app/modules/stock/stock_mutation_page.dart';
+import 'package:pos_app/modules/sync/sync_binding.dart';
+import 'package:pos_app/modules/sync/sync_page.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_page.dart';
 import 'package:pos_app/modules/transaction/main/view/transaction_page.dart';
 import 'package:pos_app/modules/transaction/order/view/order_page.dart';
+import 'package:pos_app/modules/user/view/user_create_page.dart';
+import 'package:pos_app/modules/user/view/user_list_page.dart';
 
 class AppRoute {
   final String url;
@@ -48,6 +52,24 @@ class AppRoutes {
       name: '/home/customer',
       page: () => CustomerHomePage(),
       binding: CustomerHomeBinding(),
+    ),
+  );
+
+  static final users = AppRoute(
+    url: '/user',
+    page: GetPage(
+      name: '/user',
+      page: () => UserListPage(),
+      // binding: CustomerHomeBinding(),
+    ),
+  );
+
+  static final userCreate = AppRoute(
+    url: '/user/create',
+    page: GetPage(
+      name: '/user/create',
+      page: () => CreateUserPage(),
+      // binding: CustomerHomeBinding(),
     ),
   );
 
@@ -94,12 +116,23 @@ class AppRoutes {
     page: GetPage(name: '/cart/detail', page: () => CartDetailPage()),
   );
 
+  static final syncPage = AppRoute(
+    url: '/sync',
+    page: GetPage(
+      name: '/sync',
+      page: () => SyncPage(),
+      binding: SyncBinding(),
+    ),
+  );
+
   static final routes = [
     splash.page,
     login.page,
     home.page,
     cashierHome.page,
     customerHome.page,
+    users.page,
+    userCreate.page,
     products.page,
     addProduct.page,
     stockMutation.page,
@@ -108,5 +141,6 @@ class AppRoutes {
     orders.page,
     cart.page,
     cartDetail.page,
+    syncPage.page,
   ];
 }

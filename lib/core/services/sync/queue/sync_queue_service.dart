@@ -37,7 +37,12 @@ class SyncQueueService {
     if (isSyncing) return;
 
     isSyncing = true;
-    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
+    Get.dialog(
+      Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+
+    await Future.delayed(Duration(seconds: 5));
 
     final success = await _syncWithTimeout(TIMEOUT_DURATION);
     Get.back();
@@ -61,44 +66,47 @@ class SyncQueueService {
           type: 'user',
           success: userSuccess,
           message: userSuccess ? 'Users synced' : 'Failed syncing users',
+          data: '',
           timestamp: DateTime.now(),
         ),
       );
+
+      return userSuccess;
 
       // Product
-      final prodSuccess = await productRepo.processQueue();
-      logService.addLog(
-        SyncLog(
-          type: 'product',
-          success: prodSuccess,
-          message: prodSuccess ? 'Products synced' : 'Failed syncing products',
-          timestamp: DateTime.now(),
-        ),
-      );
+      // final prodSuccess = await productRepo.processQueue();
+      // logService.addLog(
+      //   SyncLog(
+      //     type: 'product',
+      //     success: prodSuccess,
+      //     message: prodSuccess ? 'Products synced' : 'Failed syncing products',
+      //     timestamp: DateTime.now(),
+      //   ),
+      // );
 
-      // Transaction
-      final trxSuccess = await productRepo.processQueue();
-      logService.addLog(
-        SyncLog(
-          type: 'transaction',
-          success: trxSuccess,
-          message: trxSuccess ? 'Transactions synced' : 'Failed syncing transactions',
-          timestamp: DateTime.now(),
-        ),
-      );
+      // // Transaction
+      // final trxSuccess = await productRepo.processQueue();
+      // logService.addLog(
+      //   SyncLog(
+      //     type: 'transaction',
+      //     success: trxSuccess,
+      //     message: trxSuccess ? 'Transactions synced' : 'Failed syncing transactions',
+      //     timestamp: DateTime.now(),
+      //   ),
+      // );
 
-      // Order
-      final orderSuccess = await orderRepo.processQueue();
-      logService.addLog(
-        SyncLog(
-          type: 'order',
-          success: orderSuccess,
-          message: orderSuccess ? 'Orders synced' : 'Failed syncing orders',
-          timestamp: DateTime.now(),
-        ),
-      );
+      // // Order
+      // final orderSuccess = await orderRepo.processQueue();
+      // logService.addLog(
+      //   SyncLog(
+      //     type: 'order',
+      //     success: orderSuccess,
+      //     message: orderSuccess ? 'Orders synced' : 'Failed syncing orders',
+      //     timestamp: DateTime.now(),
+      //   ),
+      // );
 
-      return prodSuccess && orderSuccess;
+      // return prodSuccess && orderSuccess;
     } catch (_) {
       return false;
     }

@@ -21,9 +21,6 @@ class UserCreateModel extends HiveObject {
   final int status;
 
   @HiveField(5)
-  final String createdAt;
-
-  @HiveField(6)
   final int userid;
 
   UserCreateModel({
@@ -32,7 +29,6 @@ class UserCreateModel extends HiveObject {
     required this.roleId,
     required this.storeId,
     required this.status,
-    required this.createdAt,
     required this.userid,
   });
 
@@ -43,7 +39,6 @@ class UserCreateModel extends HiveObject {
       roleId: json['role_id'],
       storeId: json['store_id'],
       status: json['status'],
-      createdAt: json['created_at'],
       userid: json['userid'],
     );
   }
@@ -54,7 +49,6 @@ class UserCreateModel extends HiveObject {
     'role_id': roleId,
     'store_id': storeId,
     'status': status,
-    'created_at': createdAt,
     'userid': userid,
   };
 }

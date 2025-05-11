@@ -2,8 +2,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:pos_app/core/network/dio_client.dart';
+import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/constant.dart';
 
@@ -13,15 +13,25 @@ class ProductRemoteDataSource {
 
   Future<List<ProductModel>> fetchProducts() async {
     final response = await dio.get('$PRODUCT_API_URL?store_id=1');
-    log('response.data ${response.data}');
-    return (response.data as List).map((e) {
-      Map<String, dynamic> map = e;
-      log("map $map");
-      return ProductModel.fromJson(map);
-    }).toList();
+    if (response.isSuccess) {
+      return (response.data as List).map((e) {
+        Map<String, dynamic> map = e;
+        log("map $map");
+        return ProductModel.fromJson(map);
+      }).toList();
+    }
+
+    return [];
+
+    // log('response.data ${response.data}');
+    // return (response.data as List).map((e) {
+    //   Map<String, dynamic> map = e;
+    //   log("map $map");
+    //   return ProductModel.fromJson(map);
+    // }).toList();
   }
 
-  Future<Response> postProduct(ProductModel product) async {
+  Future<ApiResponse> postProduct(ProductModel product) async {
     return await dio.post(PRODUCT_API_URL, data: product.toJson());
   }
 

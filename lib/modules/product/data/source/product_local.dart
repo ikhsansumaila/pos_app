@@ -11,41 +11,48 @@ class ProductLocalDataSource {
   final Box cacheBox;
   final Box queueBox;
 
-  late final SyncQueueDataHelper<ProductModel> syncHelper;
+  late final SyncQueueDataHelper<ProductModel> queueHelper;
 
   ProductLocalDataSource(this.cacheBox, this.queueBox) {
-    syncHelper = SyncQueueDataHelper<ProductModel>(
+    queueHelper = SyncQueueDataHelper<ProductModel>(
       box: queueBox,
       key: QUEUE_PRODUCT_KEY,
       fromJson: ProductModel.fromJson,
       toJson: (e) => e.toJson(),
     );
+
+    // Get.put(SyncQueueController(queueHelper), tag: PRODUCT_CONTROLLER_TAG);
   }
 
   List<ProductModel> getCachedProducts() {
     log("get products from cache");
     final data = cacheBox.get(PRODUCT_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return (data as List)
+        .map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
   Future<void> updateCache(List<ProductModel> products) async {
     // add/update/remove cached products
-    await SyncHive.updateFromRemote<ProductModel>(boxName: PRODUCT_BOX_KEY, apiData: products);
+    await SyncHive.updateFromRemote<ProductModel>(
+      boxName: PRODUCT_BOX_KEY,
+      apiData: products,
+    );
   }
 
   void addToQueue(ProductModel item) {
-    syncHelper.addToQueue(item);
+    queueHelper.addToQueue(item);
   }
 
   List<ProductModel> getQueuedItems() {
-    return syncHelper.getQueuedItems();
+    return queueHelper.getQueuedItems();
   }
 
   void clearQueue() {
-    syncHelper.clearAllQueue();
+    queueHelper.clearAllQueue();
   }
 
   Future<void> deleteQueueAt(int index) async {
-    syncHelper.deleteQueueAt(index);
+    queueHelper.deleteQueueAt(index);
   }
 }

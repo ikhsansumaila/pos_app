@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/store/store_model.dart';
 import 'package:pos_app/modules/user/data/models/user_create_model.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository.dart';
@@ -13,11 +14,45 @@ class UserController extends GetxController {
   final RxBool isLoading = false.obs;
   final TextEditingController searchController = TextEditingController();
 
+  // Form Create User Controller
+  final formKey = GlobalKey<FormState>();
+  final namaController = TextEditingController();
+  final emailController = TextEditingController();
+  final selectedRoleId = RxInt(1);
+  final selectedStatus = RxInt(1);
+  final RxList<StoreModel> stores = <StoreModel>[].obs;
+  final selectedStore = Rx<StoreModel?>(null);
+
   @override
   void onInit() {
     super.onInit();
     fetchUsers();
     // searchController.addListener(() => filterProducts(searchController.text));
+  }
+
+  bool get isFormValid {
+    bool validForm =
+        namaController.text.isNotEmpty && emailController.text.isNotEmpty;
+
+    if (validForm && selectedRoleId.value == 3 && selectedStore.value == null) {
+      validForm = false;
+    }
+    return validForm;
+  }
+
+  void createUserIfValid() {
+    if (!isFormValid) return;
+
+    createUser(
+      UserCreateModel(
+        storeId: selectedStore.value?.id ?? 0,
+        nama: namaController.text,
+        email: emailController.text,
+        roleId: selectedRoleId.value,
+        status: selectedStatus.value,
+        userid: 11,
+      ),
+    );
   }
 
   void fetchUsers() async {
@@ -34,14 +69,17 @@ class UserController extends GetxController {
     if (query.isEmpty) {
       filteredUsers.assignAll(users);
     } else {
-      final filtered = users.where((p) => p.nama.toLowerCase().contains(query.toLowerCase())).toList();
+      final filtered =
+          users
+              .where((p) => p.nama.toLowerCase().contains(query.toLowerCase()))
+              .toList();
       filteredUsers.assignAll(filtered);
     }
   }
 
-  Future<void> createUser(Map<String, dynamic> data) async {
+  Future<void> createUser(UserCreateModel data) async {
     isLoading(true);
-    await repository.postUser(UserCreateModel.fromJson(data));
+    await repository.postUser(data);
     isLoading(false);
   }
 }

@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:pos_app/core/network/dio_client.dart';
+import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/main/data/models/transaction_model.dart';
 import 'package:pos_app/utils/constants/constant.dart';
@@ -16,15 +16,20 @@ class TransactionRemoteDataSource {
 
   Future<List<TransactionModel>> fetchTransaction() async {
     final response = await dio.get(API_URL);
-    log('response.data ${response.data}');
-    return (response.data as List).map((e) {
-      Map<String, dynamic> map = e;
-      log("map $map");
-      return TransactionModel.fromJson(map);
-    }).toList();
+
+    if (response.isSuccess) {
+      log('response.data ${response.data}');
+      return (response.data as List).map((e) {
+        Map<String, dynamic> map = e;
+        log("map $map");
+        return TransactionModel.fromJson(map);
+      }).toList();
+    }
+
+    return [];
   }
 
-  Future<Response> postTransaction(TransactionCreateModel user) async {
+  Future<ApiResponse> postTransaction(TransactionCreateModel user) async {
     return await dio.post(API_URL, data: user.toJson());
   }
 

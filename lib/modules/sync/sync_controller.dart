@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_app/core/services/sync/models/sync_log_model.dart';
+import 'package:pos_app/core/services/sync/queue/sync_queue_service.dart';
+import 'package:pos_app/core/services/sync/sync_log_service.dart';
+import 'package:pos_app/modules/sync/user/user_queue_detail.dart';
+import 'package:pos_app/utils/constants/controller_tag.dart';
+
+class SyncEntitiesModel<T> {
+  final String title;
+  final Widget detailPage;
+  SyncEntitiesModel({required this.title, required this.detailPage});
+}
+
+class SyncController extends GetxController {
+  final SyncLogService logService;
+  final SyncQueueService syncService;
+
+  var logs = <SyncLog>[].obs;
+  var exporting = false.obs;
+  var syncing = false.obs;
+
+  List<SyncEntitiesModel> entities = [
+    SyncEntitiesModel(
+      title: 'User Queue',
+      detailPage: QueueUserDetailPage(tag: USER_CONTROLLER_TAG),
+    ),
+  ];
+
+  SyncController(this.logService, this.syncService);
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadLogs();
+  }
+
+  void loadLogs() {
+    logs.value = logService.getAllLogs().reversed.toList();
+  }
+
+  Future<void> exportLogs() async {
+    exporting.value = true;
+    final path = await logService.exportLogsAsTxt();
+    exporting.value = false;
+    Get.snackbar('Export Log', 'Disimpan di: $path');
+  }
+
+  Future<void> manualSync() async {
+    syncing.value = true;
+    await syncService.syncAllWithDialog();
+    syncing.value = false;
+    loadLogs(); // Refresh log setelah sync
+  }
+}

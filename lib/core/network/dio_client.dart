@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:pos_app/core/network/dio_interceptor.dart';
+import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/utils/constants/constant.dart';
 import 'package:requests_inspector/requests_inspector.dart';
 
@@ -19,30 +22,70 @@ class DioClient {
 
     dio = Dio(options);
 
-    // Interceptor untuk logging / error handling
     dio.interceptors.add(RequestsInspectorInterceptor());
     dio.interceptors.add(RequestsInterceptor());
   }
 
-  Future<Response> get(String path, {Map<String, dynamic>? query}) async {
-    return await dio.get(path, queryParameters: query);
+  Future<ApiResponse<dynamic>> get(
+    String path, {
+    Map<String, dynamic>? query,
+  }) async {
+    try {
+      final response = await dio.get(path, queryParameters: query);
+      log("response.data dari dio client : ${response.data}");
+      return ApiResponse(data: response.data, statusCode: response.statusCode);
+    } on DioException catch (e) {
+      return ApiResponse(
+        data: e.response,
+        error: getErrorMessage(e),
+        statusCode: e.response?.statusCode,
+      );
+    }
   }
 
-  Future<Response> post(String path, {dynamic data}) async {
-    return await dio.post(path, data: data);
+  Future<ApiResponse<dynamic>> post(String path, {dynamic data}) async {
+    try {
+      final response = await dio.post(path, data: data);
+      return ApiResponse(data: response, statusCode: response.statusCode);
+    } on DioException catch (e) {
+      return ApiResponse(
+        data: e.response,
+        error: getErrorMessage(e),
+        statusCode: e.response?.statusCode,
+      );
+    }
   }
 
-  Future<Response> put(String path, {dynamic data}) async {
-    return await dio.put(path, data: data);
+  Future<ApiResponse<dynamic>> put(String path, {dynamic data}) async {
+    try {
+      final response = await dio.put(path, data: data);
+      return ApiResponse(data: response, statusCode: response.statusCode);
+    } on DioException catch (e) {
+      return ApiResponse(
+        data: e.response,
+        error: getErrorMessage(e),
+        statusCode: e.response?.statusCode,
+      );
+    }
   }
 
-  Future<Response> delete(String path) async {
-    return await dio.delete(path);
+  Future<ApiResponse<dynamic>> delete(String path) async {
+    try {
+      final response = await dio.delete(path);
+      return ApiResponse(data: response, statusCode: response.statusCode);
+    } on DioException catch (e) {
+      return ApiResponse(
+        data: e.response,
+        error: getErrorMessage(e),
+        statusCode: e.response?.statusCode,
+      );
+    }
   }
 
   String getErrorMessage(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
         return 'Connection timed out';
       case DioExceptionType.badResponse:

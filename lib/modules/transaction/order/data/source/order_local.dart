@@ -10,10 +10,10 @@ class OrderLocalDataSource {
   final Box cacheBox;
   final Box queueBox;
 
-  late final SyncQueueDataHelper<OrderModel> syncHelper;
+  late final SyncQueueDataHelper<OrderModel> queueHelper;
 
   OrderLocalDataSource(this.cacheBox, this.queueBox) {
-    syncHelper = SyncQueueDataHelper<OrderModel>(
+    queueHelper = SyncQueueDataHelper<OrderModel>(
       box: queueBox,
       key: QUEUE_ORDER_KEY,
       fromJson: OrderModel.fromJson,
@@ -23,28 +23,33 @@ class OrderLocalDataSource {
 
   List<OrderModel> getCachedOrders() {
     final data = cacheBox.get(ORDER_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => OrderModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return (data as List)
+        .map((e) => OrderModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
   Future<void> update(List<OrderModel> orders) async {
     // add/update/remove cached orders
-    await SyncHive.updateFromRemote<OrderModel>(boxName: ORDER_BOX_KEY, apiData: orders);
+    await SyncHive.updateFromRemote<OrderModel>(
+      boxName: ORDER_BOX_KEY,
+      apiData: orders,
+    );
     log("after caching ${orders.length} orders");
   }
 
   void addToQueue(OrderModel item) {
-    syncHelper.addToQueue(item);
+    queueHelper.addToQueue(item);
   }
 
   List<OrderModel> getQueuedItems() {
-    return syncHelper.getQueuedItems();
+    return queueHelper.getQueuedItems();
   }
 
   void clearQueue() {
-    syncHelper.clearAllQueue();
+    queueHelper.clearAllQueue();
   }
 
   Future<void> deleteQueueAt(int index) async {
-    syncHelper.deleteQueueAt(index);
+    queueHelper.deleteQueueAt(index);
   }
 }
