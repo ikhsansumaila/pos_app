@@ -1,10 +1,11 @@
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/services/sync/sync_api_service.dart';
+import 'package:pos_app/utils/constants/hive_key.dart';
 
 part 'order_model.g.dart';
 
-@HiveType(typeId: 1)
-class Order extends HiveObject implements SyncableHiveObject<Order> {
+@HiveType(typeId: HiveTypeIds.order)
+class OrderModel extends HiveObject implements SyncableHiveObject<OrderModel> {
   @HiveField(0)
   int id;
 
@@ -20,15 +21,9 @@ class Order extends HiveObject implements SyncableHiveObject<Order> {
   @HiveField(4)
   int totalPrice;
 
-  Order({
-    required this.id,
-    required this.customerName,
-    required this.orderDate,
-    required this.totalItems,
-    required this.totalPrice,
-  });
+  OrderModel({required this.id, required this.customerName, required this.orderDate, required this.totalItems, required this.totalPrice});
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
+  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
     id: json['id'] as int,
     customerName: json['customer_name'] as String,
     orderDate: DateTime.parse(json['order_date'] as String),
@@ -48,7 +43,7 @@ class Order extends HiveObject implements SyncableHiveObject<Order> {
   int get modelId => id;
 
   @override
-  bool isDifferent(Order other) {
+  bool isDifferent(OrderModel other) {
     return id != other.id ||
         customerName != other.customerName ||
         orderDate != other.orderDate ||

@@ -8,7 +8,7 @@ part of 'cart_item_model.dart';
 
 class CartItemModelAdapter extends TypeAdapter<CartItemModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 60;
 
   @override
   CartItemModel read(BinaryReader reader) {
@@ -17,7 +17,7 @@ class CartItemModelAdapter extends TypeAdapter<CartItemModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CartItemModel(
-      product: fields[0] as Product,
+      product: fields[0] as ProductModel,
       quantity: fields[1] as int,
     );
   }

@@ -31,19 +31,12 @@ class TabletLayout extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: AppSearchBar(
-                  controller: productController.searchController,
-                  hintText: 'Cari Barang...',
-                ),
+                child: AppSearchBar(controller: productController.searchController, hintText: 'Cari Barang...'),
               ),
               Expanded(
                 child: Obx(() {
                   if (productController.isLoading.value) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.white),
-                      ),
-                    );
+                    return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)));
                   }
 
                   return Padding(
@@ -51,8 +44,7 @@ class TabletLayout extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: productController.filteredProducts.length,
                       itemBuilder: (context, index) {
-                        final product =
-                            productController.filteredProducts[index];
+                        final product = productController.filteredProducts[index];
                         return _buildProductCard(product);
                       },
                     ),
@@ -69,7 +61,7 @@ class TabletLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(Product product) {
+  Widget _buildProductCard(ProductModel product) {
     double imageSize = 100;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
@@ -77,10 +69,7 @@ class TabletLayout extends StatelessWidget {
       elevation: 8,
       shadowColor: Colors.black26,
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
@@ -88,27 +77,11 @@ class TabletLayout extends StatelessWidget {
             children: [
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: AppImage(
-                  url: product.gambar,
-                  height: imageSize,
-                  width: imageSize,
-                  fit: BoxFit.contain,
-                ),
-                title: Text(
-                  product.namaBrg,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
+                leading: AppImage(url: product.gambar, height: imageSize, width: imageSize, fit: BoxFit.contain),
+                title: Text(product.namaBrg, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black87)),
                 subtitle: Text(
                   AppFormatter.currency(product.hargaJual.toDouble()),
-                  style: TextStyle(
-                    color: AppColors.priceColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(color: AppColors.priceColor, fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 trailing: GetBuilder(
                   init: trxController,
@@ -129,68 +102,28 @@ class TabletLayout extends StatelessWidget {
                                 stock == 0
                                     ? null
                                     : () {
-                                      Get.toNamed(
-                                        AppRoutes.stockMutation.url,
-                                        arguments: product,
-                                      );
+                                      Get.toNamed(AppRoutes.stockMutation.url, arguments: product);
                                     },
-                            icon: Icon(
-                              Icons.call_split,
-                              color:
-                                  stock == 0 ? Colors.grey : AppColors.primary,
-                            ),
-                            label: Text(
-                              'Pecah Stok',
-                              style: TextStyle(
-                                color:
-                                    stock == 0
-                                        ? Colors.grey
-                                        : AppColors.primary,
-                              ),
-                            ),
+                            icon: Icon(Icons.call_split, color: stock == 0 ? Colors.grey : AppColors.primary),
+                            label: Text('Pecah Stok', style: TextStyle(color: stock == 0 ? Colors.grey : AppColors.primary)),
                           ),
                         ),
-                        Text(
-                          '(Stok: $stock)',
-                          style: TextStyle(color: Colors.black87, fontSize: 16),
-                        ),
+                        Text('(Stok: $stock)', style: TextStyle(color: Colors.black87, fontSize: 16)),
                         SizedBox(width: 12),
 
                         // REMOVE BUTTON
                         IconButton(
-                          onPressed:
-                              buttonRemoveEnabled
-                                  ? () => data.removeItem(product)
-                                  : null,
-                          icon: Icon(
-                            Icons.remove_circle,
-                            color:
-                                buttonRemoveEnabled ? Colors.red : Colors.grey,
-                          ),
+                          onPressed: buttonRemoveEnabled ? () => data.removeItem(product) : null,
+                          icon: Icon(Icons.remove_circle, color: buttonRemoveEnabled ? Colors.red : Colors.grey),
                         ),
 
                         // QUANTITY
-                        Text(
-                          quantity.toString(),
-                          style: TextStyle(
-                            color: stock == 0 ? Colors.grey : Colors.black87,
-                            fontSize: 16,
-                          ),
-                        ),
+                        Text(quantity.toString(), style: TextStyle(color: stock == 0 ? Colors.grey : Colors.black87, fontSize: 16)),
 
                         // ADD BUTTON
                         IconButton(
-                          onPressed:
-                              buttonAddEnabled
-                                  ? () => data.addItem(product)
-                                  : null,
-                          icon: Icon(
-                            Icons.add_circle,
-                            color:
-                                buttonAddEnabled
-                                    ? AppColors.primary
-                                    : Colors.grey,
-                          ),
+                          onPressed: buttonAddEnabled ? () => data.addItem(product) : null,
+                          icon: Icon(Icons.add_circle, color: buttonAddEnabled ? AppColors.primary : Colors.grey),
                         ),
                       ],
                     );

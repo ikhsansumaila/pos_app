@@ -1,10 +1,11 @@
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/services/sync/sync_api_service.dart';
+import 'package:pos_app/utils/constants/hive_key.dart';
 
 part 'product_model.g.dart';
 
-@HiveType(typeId: 0)
-class Product extends HiveObject implements SyncableHiveObject<Product> {
+@HiveType(typeId: HiveTypeIds.product)
+class ProductModel extends HiveObject implements SyncableHiveObject<ProductModel> {
   @HiveField(0)
   int idBrg;
 
@@ -49,7 +50,7 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
 
   String? barcodeUrl = '';
 
-  Product({
+  ProductModel({
     required this.idBrg,
     required this.kodeBrg,
     required this.namaBrg,
@@ -67,7 +68,7 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
     this.barcodeUrl,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
     idBrg: json['id_brg'] as int,
     kodeBrg: json['kode_brg'] as String,
     namaBrg: json['nama_brg'] as String,
@@ -107,7 +108,7 @@ class Product extends HiveObject implements SyncableHiveObject<Product> {
   int get modelId => idBrg;
 
   @override
-  bool isDifferent(Product other) {
+  bool isDifferent(ProductModel other) {
     return kodeBrg != other.kodeBrg ||
         namaBrg != other.namaBrg ||
         satuan != other.satuan ||

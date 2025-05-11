@@ -1,10 +1,11 @@
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/services/sync/sync_api_service.dart';
+import 'package:pos_app/utils/constants/hive_key.dart';
 
 part 'user_model.g.dart';
 
-@HiveType(typeId: 0)
-class User extends HiveObject implements SyncableHiveObject<User> {
+@HiveType(typeId: HiveTypeIds.user)
+class UserModel extends HiveObject implements SyncableHiveObject<UserModel> {
   @HiveField(0)
   int id;
 
@@ -32,7 +33,7 @@ class User extends HiveObject implements SyncableHiveObject<User> {
   @HiveField(8)
   String createdAt;
 
-  User({
+  UserModel({
     required this.id,
     required this.storeId,
     this.storeName,
@@ -44,8 +45,8 @@ class User extends HiveObject implements SyncableHiveObject<User> {
     required this.createdAt,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
       id: json['id'],
       storeId: json['store_id'],
       storeName: json['store_name'],
@@ -76,7 +77,7 @@ class User extends HiveObject implements SyncableHiveObject<User> {
   int get modelId => id;
 
   @override
-  bool isDifferent(User other) {
+  bool isDifferent(UserModel other) {
     return storeId != other.storeId ||
         storeName != other.storeName ||
         nama != other.nama ||

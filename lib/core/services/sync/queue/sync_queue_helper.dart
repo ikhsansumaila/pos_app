@@ -8,19 +8,13 @@ class SyncQueueDataHelper<T> {
   final T Function(Map<String, dynamic>) fromJson;
   final Map<String, dynamic> Function(T) toJson;
 
-  SyncQueueDataHelper({
-    required this.box,
-    required this.key,
-    required this.fromJson,
-    required this.toJson,
-  });
+  SyncQueueDataHelper({required this.box, required this.key, required this.fromJson, required this.toJson});
 
   List<T> getQueuedItems() {
     log('get queued items for $key');
     final data = box.get(key, defaultValue: []);
-    return (data as List)
-        .map((e) => fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+    final result = (data as List).map((e) => fromJson(Map<String, dynamic>.from(e))).toList();
+    return result;
   }
 
   void addToQueue(T item) {
@@ -30,8 +24,13 @@ class SyncQueueDataHelper<T> {
     box.put(key, queue);
   }
 
-  void clearQueue() {
-    log('clear queue for $key');
-    box.put(key, []);
+  Future<void> deleteQueueAt(int index) async {
+    log('deleting item $index on queue for $key');
+    await box.deleteAt(index);
+  }
+
+  Future<void> clearAllQueue() async {
+    log('clearing all items on queue for $key');
+    await box.put(key, []);
   }
 }

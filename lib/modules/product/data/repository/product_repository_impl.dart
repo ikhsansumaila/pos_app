@@ -15,41 +15,47 @@ class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl(this.remote, this.local, this.connectivity);
 
   @override
-  Future<List<Product>> getProducts() async {
-    if (await connectivity.isConnected()) {
-      log("Internet is on");
-      try {
-        final products = await remote.fetchProducts();
-        await local.updateCache(products);
-        return products;
-      } catch (e) {
-        log("Error fetching products: $e");
-        return local.getCachedProducts();
-      }
-    } else {
-      log("Internet is off");
+  Future<List<ProductModel>> getProducts() async {
+    final isOnline = await connectivity.isConnected();
+
+    if (!isOnline) {
+      return local.getCachedProducts();
+    }
+
+    try {
+      final products = await remote.fetchProducts();
+      await local.updateCache(products);
+      return products;
+    } catch (e, stackTrace) {
+      log("Error fetching products: $e", stackTrace: stackTrace);
       return local.getCachedProducts();
     }
   }
 
   @override
-  Future<void> postProduct(Product product) async {
+  Future<void> postProduct(ProductModel product) async {
     if (await connectivity.isConnected()) {
-      await remote.postProduct(product);
-      await processQueue(); // send pending posts
+      var response = await remote.postProduct(product);
+
+      // if failed, save to local queue
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        local.addToQueue(product); // simpan queue lokal
+      }
     } else {
-      local.addToQueue(product); // simpan queue lokal
+      // if offline mode, save to local queue
+      local.addToQueue(product);
     }
   }
 
   @override
   Future<bool> processQueue() async {
     try {
-      final queue = local.getQueuedItems(); // dari Hive
-      for (final item in queue) {
-        await remote.postProduct(item);
-      }
-      local.clearQueue();
+      // TODO: implement bulking?
+      // final queue = local.getQueuedItems(); // dari Hive
+      // for (final item in queue) {
+      //   await remote.postProduct(item);
+      // }
+      // local.clearQueue();
       return true;
     } catch (_) {
       return false;

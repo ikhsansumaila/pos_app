@@ -40,9 +40,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 leading: const Icon(Icons.camera_alt),
                 title: const Text('Kamera'),
                 onTap: () async {
-                  final picked = await ImagePicker().pickImage(
-                    source: ImageSource.camera,
-                  );
+                  final picked = await ImagePicker().pickImage(source: ImageSource.camera);
                   if (picked != null) {
                     setState(() => _imageFile = File(picked.path));
                   }
@@ -54,9 +52,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 leading: const Icon(Icons.photo),
                 title: const Text('Galeri'),
                 onTap: () async {
-                  final picked = await ImagePicker().pickImage(
-                    source: ImageSource.gallery,
-                  );
+                  final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
                   if (picked != null) {
                     setState(() => _imageFile = File(picked.path));
                   }
@@ -72,7 +68,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
   void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final product = Product(
+      final product = ProductModel(
         idBrg: DateTime.now().millisecondsSinceEpoch,
         kodeBrg: _kodeController.text,
         namaBrg: _namaController.text,
@@ -89,22 +85,11 @@ class _AddProductPageState extends State<AddProductPage> {
         storeName: 'Toko Default',
       );
 
-      if (await productController.addProduct(product)) {
-        Get.snackbar(
-          'Berhasil',
-          'Barang berhasil ditambahkan',
-          icon: const Icon(Icons.check, color: Colors.green),
-        );
+      await productController.addProduct(product);
 
-        Navigator.pop(context); // Close loading
-        Get.back(); // Kembali ke halaman sebelumnya
-      } else {
-        Get.snackbar(
-          'Gagal',
-          'Barang gagal ditambahkan',
-          icon: const Icon(Icons.close, color: Colors.red),
-        );
-      }
+      Get.snackbar('Sukses', 'Barang berhasil ditambahkan');
+      Navigator.pop(context); // Close loading
+      Get.back(); // Kembali ke halaman sebelumnya
     }
   }
 
@@ -165,19 +150,12 @@ class _AddProductPageState extends State<AddProductPage> {
                         _imageFile == null
                             ? Container(
                               height: 150,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                              decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(12)),
                               child: const Center(child: Text('Upload Gambar')),
                             )
                             : ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                              child: Image.file(
-                                _imageFile!,
-                                height: 150,
-                                fit: BoxFit.cover,
-                              ),
+                              child: Image.file(_imageFile!, height: 150, fit: BoxFit.cover),
                             ),
                   ),
                   // const SizedBox(height: 20),
@@ -209,9 +187,7 @@ class _AddProductPageState extends State<AddProductPage> {
           onPressed: _submitForm,
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           ),
           child: Text('Simpan'),
         ),

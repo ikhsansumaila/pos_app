@@ -18,13 +18,13 @@ class StockMutationPage extends StatefulWidget {
 class _StockMutationPageState extends State<StockMutationPage> {
   final jumlahController = TextEditingController();
   final ProductController productController = Get.find();
-  Product? selectedTargetProduct;
-  late Product sourceProduct;
+  ProductModel? selectedTargetProduct;
+  late ProductModel sourceProduct;
 
   @override
   void initState() {
     super.initState();
-    sourceProduct = Get.arguments as Product;
+    sourceProduct = Get.arguments as ProductModel;
   }
 
   @override
@@ -34,20 +34,10 @@ class _StockMutationPageState extends State<StockMutationPage> {
       mainWidget: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildProductCard(
-            title: "Barang Asal",
-            product: sourceProduct,
-            includeInput: true,
-          ),
+          _buildProductCard(title: "Barang Asal", product: sourceProduct, includeInput: true),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Center(
-              child: Icon(
-                Icons.swap_vert_rounded,
-                size: 48,
-                color: const Color.fromARGB(255, 24, 142, 30),
-              ),
-            ),
+            child: Center(child: Icon(Icons.swap_vert_rounded, size: 48, color: const Color.fromARGB(255, 24, 142, 30))),
           ),
           _buildTargetProductCard(),
         ],
@@ -61,9 +51,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
           },
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           ),
           child: Text('Pecah Stok'),
         ),
@@ -71,11 +59,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
     );
   }
 
-  Widget _buildProductCard({
-    required String title,
-    required Product product,
-    bool includeInput = false,
-  }) {
+  Widget _buildProductCard({required String title, required ProductModel product, bool includeInput = false}) {
     return Card(
       color: Colors.white.withValues(alpha: 0.95),
       elevation: 6,
@@ -91,44 +75,22 @@ class _StockMutationPageState extends State<StockMutationPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                  Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   SizedBox(height: 8),
-                  Text(
-                    "Kode: ${product.kodeBrg}",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "Nama: ${product.namaBrg}",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "Satuan: ${product.satuan}",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    'Stok: ${product.stok}',
-                    style: TextStyle(fontSize: 16),
-                  ), // TODO: pakai stok aktual
+                  Text("Kode: ${product.kodeBrg}", style: TextStyle(fontSize: 16)),
+                  Text("Nama: ${product.namaBrg}", style: TextStyle(fontSize: 16)),
+                  Text("Satuan: ${product.satuan}", style: TextStyle(fontSize: 16)),
+                  Text('Stok: ${product.stok}', style: TextStyle(fontSize: 16)), // TODO: pakai stok aktual
                   Text(
                     "Harga: ${AppFormatter.currency(product.hargaJual.toDouble())}",
-                    style: TextStyle(
-                      color: AppColors.priceColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(color: AppColors.priceColor, fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   if (includeInput) ...[
                     SizedBox(height: 12),
                     TextField(
                       controller: jumlahController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: "Jumlah yang akan dipecah",
-                        border: OutlineInputBorder(),
-                      ),
+                      decoration: InputDecoration(labelText: "Jumlah yang akan dipecah", border: OutlineInputBorder()),
                     ),
                   ],
                 ],
@@ -150,40 +112,26 @@ class _StockMutationPageState extends State<StockMutationPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Barang Tujuan",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
+            Text("Barang Tujuan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(height: 12),
-            Autocomplete<Product>(
+            Autocomplete<ProductModel>(
               optionsBuilder: (TextEditingValue textEditingValue) {
-                return productController.products.where((Product p) {
-                  return p.namaBrg.toLowerCase().contains(
-                        textEditingValue.text.toLowerCase(),
-                      ) &&
-                      p.idBrg != sourceProduct.idBrg;
+                return productController.products.where((ProductModel p) {
+                  return p.namaBrg.toLowerCase().contains(textEditingValue.text.toLowerCase()) && p.idBrg != sourceProduct.idBrg;
                 });
               },
-              displayStringForOption: (Product option) => option.namaBrg,
-              onSelected: (Product selection) {
+              displayStringForOption: (ProductModel option) => option.namaBrg,
+              onSelected: (ProductModel selection) {
                 setState(() {
                   selectedTargetProduct = selection;
                 });
               },
-              fieldViewBuilder: (
-                context,
-                controller,
-                focusNode,
-                onEditingComplete,
-              ) {
+              fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
                 return TextField(
                   controller: controller,
                   focusNode: focusNode,
                   onEditingComplete: onEditingComplete,
-                  decoration: InputDecoration(
-                    labelText: "Cari nama barang tujuan",
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: InputDecoration(labelText: "Cari nama barang tujuan", border: OutlineInputBorder()),
                 );
               },
             ),
@@ -198,39 +146,20 @@ class _StockMutationPageState extends State<StockMutationPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Kode: ${selectedTargetProduct!.kodeBrg}",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          "Nama: ${selectedTargetProduct!.namaBrg}",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          "Satuan: ${selectedTargetProduct!.satuan}",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          'Stok: ${selectedTargetProduct!.stok}',
-                          style: TextStyle(fontSize: 16),
-                        ), // TODO: pakai stok aktual
+                        Text("Kode: ${selectedTargetProduct!.kodeBrg}", style: TextStyle(fontSize: 16)),
+                        Text("Nama: ${selectedTargetProduct!.namaBrg}", style: TextStyle(fontSize: 16)),
+                        Text("Satuan: ${selectedTargetProduct!.satuan}", style: TextStyle(fontSize: 16)),
+                        Text('Stok: ${selectedTargetProduct!.stok}', style: TextStyle(fontSize: 16)), // TODO: pakai stok aktual
                         Text(
                           "Harga: ${AppFormatter.currency(selectedTargetProduct!.hargaJual.toDouble())}",
-                          style: TextStyle(
-                            color: AppColors.priceColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(color: AppColors.priceColor, fontSize: 16, fontWeight: FontWeight.bold),
                         ),
 
                         SizedBox(height: 12),
                         TextField(
                           controller: jumlahController,
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "Jumlah yang akan dipecah",
-                            border: OutlineInputBorder(),
-                          ),
+                          decoration: InputDecoration(labelText: "Jumlah yang akan dipecah", border: OutlineInputBorder()),
                         ),
                       ],
                     ),
@@ -251,10 +180,8 @@ class _StockMutationPageState extends State<StockMutationPage> {
         width: 70,
         height: 70,
         errorBuilder:
-            (context, error, stackTrace) => Container(
-              color: Colors.grey.shade200,
-              child: Icon(Icons.broken_image, size: 40, color: Colors.grey),
-            ),
+            (context, error, stackTrace) =>
+                Container(color: Colors.grey.shade200, child: Icon(Icons.broken_image, size: 40, color: Colors.grey)),
       ),
     );
   }

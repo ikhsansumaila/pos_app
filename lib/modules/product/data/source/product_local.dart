@@ -8,43 +8,44 @@ import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class ProductLocalDataSource {
-  final Box box;
-  late final SyncQueueDataHelper<Product> syncHelper;
+  final Box cacheBox;
+  final Box queueBox;
 
-  ProductLocalDataSource(this.box) {
-    syncHelper = SyncQueueDataHelper<Product>(
-      box: box,
+  late final SyncQueueDataHelper<ProductModel> syncHelper;
+
+  ProductLocalDataSource(this.cacheBox, this.queueBox) {
+    syncHelper = SyncQueueDataHelper<ProductModel>(
+      box: queueBox,
       key: QUEUE_PRODUCT_KEY,
-      fromJson: Product.fromJson,
+      fromJson: ProductModel.fromJson,
       toJson: (e) => e.toJson(),
     );
   }
 
-  List<Product> getCachedProducts() {
+  List<ProductModel> getCachedProducts() {
     log("get products from cache");
-    final data = box.get(PRODUCT_BOX_KEY, defaultValue: []);
-    return (data as List)
-        .map((e) => Product.fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+    final data = cacheBox.get(PRODUCT_BOX_KEY, defaultValue: []);
+    return (data as List).map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e))).toList();
   }
 
-  Future<void> updateCache(List<Product> products) async {
+  Future<void> updateCache(List<ProductModel> products) async {
     // add/update/remove cached products
-    await SyncHive.updateFromRemote<Product>(
-      boxName: PRODUCT_BOX_KEY,
-      apiData: products,
-    );
+    await SyncHive.updateFromRemote<ProductModel>(boxName: PRODUCT_BOX_KEY, apiData: products);
   }
 
-  void addToQueue(Product item) {
+  void addToQueue(ProductModel item) {
     syncHelper.addToQueue(item);
   }
 
-  List<Product> getQueuedItems() {
+  List<ProductModel> getQueuedItems() {
     return syncHelper.getQueuedItems();
   }
 
   void clearQueue() {
-    syncHelper.clearQueue();
+    syncHelper.clearAllQueue();
+  }
+
+  Future<void> deleteQueueAt(int index) async {
+    syncHelper.deleteQueueAt(index);
   }
 }

@@ -7,11 +7,15 @@ import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/core/services/sync/models/sync_log_model.dart';
 import 'package:pos_app/core/services/sync/sync_log_service.dart';
 import 'package:pos_app/modules/product/data/repository/product_repository.dart';
+import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
 import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
+import 'package:pos_app/modules/user/data/repository/user_repository.dart';
 import 'package:pos_app/utils/constants/constant.dart';
 
 class SyncQueueService {
+  final UserRepository userRepo;
   final ProductRepository productRepo;
+  final TransactionRepository transactionRepository;
   final OrderRepository orderRepo;
   final SyncLogService logService;
   final ConnectivityService connectivity;
@@ -21,7 +25,9 @@ class SyncQueueService {
   Timer? _retryTimer;
 
   SyncQueueService({
+    required this.userRepo,
     required this.productRepo,
+    required this.transactionRepository,
     required this.orderRepo,
     required this.logService,
     required this.connectivity,
@@ -31,10 +37,7 @@ class SyncQueueService {
     if (isSyncing) return;
 
     isSyncing = true;
-    Get.dialog(
-      Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-    );
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
 
     final success = await _syncWithTimeout(TIMEOUT_DURATION);
     Get.back();
@@ -51,6 +54,17 @@ class SyncQueueService {
       final online = await connectivity.isConnected();
       if (!online) throw Exception("Offline");
 
+      // Users
+      final userSuccess = await userRepo.processQueue();
+      logService.addLog(
+        SyncLog(
+          type: 'user',
+          success: userSuccess,
+          message: userSuccess ? 'Users synced' : 'Failed syncing users',
+          timestamp: DateTime.now(),
+        ),
+      );
+
       // Product
       final prodSuccess = await productRepo.processQueue();
       logService.addLog(
@@ -58,6 +72,17 @@ class SyncQueueService {
           type: 'product',
           success: prodSuccess,
           message: prodSuccess ? 'Products synced' : 'Failed syncing products',
+          timestamp: DateTime.now(),
+        ),
+      );
+
+      // Transaction
+      final trxSuccess = await productRepo.processQueue();
+      logService.addLog(
+        SyncLog(
+          type: 'transaction',
+          success: trxSuccess,
+          message: trxSuccess ? 'Transactions synced' : 'Failed syncing transactions',
           timestamp: DateTime.now(),
         ),
       );

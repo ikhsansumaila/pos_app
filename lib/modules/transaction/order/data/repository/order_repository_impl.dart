@@ -1,4 +1,6 @@
 // data/repository/product_repository_impl.dart
+import 'dart:developer';
+
 import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
 import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
@@ -13,35 +15,47 @@ class OrderRepositoryImpl implements OrderRepository {
   OrderRepositoryImpl(this.remote, this.local, this.connectivity);
 
   @override
-  Future<List<Order>> getOrders() async {
-    if (await connectivity.isConnected()) {
+  Future<List<OrderModel>> getOrders() async {
+    final isOnline = await connectivity.isConnected();
+
+    if (!isOnline) {
+      return local.getCachedOrders();
+    }
+
+    try {
       final orders = await remote.fetchOrders();
       await local.update(orders);
-
       return orders;
-    } else {
+    } catch (e, stackTrace) {
+      log("Error fetching orders: $e", stackTrace: stackTrace);
       return local.getCachedOrders();
     }
   }
 
   @override
-  Future<void> postOrder(Order order) async {
+  Future<void> postOrder(OrderModel order) async {
     if (await connectivity.isConnected()) {
-      await remote.postOrder(order);
-      await processQueue(); // send pending posts
+      var response = await remote.postOrder(order);
+
+      // if failed, save to local queue
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        local.addToQueue(order); // simpan queue lokal
+      }
     } else {
-      local.addToQueue(order); // simpan queue lokal
+      // if offline mode, save to local queue
+      local.addToQueue(order);
     }
   }
 
   @override
   Future<bool> processQueue() async {
     try {
-      final queue = local.getQueuedItems(); // dari Hive
-      for (final item in queue) {
-        await remote.postOrder(item);
-      }
-      local.clearQueue();
+      // TODO: implement bulking?
+      // final queue = local.getQueuedItems(); // dari Hive
+      // for (final item in queue) {
+      //   await remote.postOrder(item);
+      // }
+      // local.clearQueue();
       return true;
     } catch (_) {
       return false;

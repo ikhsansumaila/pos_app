@@ -1,7 +1,8 @@
+import 'package:pos_app/modules/user/data/models/user_create_model.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
 
 abstract class UserRepository {
-  Future<List<User>> getUsers();
-  Future<void> postUser(User user);
-  Future<bool> processQueue();
+  Future<List<UserModel>> getUsers();
+  Future<void> postUser(UserCreateModel user);
+  Future<bool> processQueue(); // use in background sync process
 }

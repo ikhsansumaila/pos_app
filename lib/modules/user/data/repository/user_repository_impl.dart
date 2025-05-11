@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:pos_app/core/network/connectivity_service.dart';
+import 'package:pos_app/modules/user/data/models/user_create_model.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository.dart';
 import 'package:pos_app/modules/user/data/source/user_local.dart';
@@ -15,44 +16,59 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl(this.remote, this.local, this.connectivity);
 
   @override
-  Future<List<User>> getUsers() async {
-    if (await connectivity.isConnected()) {
-      log("Internet is on");
-      try {
-        final users = await remote.fetchUsers();
-        await local.updateCache(users);
-        return users;
-      } catch (e) {
-        log("Error fetching users: $e");
-        return local.getCachedUsers();
-      }
-    } else {
-      log("Internet is off");
+  Future<List<UserModel>> getUsers() async {
+    final isOnline = await connectivity.isConnected();
+
+    if (!isOnline) {
+      return local.getCachedUsers();
+    }
+
+    try {
+      final users = await remote.fetchUsers();
+      await local.updateCache(users);
+      return users;
+    } catch (e, stackTrace) {
+      log("Error fetching users: $e", stackTrace: stackTrace);
       return local.getCachedUsers();
     }
   }
 
   @override
-  Future<void> postUser(User user) async {
+  Future<void> postUser(UserCreateModel user) async {
     if (await connectivity.isConnected()) {
-      await remote.postUser(user);
-      await processQueue(); // send pending posts
+      var response = await remote.postUser(user);
+
+      // if failed, save to local queue
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        local.addToQueue(user); // simpan queue lokal
+      }
     } else {
-      local.addToQueue(user); // simpan queue lokal
+      // if offline mode, save to local queue
+      local.addToQueue(user);
     }
   }
 
   @override
   Future<bool> processQueue() async {
-    try {
-      final queue = local.getQueuedItems(); // dari Hive
-      for (final item in queue) {
-        await remote.postUser(item);
-      }
-      local.clearQueue();
-      return true;
-    } catch (_) {
-      return false;
-    }
+    // TODO: ADD BULKING POST and call clearAllQueue after ?
+
+    // final queue = local.getQueuedItems(); // dari Hive
+
+    // while (queue.isNotEmpty) {
+    //   final item = queue[0];
+    //   try {
+    //     // Coba kirim ulang data
+    //     var response = await remote.postUser(item);
+
+    //     // Jika berhasil, hapus data dari queue
+    //     if (response.statusCode == 200 || response.statusCode == 201) {
+    //       await local.deleteQueueAt(0); // Hapus data yang sudah berhasil diposting
+    //     }
+    //   } catch (e) {
+    //     // Jika gagal lagi, data tetap ada di queue
+    //     break;
+    //   }
+    // }
+    return true;
   }
 }

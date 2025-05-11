@@ -45,14 +45,11 @@ class CartController extends GetxController {
     }
   }
 
-  void addToCart(Product product) {
+  void addToCart(ProductModel product) {
     final productId = product.idBrg;
 
     if (cartItems.containsKey(productId)) {
-      cartItems.update(
-        productId,
-        (item) => item.copyWith(quantity: item.quantity + 1),
-      );
+      cartItems.update(productId, (item) => item.copyWith(quantity: item.quantity + 1));
     } else {
       cartItems[productId] = CartItemModel(product: product, quantity: 1);
     }
@@ -63,16 +60,13 @@ class CartController extends GetxController {
     update();
   }
 
-  void removeFromCart(Product product) {
+  void removeFromCart(ProductModel product) {
     final productId = product.idBrg;
 
     if (!cartItems.containsKey(productId)) return;
 
     if (cartItems[productId]!.quantity > 1) {
-      cartItems.update(
-        productId,
-        (item) => item.copyWith(quantity: item.quantity - 1),
-      );
+      cartItems.update(productId, (item) => item.copyWith(quantity: item.quantity - 1));
     } else {
       cartItems.remove(productId);
     }
@@ -89,16 +83,10 @@ class CartController extends GetxController {
   List<CartItemModel> get items => cartItems.values.toList();
 
   _setTotalPrice() {
-    totalPrice.value = cartItems.values.fold(
-      0,
-      (sum, item) => sum + item.product.hargaJual * item.quantity,
-    );
+    totalPrice.value = cartItems.values.fold(0, (sum, item) => sum + item.product.hargaJual * item.quantity);
   }
 
   _setTotalItems() {
-    totalItems.value = cartItems.values.fold(
-      0,
-      (sum, item) => sum + item.quantity,
-    );
+    totalItems.value = cartItems.values.fold(0, (sum, item) => sum + item.quantity);
   }
 }

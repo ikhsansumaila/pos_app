@@ -34,19 +34,12 @@ class CustomerListing extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: AppSearchBar(
-                  controller: productController.searchController,
-                  hintText: 'Cari Barang...',
-                ),
+                child: AppSearchBar(controller: productController.searchController, hintText: 'Cari Barang...'),
               ),
               Expanded(
                 child: Obx(() {
                   if (productController.isLoading.value) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.white),
-                      ),
-                    );
+                    return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)));
                   }
 
                   return Padding(
@@ -60,8 +53,7 @@ class CustomerListing extends StatelessWidget {
                         childAspectRatio: 0.8,
                       ),
                       itemBuilder: (context, index) {
-                        final product =
-                            productController.filteredProducts[index];
+                        final product = productController.filteredProducts[index];
                         return _buildProductCard(product, responsive);
                       },
                     ),
@@ -75,16 +67,14 @@ class CustomerListing extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(Product product, ResponsiveHelper responsive) {
+  Widget _buildProductCard(ProductModel product, ResponsiveHelper responsive) {
     double circularRadius = 14;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 5),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(circularRadius),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(circularRadius)),
         elevation: 8,
         shadowColor: Colors.black26,
         child: GetBuilder(
@@ -107,70 +97,32 @@ class CustomerListing extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppImage(
-                      url: product.gambar,
-                      width: double.infinity,
-                      height: 130,
-                      fit: BoxFit.cover,
-                    ),
+                    AppImage(url: product.gambar, width: double.infinity, height: 130, fit: BoxFit.cover),
                     SizedBox(height: 8),
-                    Text(
-                      product.namaBrg,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                        color: Colors.black87,
-                      ),
-                    ),
+                    Text(product.namaBrg, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: Colors.black87)),
                     Text(
                       AppFormatter.currency(product.hargaJual.toDouble()),
-                      style: TextStyle(
-                        color: AppColors.priceColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: AppColors.priceColor, fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '(Stok: $stock)',
-                          style: TextStyle(color: Colors.black87, fontSize: 10),
-                        ),
+                        Text('(Stok: $stock)', style: TextStyle(color: Colors.black87, fontSize: 10)),
                         Row(
                           children: [
                             AppIconButton(
-                              onPressed:
-                                  buttonRemoveEnabled
-                                      ? () => data.removeFromCart(product)
-                                      : null,
+                              onPressed: buttonRemoveEnabled ? () => data.removeFromCart(product) : null,
                               icon: Icons.remove_circle,
-                              color:
-                                  buttonRemoveEnabled
-                                      ? Colors.red
-                                      : Colors.grey,
+                              color: buttonRemoveEnabled ? Colors.red : Colors.grey,
                               size: 14,
                             ),
                             const SizedBox(width: 8),
-                            Text(
-                              quantity.toString(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                color:
-                                    stock == 0 ? Colors.grey : Colors.black87,
-                              ),
-                            ),
+                            Text(quantity.toString(), style: TextStyle(fontSize: 10, color: stock == 0 ? Colors.grey : Colors.black87)),
                             const SizedBox(width: 8),
                             AppIconButton(
-                              onPressed:
-                                  buttonAddEnabled
-                                      ? () => data.addToCart(product)
-                                      : null,
+                              onPressed: buttonAddEnabled ? () => data.addToCart(product) : null,
                               icon: Icons.add_circle,
-                              color:
-                                  buttonAddEnabled
-                                      ? AppColors.primary
-                                      : Colors.grey,
+                              color: buttonAddEnabled ? AppColors.primary : Colors.grey,
                               size: 14,
                             ),
                           ],

@@ -7,8 +7,8 @@ class ProductController extends GetxController {
   final ProductRepository repository;
   ProductController(this.repository);
 
-  final products = <Product>[].obs;
-  final filteredProducts = <Product>[].obs;
+  final products = <ProductModel>[].obs;
+  final filteredProducts = <ProductModel>[].obs;
   final isLoading = false.obs;
 
   final searchController = TextEditingController();
@@ -34,23 +34,14 @@ class ProductController extends GetxController {
     if (query.isEmpty) {
       filteredProducts.assignAll(products);
     } else {
-      final filtered =
-          products
-              .where(
-                (p) => p.namaBrg.toLowerCase().contains(query.toLowerCase()),
-              )
-              .toList();
+      final filtered = products.where((p) => p.namaBrg.toLowerCase().contains(query.toLowerCase())).toList();
       filteredProducts.assignAll(filtered);
     }
   }
 
-  Future<bool> addProduct(Product product) async {
+  Future<void> addProduct(ProductModel product) async {
     isLoading(true);
-
-    // return repository.postProduct(product);
-    var result = Future.delayed(Duration(seconds: 2)).then((value) => true);
-
+    await repository.postProduct(product);
     isLoading(false);
-    return result;
   }
 }

@@ -35,27 +35,16 @@ class SmartphoneLayout extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: AppSearchBar(
-                  controller: productController.searchController,
-                  hintText: 'Cari Barang...',
-                ),
+                child: AppSearchBar(controller: productController.searchController, hintText: 'Cari Barang...'),
               ),
               Expanded(
                 child: Obx(() {
                   if (productController.isLoading.value) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.white),
-                      ),
-                    );
+                    return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)));
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 50.0,
-                      left: 8,
-                      right: 8,
-                    ),
+                    padding: const EdgeInsets.only(bottom: 50.0, left: 8, right: 8),
                     child: GridView.builder(
                       itemCount: productController.filteredProducts.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -65,8 +54,7 @@ class SmartphoneLayout extends StatelessWidget {
                         childAspectRatio: 1,
                       ),
                       itemBuilder: (context, index) {
-                        final product =
-                            productController.filteredProducts[index];
+                        final product = productController.filteredProducts[index];
                         return _buildProductCard(product, responsive);
                       },
                     ),
@@ -83,21 +71,16 @@ class SmartphoneLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(Product product, ResponsiveHelper responsive) {
+  Widget _buildProductCard(ProductModel product, ResponsiveHelper responsive) {
     double circularRadius = 14;
 
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(circularRadius),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(circularRadius)),
       elevation: 8,
       shadowColor: Colors.black26,
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(circularRadius),
-        ),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(circularRadius)),
         child: GetBuilder(
           init: trxController,
           builder: (data) {
@@ -122,31 +105,12 @@ class SmartphoneLayout extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(product.namaBrg, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: Colors.black87)),
                             Text(
-                              product.namaBrg,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 8,
-                                color: Colors.black87,
-                              ),
+                              AppFormatter.currency(product.hargaJual.toDouble()),
+                              style: TextStyle(color: AppColors.priceColor, fontSize: 10, fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                              AppFormatter.currency(
-                                product.hargaJual.toDouble(),
-                              ),
-                              style: TextStyle(
-                                color: AppColors.priceColor,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'Stok: ${product.stok}',
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 8,
-                              ),
-                            ),
+                            Text('Stok: ${product.stok}', style: TextStyle(color: Colors.black87, fontSize: 8)),
                           ],
                         ),
                       ),
@@ -160,31 +124,14 @@ class SmartphoneLayout extends StatelessWidget {
                             stock == 0
                                 ? null
                                 : () {
-                                  Get.toNamed(
-                                    AppRoutes.stockMutation.url,
-                                    arguments: product,
-                                  );
+                                  Get.toNamed(AppRoutes.stockMutation.url, arguments: product);
                                 },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
-                              Icons.call_split,
-                              color:
-                                  stock == 0 ? Colors.grey : AppColors.primary,
-                              size: 12,
-                            ),
+                            Icon(Icons.call_split, color: stock == 0 ? Colors.grey : AppColors.primary, size: 12),
                             const SizedBox(width: 2), // spasi minimal
-                            Text(
-                              'Pecah Stok',
-                              style: TextStyle(
-                                color:
-                                    stock == 0
-                                        ? Colors.grey
-                                        : AppColors.primary,
-                                fontSize: 8,
-                              ),
-                            ),
+                            Text('Pecah Stok', style: TextStyle(color: stock == 0 ? Colors.grey : AppColors.primary, fontSize: 8)),
                           ],
                         ),
                       ),
@@ -193,34 +140,18 @@ class SmartphoneLayout extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           AppIconButton(
-                            onPressed:
-                                buttonRemoveEnabled
-                                    ? () => data.removeItem(product)
-                                    : null,
+                            onPressed: buttonRemoveEnabled ? () => data.removeItem(product) : null,
                             icon: Icons.remove_circle,
-                            color:
-                                buttonRemoveEnabled ? Colors.red : Colors.grey,
+                            color: buttonRemoveEnabled ? Colors.red : Colors.grey,
                             size: 12,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            quantity.toString(),
-                            style: TextStyle(
-                              fontSize: 8,
-                              color: stock == 0 ? Colors.grey : Colors.black87,
-                            ),
-                          ),
+                          Text(quantity.toString(), style: TextStyle(fontSize: 8, color: stock == 0 ? Colors.grey : Colors.black87)),
                           const SizedBox(width: 8),
                           AppIconButton(
-                            onPressed:
-                                buttonAddEnabled
-                                    ? () => data.addItem(product)
-                                    : null,
+                            onPressed: buttonAddEnabled ? () => data.addItem(product) : null,
                             icon: Icons.add_circle,
-                            color:
-                                buttonAddEnabled
-                                    ? AppColors.primary
-                                    : Colors.grey,
+                            color: buttonAddEnabled ? AppColors.primary : Colors.grey,
                             size: 12,
                           ),
                         ],

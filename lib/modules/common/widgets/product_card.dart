@@ -7,7 +7,7 @@ import 'package:pos_app/utils/formatter.dart';
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.product});
 
-  final Product product;
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +15,12 @@ class ProductCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius)),
       elevation: 6,
       shadowColor: Colors.black26,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(borderRadius)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -34,40 +29,24 @@ class ProductCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
                 aspectRatio: 1, // Square image
-                child: AppImage(
-                  url: product.gambar,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 120,
-                ),
+                child: AppImage(url: product.gambar, fit: BoxFit.cover, width: double.infinity, height: 120),
               ),
             ),
             const SizedBox(height: 8),
             // Info produk
             Text(
               product.namaBrg,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
             Text(
               AppFormatter.currency(product.hargaJual.toDouble()),
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: AppColors.priceColor,
-              ),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.priceColor),
             ),
             const SizedBox(height: 2),
-            Text(
-              'Stok: ${product.stok}',
-              style: const TextStyle(fontSize: 12, color: Colors.black54),
-            ),
+            Text('Stok: ${product.stok}', style: const TextStyle(fontSize: 12, color: Colors.black54)),
           ],
         ),
       ),

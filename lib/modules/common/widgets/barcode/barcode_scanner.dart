@@ -35,7 +35,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     print('data runtime ${data.runtimeType}');
     print('data  $data');
     try {
-      Product? product = data.firstWhere(
+      ProductModel? product = data.firstWhere(
         (product) => product.kodeBrg.toString() == code,
         orElse: () => throw Exception("Product with ID $code not found!"),
       );
@@ -56,14 +56,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
             title: Text("Barcode Invalid:"),
             content: Text('$code tidak terdaftar di database'),
             actions: [
-              TextButton(
-                onPressed: _onScanAgain,
-                child: const Text("Scan Ulang"),
-              ),
-              TextButton(
-                onPressed: _onCloseDialog,
-                child: const Text("Kembali"),
-              ),
+              TextButton(onPressed: _onScanAgain, child: const Text("Scan Ulang")),
+              TextButton(onPressed: _onCloseDialog, child: const Text("Kembali")),
             ],
           ),
     );
@@ -97,13 +91,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        MobileScanner(controller: _controller, onDetect: _onDetect),
-        _buildOverlay(),
-        _buildFlashlightButton(),
-      ],
-    );
+    return Stack(children: [MobileScanner(controller: _controller, onDetect: _onDetect), _buildOverlay(), _buildFlashlightButton()]);
   }
 
   Widget _buildOverlay() {
@@ -111,10 +99,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       child: Container(
         width: 250,
         height: 250,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.greenAccent, width: 3),
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent, width: 3), borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -125,14 +110,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       left: 0,
       right: 0,
       child: Center(
-        child: IconButton(
-          onPressed: _toggleTorch,
-          icon: Icon(
-            _torchOn ? Icons.flash_on : Icons.flash_off,
-            size: 32,
-            color: Colors.white,
-          ),
-        ),
+        child: IconButton(onPressed: _toggleTorch, icon: Icon(_torchOn ? Icons.flash_on : Icons.flash_off, size: 32, color: Colors.white)),
       ),
     );
   }
