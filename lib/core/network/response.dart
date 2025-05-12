@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ApiResponse<T> {
   final T? data;
   final String? error;
@@ -6,6 +8,15 @@ class ApiResponse<T> {
   ApiResponse({this.data, this.error, this.statusCode});
 
   bool get isSuccess => error == null;
+
+  @override
+  String toString() {
+    try {
+      return data != null ? jsonEncode(data) : 'null';
+    } catch (e) {
+      return data.toString(); // fallback ke toString biasa
+    }
+  }
 
   // final T? data;
   // final String? message;

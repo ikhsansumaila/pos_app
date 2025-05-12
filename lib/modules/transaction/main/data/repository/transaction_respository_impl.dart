@@ -51,28 +51,4 @@ class TransactionRepositoryImpl implements TransactionRepository {
       local.addToQueue(trx);
     }
   }
-
-  @override
-  Future<bool> processQueue() async {
-    // TODO: ADD BULKING POST and call clearAllQueue after ?
-
-    // final queue = local.getQueuedItems(); // dari Hive
-
-    // while (queue.isNotEmpty) {
-    //   final item = queue[0];
-    //   try {
-    //     // Coba kirim ulang data
-    //     var response = await remote.postTransaction(item);
-
-    //     // Jika berhasil, hapus data dari queue
-    //     if (response.statusCode == 200 || response.statusCode == 201) {
-    //       await local.deleteQueueAt(0); // Hapus data yang sudah berhasil diposting
-    //     }
-    //   } catch (e) {
-    //     // Jika gagal lagi, data tetap ada di queue
-    //     break;
-    //   }
-    // }
-    return true;
-  }
 }

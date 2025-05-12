@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
 
 class TransactionQueueDetail extends StatelessWidget {
@@ -11,9 +12,9 @@ class TransactionQueueDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('List Queue Transaction')),
+      appBar: MyAppBar(title: 'List Data Transaksi'),
       body: () {
-        var queueItems = controller.repo.local.getQueuedItems();
+        var queueItems = controller.local.getQueuedItems();
         for (var i = 0; i < queueItems.length; i++) {
           print('queue item : ${queueItems[i].toJson()}');
         }

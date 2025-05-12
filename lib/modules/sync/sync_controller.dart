@@ -21,9 +21,9 @@ class SyncController extends GetxController {
   var syncing = false.obs;
 
   List<SyncEntitiesModel> entities = [
-    SyncEntitiesModel(title: 'User Queue', detailPage: UserQueueDetailPage()),
+    SyncEntitiesModel(title: 'Data User', detailPage: UserQueueDetailPage()),
     SyncEntitiesModel(
-      title: 'Transaction Queue',
+      title: 'Data Transaksi',
       detailPage: TransactionQueueDetail(),
     ),
   ];
@@ -38,6 +38,10 @@ class SyncController extends GetxController {
 
   void loadLogs() {
     logs.value = logService.getAllLogs().reversed.toList();
+  }
+
+  void refreshLogs() {
+    loadLogs();
   }
 
   Future<void> exportLogs() async {

@@ -30,13 +30,13 @@ class TransactionRemoteDataSource {
     return [];
   }
 
-  Future<ApiResponse> postTransaction(TransactionCreateModel user) async {
-    return await dio.post(API_URL, data: user.toJson());
+  Future<ApiResponse> postTransaction(TransactionCreateModel trx) async {
+    return await dio.post(API_URL, data: trx.toJson());
   }
 
   //TODO: USE IT OR NOT?
-  Future<void> postBulkUser(List<TransactionCreateModel> users) async {
-    final data = jsonEncode(users.map((u) => u.toJson()).toList());
+  Future<void> postBulkTransaction(List<TransactionCreateModel> trx) async {
+    final data = jsonEncode(trx.map((u) => u.toJson()).toList());
     await dio.post(API_URL, data: data);
   }
 }

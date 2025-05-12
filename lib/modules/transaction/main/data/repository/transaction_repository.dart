@@ -4,5 +4,4 @@ import 'package:pos_app/modules/transaction/main/data/models/transaction_model.d
 abstract class TransactionRepository {
   Future<List<TransactionModel>> getUsers();
   Future<void> postTransaction(TransactionCreateModel transaction);
-  Future<bool> processQueue(); // use in background sync process
 }

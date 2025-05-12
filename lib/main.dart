@@ -51,7 +51,7 @@ Future<void> initHive() async {
   registerHiveAdapters();
 
   // Delete Hive Boxes, for testing purpose
-  await deleteBoxes();
+  // await deleteBoxes();
 
   // Open Hive Boxes (MUST BE WAITED ON INIT)
   await openBoxes();

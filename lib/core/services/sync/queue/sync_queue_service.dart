@@ -4,20 +4,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
-import 'package:pos_app/modules/product/data/repository/product_repository.dart';
-import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
-import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
-import 'package:pos_app/modules/user/data/repository/user_repository.dart';
+import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
+import 'package:pos_app/modules/sync/user/user_queue_controller.dart';
 import 'package:pos_app/utils/constants/rest.dart';
 
 class SyncQueueService {
-  final UserRepository userRepo;
-  final ProductRepository productRepo;
-  final TransactionRepository transactionRepository;
-  final OrderRepository orderRepo;
-  final SyncLogService logService;
+  final UserQueueController userQueueController;
+  final TransactionQueueController transactionQueueController;
   final ConnectivityService connectivity;
 
   bool isSyncing = false;
@@ -25,11 +18,8 @@ class SyncQueueService {
   Timer? _retryTimer;
 
   SyncQueueService({
-    required this.userRepo,
-    required this.productRepo,
-    required this.transactionRepository,
-    required this.orderRepo,
-    required this.logService,
+    required this.userQueueController,
+    required this.transactionQueueController,
     required this.connectivity,
   });
 
@@ -43,75 +33,28 @@ class SyncQueueService {
     );
 
     await Future.delayed(Duration(seconds: 3));
+    await _syncWithTimeout(TIMEOUT_DURATION);
 
-    final success = await _syncWithTimeout(TIMEOUT_DURATION);
     Get.back();
     isSyncing = false;
 
-    if (!success) {
-      lastFailedSync = DateTime.now();
+    // if (!success) {
+    //   lastFailedSync = DateTime.now();
 
-      // Run Schedule retry
-      // _scheduleRetry();
-    }
+    // Run Schedule retry
+    // _scheduleRetry();
+    // }
   }
 
-  Future<bool> _syncWithTimeout(Duration timeout) async {
+  Future<void> _syncWithTimeout(Duration timeout) async {
     try {
       final online = await connectivity.isConnected();
       if (!online) throw Exception("Offline");
 
       // Users
-      final userSuccess = await userRepo.processQueue();
-      logService.addLog(
-        SyncLog(
-          type: 'user',
-          success: userSuccess,
-          message: userSuccess ? 'Users synced' : 'Failed syncing users',
-          data: '',
-          timestamp: DateTime.now(),
-        ),
-      );
-
-      return userSuccess;
-
-      // Product
-      // final prodSuccess = await productRepo.processQueue();
-      // logService.addLog(
-      //   SyncLog(
-      //     type: 'product',
-      //     success: prodSuccess,
-      //     message: prodSuccess ? 'Products synced' : 'Failed syncing products',
-      //     timestamp: DateTime.now(),
-      //   ),
-      // );
-
-      // // Transaction
-      // final trxSuccess = await productRepo.processQueue();
-      // logService.addLog(
-      //   SyncLog(
-      //     type: 'transaction',
-      //     success: trxSuccess,
-      //     message: trxSuccess ? 'Transactions synced' : 'Failed syncing transactions',
-      //     timestamp: DateTime.now(),
-      //   ),
-      // );
-
-      // // Order
-      // final orderSuccess = await orderRepo.processQueue();
-      // logService.addLog(
-      //   SyncLog(
-      //     type: 'order',
-      //     success: orderSuccess,
-      //     message: orderSuccess ? 'Orders synced' : 'Failed syncing orders',
-      //     timestamp: DateTime.now(),
-      //   ),
-      // );
-
-      // return prodSuccess && orderSuccess;
-    } catch (_) {
-      return false;
-    }
+      await userQueueController.processQueue();
+      await transactionQueueController.processQueue();
+    } catch (_) {}
   }
 
   void _scheduleRetry() {

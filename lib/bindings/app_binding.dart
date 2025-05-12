@@ -37,6 +37,9 @@ class AppBinding extends Bindings {
     Get.put(DioClient());
     Get.put(ConnectivityService());
 
+    // Inject Sync Log
+    Get.put(SyncLogService(logBox: Hive.box(SYNC_LOG_BOX_KEY)));
+
     // Inject Local Storage, Hive box is open in main
     putLocalStorage();
 
@@ -52,17 +55,11 @@ class AppBinding extends Bindings {
     // Inject Controller
     putController();
 
-    // Inject Sync Log
-    Get.put(SyncLogService(logBox: Hive.box(SYNC_LOG_BOX_KEY)));
-
     // Syncronization data to server, run in background/manual mode
     Get.put(
       SyncQueueService(
-        userRepo: Get.find(),
-        transactionRepository: Get.find(),
-        productRepo: Get.find(),
-        orderRepo: Get.find(),
-        logService: Get.find(),
+        userQueueController: Get.find(),
+        transactionQueueController: Get.find(),
         connectivity: Get.find(),
       ),
     );
@@ -134,8 +131,20 @@ class AppBinding extends Bindings {
   }
 
   void putQueueController() {
-    Get.put(UserQueueController(repo: Get.find()));
-    Get.put(TransactionQueueController(repo: Get.find()));
+    Get.put(
+      UserQueueController(
+        local: Get.find(),
+        remote: Get.find(),
+        logService: Get.find(),
+      ),
+    );
+    Get.put(
+      TransactionQueueController(
+        local: Get.find(),
+        remote: Get.find(),
+        logService: Get.find(),
+      ),
+    );
   }
 
   void putController() {

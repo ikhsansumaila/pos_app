@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/sync/user/user_queue_controller.dart';
 
 class UserQueueDetailPage extends StatelessWidget {
@@ -10,10 +11,10 @@ class UserQueueDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final queueItems = controller.repo.local.getQueuedItems();
+    final queueItems = controller.getQueuedItems();
 
     return Scaffold(
-      appBar: AppBar(title: Text('List Queue User')),
+      appBar: MyAppBar(title: 'List Data User'),
       body:
           queueItems.isEmpty
               ? Center(child: Text('Kosong'))
@@ -25,25 +26,18 @@ class UserQueueDetailPage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: ElevatedButton.icon(
                         onPressed: () async {
-                          for (var item in queueItems) {
-                            await controller.rePostItem(item);
-                            // controller.retrySync(item);
-                          }
-                          Get.snackbar(
-                            'Sinkronisasi',
-                            'Semua data disinkronkan',
-                          );
+                          await controller.rePostAllItems(queueItems);
                         },
                         icon: Icon(Icons.sync),
-                        label: Text('Sync Semua'),
+                        label: Text('Sinkronisasi Semua'),
                       ),
                     ),
                   ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: queueItems.length,
-                      itemBuilder: (_, i) {
-                        final item = queueItems[i];
+                      itemBuilder: (_, index) {
+                        final item = queueItems[index];
                         final itemJson = item.toJson();
                         final previewText = itemJson.toString();
 
@@ -64,8 +58,8 @@ class UserQueueDetailPage extends StatelessWidget {
                                 IconButton(
                                   icon: Icon(Icons.sync),
                                   tooltip: 'Sync Ulang',
-                                  onPressed: () {
-                                    // controller.retrySync(item);
+                                  onPressed: () async {
+                                    await controller.rePostItem(item, index);
                                   },
                                 ),
                                 IconButton(
