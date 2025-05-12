@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/core/network/response.dart';
@@ -19,10 +18,10 @@ class TransactionRemoteDataSource {
     final response = await dio.get(API_URL);
 
     if (response.isSuccess) {
-      log('response.data ${response.data}');
+      // log('response.data ${response.data}');
       return (response.data as List).map((e) {
         Map<String, dynamic> map = e;
-        log("map $map");
+        // log("map $map");
         return TransactionModel.fromJson(map);
       }).toList();
     }

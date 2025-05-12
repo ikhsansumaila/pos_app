@@ -1,16 +1,18 @@
 // ignore_for_file: non_constant_identifier_names
 final String USER_BOX_KEY = 'userBox';
+final String USER_ROLE_BOX_KEY = 'userRoleBox';
 final String STORE_BOX_KEY = 'storeBox';
-final String TRANSACTION_BOX_KEY = 'transactionBox';
-
 final String PRODUCT_BOX_KEY = 'productBox';
+final String TRANSACTION_BOX_KEY = 'transactionBox';
 final String ORDER_BOX_KEY = 'orderBox';
-final String SYNC_LOG_BOX_KEY = 'syncLogBox';
 
 final String QUEUE_USER_KEY = 'queueBox_user';
+final String QUEUE_STORE_KEY = 'queueBox_store';
 final String QUEUE_PRODUCT_KEY = 'queueBox_product';
 final String QUEUE_ORDER_KEY = 'queueBox_order';
 final String QUEUE_TRANSACTION_KEY = 'queueBox_transaction';
+
+final String SYNC_LOG_BOX_KEY = 'syncLogBox';
 
 /// Gunakan ID unik untuk setiap model Hive.
 /// Jangan ubah nilai yang sudah digunakan di production.
@@ -18,6 +20,7 @@ class HiveTypeIds {
   // User (0–19)
   static const int user = 0;
   static const int userCreate = 1;
+  static const int userRole = 2;
 
   // Store (20–39)
   static const int store = 20;

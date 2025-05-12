@@ -11,7 +11,10 @@ abstract class SyncableRemoteData<T> {
 abstract class SyncableHiveObject<T> extends HiveObject implements SyncableRemoteData<T> {}
 
 class LocalStorageService {
-  static Future<void> updateFromRemote<T extends SyncableHiveObject<T>>({required String boxName, required List<T> apiData}) async {
+  static Future<void> updateFromRemote<T extends SyncableHiveObject<T>>({
+    required String boxName,
+    required List<T> apiData,
+  }) async {
     int added = 0, updated = 0, deleted = 0;
 
     final box = await Hive.openBox(boxName);

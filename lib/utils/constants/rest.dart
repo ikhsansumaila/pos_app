@@ -5,6 +5,7 @@ final Duration TIMEOUT_DURATION = Duration(seconds: 10);
 final Duration RETRY_SYNC_INTERVAL = Duration(minutes: 10);
 
 final String USER_API_URL = '/api/users';
+final String USER_ROLES_API_URL = '/api/roles';
 final String STORE_API_URL = '/api/stores';
 final String PRODUCT_API_URL = '/api/produk';
 final String ORDER_API_URL = '/api/orders';

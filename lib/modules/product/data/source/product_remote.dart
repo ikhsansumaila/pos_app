@@ -1,6 +1,5 @@
 // data/datasources/product_remote_datasource.dart
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/core/network/response.dart';
@@ -16,7 +15,7 @@ class ProductRemoteDataSource {
     if (response.isSuccess) {
       return (response.data as List).map((e) {
         Map<String, dynamic> map = e;
-        log("map $map");
+        // log("map $map");
         return ProductModel.fromJson(map);
       }).toList();
     }

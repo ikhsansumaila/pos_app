@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/store/store_model.dart';
-import 'package:pos_app/modules/user/controller/user_controller.dart';
+import 'package:pos_app/modules/user/controller/user_form_controller.dart';
 import 'package:pos_app/modules/user/view/search_store_widget.dart';
 
 class CreateUserPage extends StatelessWidget {
   CreateUserPage({super.key});
 
-  final UserController controller = Get.find();
+  final controller = Get.put(UserFormController(userRepo: Get.find(), storeRepo: Get.find()));
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +20,7 @@ class CreateUserPage extends StatelessWidget {
             () => ListView(
               children: [
                 const SizedBox(height: 8),
-                Text(
-                  "Informasi User",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                Text("Informasi User", style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 12),
 
                 _buildTextField(controller.namaController, 'Nama'),
@@ -35,25 +31,19 @@ class CreateUserPage extends StatelessWidget {
                 DropdownButtonFormField<int>(
                   value: controller.selectedRoleId.value,
                   decoration: const InputDecoration(labelText: 'Role'),
-                  items: const [
-                    DropdownMenuItem(value: 1, child: Text('Admin')),
-                    DropdownMenuItem(value: 2, child: Text('Customer')),
-                    DropdownMenuItem(value: 3, child: Text('Kasir')),
-                  ],
+                  items:
+                      controller.userRoles
+                          .map((e) => DropdownMenuItem(value: e.id, child: Text(e.role)))
+                          .toList(),
                   onChanged: (val) => controller.selectedRoleId.value = val!,
                 ),
                 const SizedBox(height: 12),
 
-                if (controller.selectedRoleId.value == 3)
+                if (controller.selectedRoleId.value == 3) // 3 is kasir
                   StoreSearchDropdown(
-                    items: [
-                      StoreModel(id: 1, name: 'Toko A'),
-                      StoreModel(id: 2, name: 'Toko B'),
-                      StoreModel(id: 3, name: 'Toko C'),
-                    ],
+                    items: controller.storeList,
                     selectedItem: controller.selectedStore.value,
-                    onChanged:
-                        (store) => controller.selectedStore.value = store,
+                    onChanged: (store) => controller.selectedStore.value = store,
                   ),
 
                 const SizedBox(height: 12),
@@ -74,10 +64,7 @@ class CreateUserPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed:
-                      controller.isFormValid
-                          ? controller.createUserIfValid
-                          : null,
+                  onPressed: controller.isFormValid ? controller.createUserIfValid : null,
                 ),
               ],
             ),
@@ -87,9 +74,9 @@ class CreateUserPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label) {
+  Widget _buildTextField(TextEditingController textController, String label) {
     return TextFormField(
-      controller: controller,
+      controller: textController,
       decoration: InputDecoration(labelText: label),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => value!.isEmpty ? '$label wajib diisi' : null,

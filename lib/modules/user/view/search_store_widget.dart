@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pos_app/modules/store/store_model.dart';
+import 'package:pos_app/modules/store/data/models/store_model.dart';
 
 class StoreSearchDropdown extends StatefulWidget {
   final List<StoreModel> items;
   final Function(StoreModel) onChanged;
   final StoreModel? selectedItem;
 
-  const StoreSearchDropdown({
-    super.key,
-    required this.items,
-    required this.onChanged,
-    this.selectedItem,
-  });
+  const StoreSearchDropdown({super.key, required this.items, required this.onChanged, this.selectedItem});
 
   @override
   State<StoreSearchDropdown> createState() => _StoreSearchDropdownState();
@@ -28,7 +23,7 @@ class _StoreSearchDropdownState extends State<StoreSearchDropdown> {
   @override
   void initState() {
     super.initState();
-    _controller.text = widget.selectedItem?.name ?? '';
+    _controller.text = widget.selectedItem?.storeName ?? '';
     _focusNode.addListener(_handleFocusChange);
   }
 
@@ -71,9 +66,9 @@ class _StoreSearchDropdownState extends State<StoreSearchDropdown> {
                   children:
                       _filteredItems.map((store) {
                         return ListTile(
-                          title: Text(store.name),
+                          title: Text(store.storeName),
                           onTap: () {
-                            _controller.text = store.name;
+                            _controller.text = store.storeName;
                             widget.onChanged(store);
                             _focusNode.unfocus();
                           },
@@ -101,18 +96,10 @@ class _StoreSearchDropdownState extends State<StoreSearchDropdown> {
       child: TextField(
         controller: _controller,
         focusNode: _focusNode,
-        decoration: InputDecoration(
-          labelText: "Pilih Toko",
-          suffixIcon: Icon(Icons.arrow_drop_down),
-        ),
+        decoration: InputDecoration(labelText: "Pilih Toko", suffixIcon: Icon(Icons.arrow_drop_down)),
         onChanged: (value) {
           setState(() {
-            _filteredItems =
-                widget.items
-                    .where(
-                      (e) => e.name.toLowerCase().contains(value.toLowerCase()),
-                    )
-                    .toList();
+            _filteredItems = widget.items.where((e) => e.storeName.toLowerCase().contains(value.toLowerCase())).toList();
             _overlayEntry?.markNeedsBuild();
           });
         },
