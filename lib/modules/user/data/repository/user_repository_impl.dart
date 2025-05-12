@@ -59,14 +59,17 @@ class UserRepositoryImpl implements UserRepository {
     final queue = local.getQueuedItems(); // dari Hive
 
     while (queue.isNotEmpty) {
-      final item = queue[0];
       try {
-        // Coba kirim ulang data
+        final item = queue[0]; // send FIFO
+
+        // Re-send pending data
+        log('trying to send ${item.toJson()}');
         var response = await remote.postUser(item);
 
         // Jika berhasil, hapus data dari queue
         if (response.statusCode == 200 || response.statusCode == 201) {
           await local.deleteQueueAt(0); // Hapus data yg sukses
+          continue;
         }
 
         return false;

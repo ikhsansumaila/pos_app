@@ -2,8 +2,14 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
+import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
+import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
 
 class TransactionController extends GetxController {
+  final TransactionRepository repository;
+
+  TransactionController(this.repository);
+
   Box<CartItemModel>? _cartBox;
   var trxItems = <int, CartItemModel>{}.obs;
   var totalItems = 0.obs;
@@ -98,5 +104,9 @@ class TransactionController extends GetxController {
     trxItems.clear();
     _setTotalItems();
     _setTotalPrice();
+  }
+
+  Future<void> createTransaction(TransactionCreateModel data) async {
+    await repository.postTransaction(data);
   }
 }

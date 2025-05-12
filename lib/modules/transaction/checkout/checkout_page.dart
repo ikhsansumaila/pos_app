@@ -5,6 +5,7 @@ import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/common/widgets/print.dart';
 import 'package:pos_app/modules/transaction/checkout/checkout_controller.dart';
 import 'package:pos_app/modules/transaction/main/controller/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/formatter.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
@@ -55,34 +56,24 @@ class CheckoutPage extends StatelessWidget {
                                 // Nama + Qty
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         cartItem.product.namaBrg,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: responsive.fontSize(18),
-                                        ),
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: responsive.fontSize(18)),
                                       ),
                                       SizedBox(height: 8),
                                       Text(
                                         'Qty: ${cartItem.quantity} x ${AppFormatter.currency(cartItem.product.hargaJual.toDouble())}',
-                                        style: TextStyle(
-                                          fontSize: responsive.fontSize(16),
-                                        ),
+                                        style: TextStyle(fontSize: responsive.fontSize(16)),
                                       ),
                                     ],
                                   ),
                                 ),
                                 // Harga di kanan bawah
                                 Text(
-                                  AppFormatter.currency(
-                                    (cartItem.quantity *
-                                            cartItem.product.hargaJual)
-                                        .toDouble(),
-                                  ),
+                                  AppFormatter.currency((cartItem.quantity * cartItem.product.hargaJual).toDouble()),
                                   style: TextStyle(
                                     fontSize: responsive.fontSize(18),
                                     fontWeight: FontWeight.bold,
@@ -111,39 +102,64 @@ class CheckoutPage extends StatelessWidget {
                       Text('Total', style: TextStyle(fontSize: 18)),
                       Text(
                         AppFormatter.currency(checkoutController.totalHarga),
-                        style: TextStyle(
-                          fontSize: responsive.fontSize(22),
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.priceColor,
-                        ),
+                        style: TextStyle(fontSize: responsive.fontSize(22), fontWeight: FontWeight.bold, color: AppColors.priceColor),
                       ),
                     ],
                   ),
                   SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed:
-                        () async => await cetakStrukPDF(
-                          items,
-                          checkoutController.totalHarga,
-                        ),
-                    //() {
-                    // Proses pembayaran
-                    // checkoutController.clear();
-                    // Get.back();
+                    onPressed: () async {
+                      // Proses pembayaran
+                      var transType = 'Cash';
+                      var transDate = DateTime.now().toIso8601String();
+                      var description = '';
+                      var transSubtotal = checkoutController.totalHarga;
+                      var transDiscount = 0.0;
+                      var transTotal = checkoutController.totalHarga;
+                      var transPayment = checkoutController.totalHarga;
+                      var transBalance = 0.0;
+                      var userId = 1;
 
-                    // },
+                      var trxItems =
+                          items.map((item) {
+                            var subTotal = item.product.hargaJual.toDouble() * item.quantity;
+                            return TransactionItemModel(
+                              idBarang: item.product.idBrg,
+                              kodeBarang: item.product.kodeBrg,
+                              description: description,
+                              qty: item.quantity,
+                              price: item.product.hargaJual.toDouble(),
+                              subtotal: subTotal,
+                              discount: 0.0,
+                              total: subTotal,
+                            );
+                          }).toList();
+
+                      var trxData = TransactionCreateModel(
+                        transType: transType,
+                        transDate: transDate,
+                        description: description,
+                        transSubtotal: transSubtotal,
+                        transDiscount: transDiscount,
+                        transTotal: transTotal,
+                        transPayment: transPayment,
+                        transBalance: transBalance,
+                        userId: userId,
+                        items: trxItems,
+                      );
+                      await checkoutController.createTransaction(trxData);
+
+                      // print pdf after create trx
+                      await cetakStrukPDF(items, checkoutController.totalHarga);
+                      Get.back();
+                    },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 48),
                       // backgroundColor: AppColors.primary,
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                     ),
-                    child: Text(
-                      'Bayar Sekarang',
-                      style: TextStyle(fontSize: responsive.fontSize(18)),
-                    ),
+                    child: Text('Bayar Sekarang', style: TextStyle(fontSize: responsive.fontSize(18))),
                   ),
                 ],
               ),

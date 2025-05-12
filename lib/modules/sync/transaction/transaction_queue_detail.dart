@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/sync/user/user_queue_controller.dart';
+import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
 
-class UserQueueuDetailPage extends StatelessWidget {
+class TransactionQueueDetail extends StatelessWidget {
   final String tag;
 
   // Controller yang diambil berdasarkan tag dan tipe generik T
-  final UserQueueController controller;
+  final TransactionQueueController controller;
 
   // Konstruktor
-  UserQueueuDetailPage({super.key, required this.tag}) : controller = Get.find(tag: tag);
+  TransactionQueueDetail({super.key, required this.tag}) : controller = Get.find(tag: tag);
 
   @override
   Widget build(BuildContext context) {

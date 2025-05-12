@@ -4,6 +4,6 @@ import 'package:pos_app/modules/transaction/main/controller/transaction_controll
 class TransactionBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(TransactionController());
+    Get.put(TransactionController(Get.find()));
   }
 }

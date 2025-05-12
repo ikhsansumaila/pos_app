@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/services/sync/queue/sync_queue_helper.dart';
-import 'package:pos_app/core/services/sync/sync_api_service.dart';
+import 'package:pos_app/core/storage/local_storage_service.dart';
 import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/main/data/models/transaction_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
@@ -27,17 +27,12 @@ class TransactionLocalDataSource extends GetxController {
   List<TransactionModel> getCachedTransaction() {
     log("get transactions from cache");
     final data = cacheBox.get(TRANSACTION_BOX_KEY, defaultValue: []);
-    return (data as List)
-        .map((e) => TransactionModel.fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+    return (data as List).map((e) => TransactionModel.fromJson(Map<String, dynamic>.from(e))).toList();
   }
 
   Future<void> updateCache(List<TransactionModel> trx) async {
     // add/update/remove cached
-    await SyncHive.updateFromRemote<TransactionModel>(
-      boxName: TRANSACTION_BOX_KEY,
-      apiData: trx,
-    );
+    await LocalStorageService.updateFromRemote<TransactionModel>(boxName: TRANSACTION_BOX_KEY, apiData: trx);
   }
 
   void addToQueue(TransactionCreateModel item) {

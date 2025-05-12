@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/core/services/sync/models/sync_log_model.dart';
+import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
 import 'package:pos_app/core/services/sync/queue/sync_queue_service.dart';
-import 'package:pos_app/core/services/sync/sync_log_service.dart';
+import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
+import 'package:pos_app/modules/sync/transaction/transaction_queue_detail.dart';
 import 'package:pos_app/modules/sync/user/user_queue_detail.dart';
 import 'package:pos_app/utils/constants/controller_tag.dart';
 
@@ -21,10 +22,8 @@ class SyncController extends GetxController {
   var syncing = false.obs;
 
   List<SyncEntitiesModel> entities = [
-    SyncEntitiesModel(
-      title: 'User Queue',
-      detailPage: QueueUserDetailPage(tag: USER_CONTROLLER_TAG),
-    ),
+    SyncEntitiesModel(title: 'User Queue', detailPage: UserQueueuDetailPage(tag: USER_CONTROLLER_TAG)),
+    SyncEntitiesModel(title: 'Transaction Queue', detailPage: TransactionQueueDetail(tag: TRANSACTION_CONTROLLER_TAG)),
   ];
 
   SyncController(this.logService, this.syncService);

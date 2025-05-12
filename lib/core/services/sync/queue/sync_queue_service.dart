@@ -4,8 +4,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/core/services/sync/models/sync_log_model.dart';
-import 'package:pos_app/core/services/sync/sync_log_service.dart';
+import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
+import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
 import 'package:pos_app/modules/product/data/repository/product_repository.dart';
 import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
 import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
@@ -37,12 +37,9 @@ class SyncQueueService {
     if (isSyncing) return;
 
     isSyncing = true;
-    Get.dialog(
-      Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-    );
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
 
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 3));
 
     final success = await _syncWithTimeout(TIMEOUT_DURATION);
     Get.back();
@@ -50,7 +47,9 @@ class SyncQueueService {
 
     if (!success) {
       lastFailedSync = DateTime.now();
-      _scheduleRetry();
+
+      // Run Schedule retry
+      // _scheduleRetry();
     }
   }
 
