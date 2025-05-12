@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:pos_app/core/network/dio_interceptor.dart';
 import 'package:pos_app/core/network/response.dart';
-import 'package:pos_app/utils/constants/constant.dart';
+import 'package:pos_app/utils/constants/rest.dart';
 import 'package:requests_inspector/requests_inspector.dart';
 
 class DioClient {

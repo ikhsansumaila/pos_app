@@ -14,7 +14,7 @@ class TransactionLocalDataSource extends GetxController {
 
   late final SyncQueueDataHelper<TransactionCreateModel> queueHelper;
 
-  TransactionLocalDataSource(this.cacheBox, this.queueBox) {
+  TransactionLocalDataSource({required this.cacheBox, required this.queueBox}) {
     // this sync only for create transactions
     queueHelper = SyncQueueDataHelper<TransactionCreateModel>(
       box: queueBox,
@@ -27,12 +27,17 @@ class TransactionLocalDataSource extends GetxController {
   List<TransactionModel> getCachedTransaction() {
     log("get transactions from cache");
     final data = cacheBox.get(TRANSACTION_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => TransactionModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return (data as List)
+        .map((e) => TransactionModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
   Future<void> updateCache(List<TransactionModel> trx) async {
     // add/update/remove cached
-    await LocalStorageService.updateFromRemote<TransactionModel>(boxName: TRANSACTION_BOX_KEY, apiData: trx);
+    await LocalStorageService.updateFromRemote<TransactionModel>(
+      boxName: TRANSACTION_BOX_KEY,
+      apiData: trx,
+    );
   }
 
   void addToQueue(TransactionCreateModel item) {

@@ -12,7 +12,11 @@ class ProductRepositoryImpl implements ProductRepository {
   final ProductLocalDataSource local;
   final ConnectivityService connectivity;
 
-  ProductRepositoryImpl(this.remote, this.local, this.connectivity);
+  ProductRepositoryImpl({
+    required this.remote,
+    required this.local,
+    required this.connectivity,
+  });
 
   @override
   Future<List<ProductModel>> getProducts() async {

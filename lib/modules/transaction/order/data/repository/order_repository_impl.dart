@@ -12,7 +12,11 @@ class OrderRepositoryImpl implements OrderRepository {
   final OrderLocalDataSource local;
   final ConnectivityService connectivity;
 
-  OrderRepositoryImpl(this.remote, this.local, this.connectivity);
+  OrderRepositoryImpl({
+    required this.remote,
+    required this.local,
+    required this.connectivity,
+  });
 
   @override
   Future<List<OrderModel>> getOrders() async {

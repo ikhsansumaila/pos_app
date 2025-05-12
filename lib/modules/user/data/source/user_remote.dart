@@ -5,11 +5,11 @@ import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/user/data/models/user_create_model.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
-import 'package:pos_app/utils/constants/constant.dart';
+import 'package:pos_app/utils/constants/rest.dart';
 
 class UserRemoteDataSource {
   final DioClient dio;
-  UserRemoteDataSource(this.dio);
+  UserRemoteDataSource({required this.dio});
 
   Future<List<UserModel>> fetchUsers() async {
     final response = await dio.get(USER_API_URL);

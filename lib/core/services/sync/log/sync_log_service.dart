@@ -8,7 +8,7 @@ import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
 class SyncLogService {
   final Box logBox;
 
-  SyncLogService(this.logBox);
+  SyncLogService({required this.logBox});
 
   void addLog(SyncLog log) {
     final logs = getAllLogs();
@@ -18,14 +18,18 @@ class SyncLogService {
 
   List<SyncLog> getAllLogs() {
     final raw = logBox.get('logs', defaultValue: []) as List;
-    return raw.map((e) => SyncLog.fromJson(Map<String, dynamic>.from(e))).toList();
+    return raw
+        .map((e) => SyncLog.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
   Future<String> exportLogsAsTxt() async {
     final logs = getAllLogs();
     final buffer = StringBuffer();
     for (var log in logs) {
-      buffer.writeln("[${log.timestamp}] ${log.type.toUpperCase()} | ${log.success ? "SUCCESS" : "FAILED"}: ${log.message}");
+      buffer.writeln(
+        "[${log.timestamp}] ${log.type.toUpperCase()} | ${log.success ? "SUCCESS" : "FAILED"}: ${log.message}",
+      );
     }
 
     final dir = await getApplicationDocumentsDirectory();

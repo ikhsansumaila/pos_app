@@ -13,7 +13,11 @@ class UserRepositoryImpl implements UserRepository {
   final UserLocalDataSource local;
   final ConnectivityService connectivity;
 
-  UserRepositoryImpl(this.remote, this.local, this.connectivity);
+  UserRepositoryImpl({
+    required this.remote,
+    required this.local,
+    required this.connectivity,
+  });
 
   @override
   Future<List<UserModel>> getUsers() async {

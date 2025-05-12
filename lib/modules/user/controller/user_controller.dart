@@ -1,4 +1,6 @@
-import 'package:flutter/widgets.dart';
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/store/store_model.dart';
 import 'package:pos_app/modules/user/data/models/user_create_model.dart';
@@ -6,8 +8,9 @@ import 'package:pos_app/modules/user/data/models/user_model.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository.dart';
 
 class UserController extends GetxController {
-  UserController(this.repository);
   final UserRepository repository;
+
+  UserController({required this.repository});
 
   final RxList<UserModel> users = <UserModel>[].obs;
   final RxList<UserModel> filteredUsers = <UserModel>[].obs;
@@ -40,10 +43,16 @@ class UserController extends GetxController {
     return validForm;
   }
 
-  void createUserIfValid() {
+  Future<void> createUserIfValid() async {
+    log("Create User");
     if (!isFormValid) return;
 
-    createUser(
+    Get.dialog(
+      Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+
+    await createUser(
       UserCreateModel(
         storeId: selectedStore.value?.id ?? 0,
         nama: namaController.text,
@@ -53,6 +62,8 @@ class UserController extends GetxController {
         userid: 11,
       ),
     );
+
+    Get.back();
   }
 
   void fetchUsers() async {

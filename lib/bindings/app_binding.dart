@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/core/network/dio_client.dart';
-import 'package:pos_app/core/services/sync/queue/sync_queue_service.dart';
 import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
+import 'package:pos_app/core/services/sync/queue/sync_queue_service.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/cart/cart_controller.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
@@ -28,7 +28,6 @@ import 'package:pos_app/modules/user/data/repository/user_repository.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository_impl.dart';
 import 'package:pos_app/modules/user/data/source/user_local.dart';
 import 'package:pos_app/modules/user/data/source/user_remote.dart';
-import 'package:pos_app/utils/constants/controller_tag.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class AppBinding extends Bindings {
@@ -47,14 +46,14 @@ class AppBinding extends Bindings {
     // Inject Repository
     putRepository();
 
+    // Inject Queue Controller
+    putQueueController();
+
     // Inject Controller
     putController();
 
-    // Inject Queue
-    putQueue();
-
     // Inject Sync Log
-    Get.put(SyncLogService(Hive.box(SYNC_LOG_BOX_KEY)));
+    Get.put(SyncLogService(logBox: Hive.box(SYNC_LOG_BOX_KEY)));
 
     // Syncronization data to server, run in background/manual mode
     Get.put(
@@ -70,37 +69,81 @@ class AppBinding extends Bindings {
   }
 
   void putLocalStorage() {
-    Get.put(UserLocalDataSource(Hive.box(USER_BOX_KEY), Hive.box(QUEUE_USER_KEY)));
-    Get.put(ProductLocalDataSource(Hive.box(PRODUCT_BOX_KEY), Hive.box(QUEUE_PRODUCT_KEY)));
-    Get.put(OrderLocalDataSource(Hive.box(ORDER_BOX_KEY), Hive.box(QUEUE_ORDER_KEY)));
-    Get.put(TransactionLocalDataSource(Hive.box(TRANSACTION_BOX_KEY), Hive.box(QUEUE_TRANSACTION_KEY)));
+    Get.put(
+      UserLocalDataSource(
+        cacheBox: Hive.box(USER_BOX_KEY),
+        queueBox: Hive.box(QUEUE_USER_KEY),
+      ),
+    );
+    Get.put(
+      ProductLocalDataSource(
+        cacheBox: Hive.box(PRODUCT_BOX_KEY),
+        queueBox: Hive.box(QUEUE_PRODUCT_KEY),
+      ),
+    );
+    Get.put(
+      OrderLocalDataSource(
+        cacheBox: Hive.box(ORDER_BOX_KEY),
+        queueBox: Hive.box(QUEUE_ORDER_KEY),
+      ),
+    );
+    Get.put(
+      TransactionLocalDataSource(
+        cacheBox: Hive.box(TRANSACTION_BOX_KEY),
+        queueBox: Hive.box(QUEUE_TRANSACTION_KEY),
+      ),
+    );
   }
 
   void putRemoteStorage() {
-    Get.put(UserRemoteDataSource(Get.find()));
-    Get.put(ProductRemoteDataSource(Get.find()));
-    Get.put(TransactionRemoteDataSource(Get.find()));
-    Get.put(OrderRemoteDataSource(Get.find()));
-  }
-
-  void putQueue() {
-    Get.put(UserQueueController(Get.find()), tag: USER_CONTROLLER_TAG);
-    Get.put(TransactionQueueController(Get.find()), tag: TRANSACTION_CONTROLLER_TAG);
+    Get.put(UserRemoteDataSource(dio: Get.find()));
+    Get.put(ProductRemoteDataSource(dio: Get.find()));
+    Get.put(TransactionRemoteDataSource(dio: Get.find()));
+    Get.put(OrderRemoteDataSource(dio: Get.find()));
   }
 
   void putRepository() {
-    Get.put<UserRepository>(UserRepositoryImpl(Get.find(), Get.find(), Get.find()));
-    Get.put<ProductRepository>(ProductRepositoryImpl(Get.find(), Get.find(), Get.find()));
-    Get.put<TransactionRepository>(TransactionRepositoryImpl(Get.find(), Get.find(), Get.find()));
-    Get.put<OrderRepository>(OrderRepositoryImpl(Get.find(), Get.find(), Get.find()));
+    Get.put<UserRepository>(
+      UserRepositoryImpl(
+        local: Get.find(),
+        remote: Get.find(),
+        connectivity: Get.find(),
+      ),
+    );
+    Get.put<ProductRepository>(
+      ProductRepositoryImpl(
+        local: Get.find(),
+        remote: Get.find(),
+        connectivity: Get.find(),
+      ),
+    );
+    Get.put<TransactionRepository>(
+      TransactionRepositoryImpl(
+        local: Get.find(),
+        remote: Get.find(),
+        connectivity: Get.find(),
+      ),
+    );
+    Get.put<OrderRepository>(
+      OrderRepositoryImpl(
+        local: Get.find(),
+        remote: Get.find(),
+        connectivity: Get.find(),
+      ),
+    );
+  }
+
+  void putQueueController() {
+    Get.put(UserQueueController(repo: Get.find()));
+    Get.put(TransactionQueueController(repo: Get.find()));
   }
 
   void putController() {
     Get.put(AuthController());
-    Get.put(UserController(Get.find()));
-    Get.put(ProductController(Get.find()));
+    Get.put(UserController(repository: Get.find()));
+    Get.put(ProductController(repository: Get.find()));
     Get.put(OrdersController());
-    Get.put(TransactionController(Get.find()));
+    Get.put(TransactionController(repository: Get.find()));
     Get.put(CartController());
   }
 }

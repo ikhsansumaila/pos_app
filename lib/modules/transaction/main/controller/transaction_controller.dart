@@ -8,7 +8,7 @@ import 'package:pos_app/modules/transaction/main/data/repository/transaction_rep
 class TransactionController extends GetxController {
   final TransactionRepository repository;
 
-  TransactionController(this.repository);
+  TransactionController({required this.repository});
 
   Box<CartItemModel>? _cartBox;
   var trxItems = <int, CartItemModel>{}.obs;
@@ -54,7 +54,10 @@ class TransactionController extends GetxController {
     final productId = product.idBrg;
 
     if (trxItems.containsKey(productId)) {
-      trxItems.update(productId, (item) => item.copyWith(quantity: item.quantity + 1));
+      trxItems.update(
+        productId,
+        (item) => item.copyWith(quantity: item.quantity + 1),
+      );
     } else {
       // new item
       trxItems[productId] = CartItemModel(product: product, quantity: 1);
@@ -72,7 +75,10 @@ class TransactionController extends GetxController {
     if (!trxItems.containsKey(productId)) return;
 
     if (trxItems[productId]!.quantity > 1) {
-      trxItems.update(productId, (item) => item.copyWith(quantity: item.quantity - 1));
+      trxItems.update(
+        productId,
+        (item) => item.copyWith(quantity: item.quantity - 1),
+      );
     } else {
       //1 item left
       trxItems.remove(productId);
@@ -93,11 +99,17 @@ class TransactionController extends GetxController {
   }
 
   void _setTotalPrice() {
-    totalPrice.value = trxItems.values.fold(0, (sum, item) => sum + item.product.hargaJual * item.quantity);
+    totalPrice.value = trxItems.values.fold(
+      0,
+      (sum, item) => sum + item.product.hargaJual * item.quantity,
+    );
   }
 
   void _setTotalItems() {
-    totalItems.value = trxItems.values.fold(0, (sum, item) => sum + item.quantity);
+    totalItems.value = trxItems.values.fold(
+      0,
+      (sum, item) => sum + item.quantity,
+    );
   }
 
   void clearItems() {

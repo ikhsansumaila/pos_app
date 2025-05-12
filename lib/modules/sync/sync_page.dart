@@ -42,10 +42,18 @@ class SyncPage extends StatelessWidget {
                   () => ElevatedButton.icon(
                     icon:
                         controller.syncing.value
-                            ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                            ? SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
                             : Icon(Icons.sync),
-                    label: Text("Sinkronisasi Sekarang"),
-                    onPressed: controller.syncing.value ? null : controller.manualSync,
+                    label: Text("Sinkronisasi Semua"),
+                    onPressed:
+                        controller.syncing.value ? null : controller.manualSync,
                   ),
                 ),
                 SizedBox(width: 10),
@@ -53,10 +61,17 @@ class SyncPage extends StatelessWidget {
                   () => OutlinedButton.icon(
                     icon:
                         controller.exporting.value
-                            ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                            ? SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
                             : Icon(Icons.download),
                     label: Text("Export Log"),
-                    onPressed: controller.exporting.value ? null : controller.exportLogs,
+                    onPressed:
+                        controller.exporting.value
+                            ? null
+                            : controller.exportLogs,
                   ),
                 ),
               ],
@@ -72,10 +87,17 @@ class SyncPage extends StatelessWidget {
                 itemBuilder: (_, i) {
                   final log = controller.logs[i];
                   return ListTile(
-                    leading: Icon(log.success ? Icons.check_circle : Icons.error, color: log.success ? Colors.green : Colors.red),
-                    title: Text("${log.type.toUpperCase()} | ${log.success ? 'Berhasil' : 'Gagal'}"),
+                    leading: Icon(
+                      log.success ? Icons.check_circle : Icons.error,
+                      color: log.success ? Colors.green : Colors.red,
+                    ),
+                    title: Text(
+                      "${log.type.toUpperCase()} | ${log.success ? 'Berhasil' : 'Gagal'}",
+                    ),
                     subtitle: Text(log.message),
-                    trailing: Text(DateFormat('dd/MM HH:mm').format(log.timestamp)),
+                    trailing: Text(
+                      DateFormat('dd/MM HH:mm').format(log.timestamp),
+                    ),
                   );
                 },
               );

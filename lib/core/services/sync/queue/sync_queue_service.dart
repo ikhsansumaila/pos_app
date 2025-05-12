@@ -10,7 +10,7 @@ import 'package:pos_app/modules/product/data/repository/product_repository.dart'
 import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
 import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository.dart';
-import 'package:pos_app/utils/constants/constant.dart';
+import 'package:pos_app/utils/constants/rest.dart';
 
 class SyncQueueService {
   final UserRepository userRepo;
@@ -37,7 +37,10 @@ class SyncQueueService {
     if (isSyncing) return;
 
     isSyncing = true;
-    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
+    Get.dialog(
+      Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
 
     await Future.delayed(Duration(seconds: 3));
 

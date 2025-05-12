@@ -2,11 +2,11 @@
 import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
-import 'package:pos_app/utils/constants/constant.dart';
+import 'package:pos_app/utils/constants/rest.dart';
 
 class OrderRemoteDataSource {
   final DioClient dio;
-  OrderRemoteDataSource(this.dio);
+  OrderRemoteDataSource({required this.dio});
 
   Future<List<OrderModel>> fetchOrders() async {
     final response = await dio.get(ORDER_API_URL);

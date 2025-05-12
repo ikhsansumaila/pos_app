@@ -13,7 +13,7 @@ class ProductLocalDataSource {
 
   late final SyncQueueDataHelper<ProductModel> queueHelper;
 
-  ProductLocalDataSource(this.cacheBox, this.queueBox) {
+  ProductLocalDataSource({required this.cacheBox, required this.queueBox}) {
     queueHelper = SyncQueueDataHelper<ProductModel>(
       box: queueBox,
       key: QUEUE_PRODUCT_KEY,
@@ -25,12 +25,17 @@ class ProductLocalDataSource {
   List<ProductModel> getCachedProducts() {
     log("get products from cache");
     final data = cacheBox.get(PRODUCT_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return (data as List)
+        .map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
   Future<void> updateCache(List<ProductModel> products) async {
     // add/update/remove cached products
-    await LocalStorageService.updateFromRemote<ProductModel>(boxName: PRODUCT_BOX_KEY, apiData: products);
+    await LocalStorageService.updateFromRemote<ProductModel>(
+      boxName: PRODUCT_BOX_KEY,
+      apiData: products,
+    );
   }
 
   void addToQueue(ProductModel item) {

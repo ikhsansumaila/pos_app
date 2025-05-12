@@ -5,11 +5,11 @@ import 'dart:developer';
 import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
-import 'package:pos_app/utils/constants/constant.dart';
+import 'package:pos_app/utils/constants/rest.dart';
 
 class ProductRemoteDataSource {
   final DioClient dio;
-  ProductRemoteDataSource(this.dio);
+  ProductRemoteDataSource({required this.dio});
 
   Future<List<ProductModel>> fetchProducts() async {
     final response = await dio.get('$PRODUCT_API_URL?store_id=1');

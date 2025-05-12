@@ -5,7 +5,7 @@ import 'package:pos_app/modules/product/data/repository/product_repository.dart'
 
 class ProductController extends GetxController {
   final ProductRepository repository;
-  ProductController(this.repository);
+  ProductController({required this.repository});
 
   final products = <ProductModel>[].obs;
   final filteredProducts = <ProductModel>[].obs;
@@ -34,7 +34,12 @@ class ProductController extends GetxController {
     if (query.isEmpty) {
       filteredProducts.assignAll(products);
     } else {
-      final filtered = products.where((p) => p.namaBrg.toLowerCase().contains(query.toLowerCase())).toList();
+      final filtered =
+          products
+              .where(
+                (p) => p.namaBrg.toLowerCase().contains(query.toLowerCase()),
+              )
+              .toList();
       filteredProducts.assignAll(filtered);
     }
   }

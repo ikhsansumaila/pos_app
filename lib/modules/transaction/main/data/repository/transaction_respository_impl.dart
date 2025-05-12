@@ -13,7 +13,11 @@ class TransactionRepositoryImpl implements TransactionRepository {
   final TransactionLocalDataSource local;
   final ConnectivityService connectivity;
 
-  TransactionRepositoryImpl(this.remote, this.local, this.connectivity);
+  TransactionRepositoryImpl({
+    required this.remote,
+    required this.local,
+    required this.connectivity,
+  });
 
   @override
   Future<List<TransactionModel>> getUsers() async {

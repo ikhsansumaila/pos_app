@@ -3,20 +3,17 @@ import 'package:get/get.dart';
 import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
 
 class TransactionQueueDetail extends StatelessWidget {
-  final String tag;
-
-  // Controller yang diambil berdasarkan tag dan tipe generik T
-  final TransactionQueueController controller;
+  final TransactionQueueController controller = Get.find();
 
   // Konstruktor
-  TransactionQueueDetail({super.key, required this.tag}) : controller = Get.find(tag: tag);
+  TransactionQueueDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('List Queue $tag')),
+      appBar: AppBar(title: Text('List Queue Transaction')),
       body: () {
-        var queueItems = controller.local.getQueuedItems();
+        var queueItems = controller.repo.local.getQueuedItems();
         for (var i = 0; i < queueItems.length; i++) {
           print('queue item : ${queueItems[i].toJson()}');
         }

@@ -13,7 +13,7 @@ class UserLocalDataSource {
 
   late final SyncQueueDataHelper<UserCreateModel> queueHelper;
 
-  UserLocalDataSource(this.cacheBox, this.queueBox) {
+  UserLocalDataSource({required this.cacheBox, required this.queueBox}) {
     // this sync only for create user
     queueHelper = SyncQueueDataHelper<UserCreateModel>(
       box: queueBox,
@@ -26,12 +26,17 @@ class UserLocalDataSource {
   List<UserModel> getCachedUsers() {
     log("get products from cache");
     final data = cacheBox.get(USER_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => UserModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return (data as List)
+        .map((e) => UserModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
   Future<void> updateCache(List<UserModel> users) async {
     // add/update/remove cached
-    await LocalStorageService.updateFromRemote<UserModel>(boxName: USER_BOX_KEY, apiData: users);
+    await LocalStorageService.updateFromRemote<UserModel>(
+      boxName: USER_BOX_KEY,
+      apiData: users,
+    );
   }
 
   void addToQueue(UserCreateModel item) {
