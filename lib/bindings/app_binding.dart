@@ -27,7 +27,6 @@ import 'package:pos_app/modules/transaction/order/data/repository/order_reposito
 import 'package:pos_app/modules/transaction/order/data/source/order_local.dart';
 import 'package:pos_app/modules/transaction/order/data/source/order_remote.dart';
 import 'package:pos_app/modules/transaction/order/order_controller.dart';
-import 'package:pos_app/modules/user/controller/user_controller.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository_impl.dart';
 import 'package:pos_app/modules/user/data/source/user_local.dart';
@@ -125,7 +124,7 @@ class AppBinding extends Bindings {
 
   void putController() {
     Get.put(AuthController());
-    Get.put(UserController(repository: Get.find()));
+    // Get.put(UserController(repository: Get.find()));
     Get.put(ProductController(repository: Get.find()));
     Get.put(OrdersController());
     Get.put(TransactionController(repository: Get.find()));

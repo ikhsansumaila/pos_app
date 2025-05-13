@@ -25,17 +25,12 @@ class ProductLocalDataSource {
   List<ProductModel> getCachedProducts() {
     log("get products from cache");
     final data = cacheBox.get(PRODUCT_BOX_KEY, defaultValue: []);
-    return (data as List)
-        .map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+    return (data as List).map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e))).toList();
   }
 
   Future<void> updateCache(List<ProductModel> products) async {
     // add/update/remove cached products
-    await LocalStorageService.updateFromRemote<ProductModel>(
-      boxName: PRODUCT_BOX_KEY,
-      apiData: products,
-    );
+    await LocalStorageService.updateFromRemote<ProductModel>(box: cacheBox, apiData: products);
   }
 
   void addToQueue(ProductModel item) {

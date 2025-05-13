@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:pos_app/core/network/dio_interceptor.dart';
 import 'package:pos_app/core/network/response.dart';
@@ -14,10 +12,7 @@ class DioClient {
       baseUrl: BASE_API_URL,
       connectTimeout: TIMEOUT_DURATION,
       receiveTimeout: TIMEOUT_DURATION,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     );
 
     dio = Dio(options);
@@ -26,13 +21,10 @@ class DioClient {
     dio.interceptors.add(RequestsInterceptor());
   }
 
-  Future<ApiResponse<dynamic>> get(
-    String path, {
-    Map<String, dynamic>? query,
-  }) async {
+  Future<ApiResponse<dynamic>> get(String path, {Map<String, dynamic>? query}) async {
     try {
       final response = await dio.get(path, queryParameters: query);
-      log("response.data dari dio client : ${response.data}");
+      // log("response.data dari dio client : ${response.data}");
       return ApiResponse(data: response.data, statusCode: response.statusCode);
     } on DioException catch (e) {
       return ApiResponse(

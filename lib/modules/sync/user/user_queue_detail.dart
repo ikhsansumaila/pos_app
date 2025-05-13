@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -38,20 +40,12 @@ class UserQueueDetailPage extends StatelessWidget {
                       itemCount: queueItems.length,
                       itemBuilder: (_, index) {
                         final item = queueItems[index];
-                        final itemJson = item.toJson();
-                        final previewText = itemJson.toString();
+                        final previewText = jsonEncode(item);
 
                         return Card(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
+                          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           child: ListTile(
-                            title: Text(
-                              previewText,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            title: Text(previewText, maxLines: 2, overflow: TextOverflow.ellipsis),
                             trailing: Wrap(
                               spacing: 8,
                               children: [
@@ -66,13 +60,8 @@ class UserQueueDetailPage extends StatelessWidget {
                                   icon: Icon(Icons.copy),
                                   tooltip: 'Copy JSON',
                                   onPressed: () {
-                                    Clipboard.setData(
-                                      ClipboardData(text: previewText),
-                                    );
-                                    Get.snackbar(
-                                      'Disalin',
-                                      'Data berhasil disalin',
-                                    );
+                                    Clipboard.setData(ClipboardData(text: previewText));
+                                    Get.snackbar('Disalin', 'Data berhasil disalin');
                                   },
                                 ),
                               ],

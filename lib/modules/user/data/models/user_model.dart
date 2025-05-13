@@ -33,6 +33,9 @@ class UserModel extends HiveObject implements SyncableHiveObject<UserModel> {
   @HiveField(8)
   String createdAt;
 
+  @HiveField(9)
+  int cacheId;
+
   UserModel({
     required this.id,
     required this.storeId,
@@ -43,6 +46,7 @@ class UserModel extends HiveObject implements SyncableHiveObject<UserModel> {
     required this.role,
     required this.status,
     required this.createdAt,
+    required this.cacheId,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -56,6 +60,7 @@ class UserModel extends HiveObject implements SyncableHiveObject<UserModel> {
       role: json['role'],
       status: json['status'],
       createdAt: json['created_at'],
+      cacheId: json['cache_id'],
     );
   }
 
@@ -70,21 +75,22 @@ class UserModel extends HiveObject implements SyncableHiveObject<UserModel> {
       'role': role,
       'status': status,
       'created_at': createdAt,
+      'cache_id': cacheId,
     };
   }
 
   @override
-  int get modelId => id;
+  int? get modelId => cacheId;
 
   @override
   bool isDifferent(UserModel other) {
-    return storeId != other.storeId ||
+    return cacheId != other.cacheId ||
+        storeId != other.storeId ||
         storeName != other.storeName ||
         nama != other.nama ||
         email != other.email ||
         roleId != other.roleId ||
         role != other.role ||
-        status != other.status ||
-        createdAt != other.createdAt;
+        status != other.status;
   }
 }

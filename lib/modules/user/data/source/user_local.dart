@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/services/sync/queue/sync_queue_helper.dart';
 import 'package:pos_app/core/storage/local_storage_service.dart';
@@ -30,27 +28,40 @@ class UserLocalDataSource {
   }
 
   List<UserModel> getCachedUsers() {
-    log("get users from cache");
-    final data = userCacheBox.get(USER_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => UserModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return userCacheBox.values.map((element) => element as UserModel).toList();
   }
 
   List<UserRoleModel> getCachedUserRoles() {
-    log("get user roles from cache");
-    final data = userRoleCacheBox.get(USER_ROLE_BOX_KEY, defaultValue: []);
-    return (data as List).map((e) => UserRoleModel.fromJson(Map<String, dynamic>.from(e))).toList();
+    return userRoleCacheBox.values.map((element) => element as UserRoleModel).toList();
   }
 
   Future<void> updateCache(List<UserModel> users) async {
     // add/update/remove cached
-    await LocalStorageService.updateFromRemote<UserModel>(boxName: USER_BOX_KEY, apiData: users);
+    await LocalStorageService.updateFromRemote<UserModel>(box: userCacheBox, apiData: users);
   }
 
   Future<void> updateUserRolesCache(List<UserRoleModel> roles) async {
     // add/update/remove cached
     await LocalStorageService.updateFromRemote<UserRoleModel>(
-      boxName: USER_ROLE_BOX_KEY,
+      box: userRoleCacheBox,
       apiData: roles,
+    );
+  }
+
+  Future<void> addToCache(UserCreateModel userCreate) async {
+    await userCacheBox.add(
+      UserModel(
+        id: userCreate.cacheId,
+        cacheId: userCreate.cacheId,
+        storeId: userCreate.storeId,
+        storeName: "",
+        nama: userCreate.nama,
+        email: userCreate.email,
+        roleId: userCreate.roleId,
+        role: "",
+        status: userCreate.status,
+        createdAt: DateTime.now().toIso8601String(),
+      ),
     );
   }
 

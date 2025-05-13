@@ -17,30 +17,36 @@ class UserCreateModelAdapter extends TypeAdapter<UserCreateModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserCreateModel(
-      nama: fields[0] as String,
-      email: fields[1] as String,
-      roleId: fields[2] as int,
-      storeId: fields[3] as int,
-      status: fields[4] as int,
-      userid: fields[5] as int,
+      cacheId: fields[0] as int,
+      nama: fields[1] as String,
+      email: fields[2] as String,
+      password: fields[3] as String,
+      roleId: fields[4] as int,
+      storeId: fields[5] as int,
+      status: fields[6] as int,
+      userid: fields[7] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserCreateModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
-      ..write(obj.nama)
+      ..write(obj.cacheId)
       ..writeByte(1)
-      ..write(obj.email)
+      ..write(obj.nama)
       ..writeByte(2)
-      ..write(obj.roleId)
+      ..write(obj.email)
       ..writeByte(3)
-      ..write(obj.storeId)
+      ..write(obj.password)
       ..writeByte(4)
-      ..write(obj.status)
+      ..write(obj.roleId)
       ..writeByte(5)
+      ..write(obj.storeId)
+      ..writeByte(6)
+      ..write(obj.status)
+      ..writeByte(7)
       ..write(obj.userid);
   }
 
