@@ -27,10 +27,7 @@ class SyncQueueService {
     if (isSyncing) return;
 
     isSyncing = true;
-    Get.dialog(
-      Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-    );
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
 
     await Future.delayed(Duration(seconds: 3));
     await _syncWithTimeout(TIMEOUT_DURATION);
@@ -52,7 +49,7 @@ class SyncQueueService {
       if (!online) throw Exception("Offline");
 
       // Users
-      await userQueueController.processQueue();
+      // await userQueueController.processQueue();
       await transactionQueueController.processQueue();
     } catch (_) {}
   }

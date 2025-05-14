@@ -34,7 +34,7 @@ class UserController extends GetxController {
       filteredUsers.assignAll(users);
     } else {
       final filtered =
-          users.where((p) => p.nama.toLowerCase().contains(query.toLowerCase())).toList();
+          users.where((p) => (p.nama ?? '').toLowerCase().contains(query.toLowerCase())).toList();
       filteredUsers.assignAll(filtered);
     }
   }

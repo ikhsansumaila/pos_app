@@ -13,7 +13,7 @@ class UserQueueDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final queueItems = controller.getQueuedItems();
+    final queueItems = []; //controller.getQueuedItems();
 
     return Scaffold(
       appBar: MyAppBar(title: 'List Data User'),
@@ -28,7 +28,7 @@ class UserQueueDetailPage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: ElevatedButton.icon(
                         onPressed: () async {
-                          await controller.rePostAllItems(queueItems);
+                          // await controller.rePostAllItems(queueItems);
                         },
                         icon: Icon(Icons.sync),
                         label: Text('Sinkronisasi Semua'),
@@ -53,7 +53,7 @@ class UserQueueDetailPage extends StatelessWidget {
                                   icon: Icon(Icons.sync),
                                   tooltip: 'Sync Ulang',
                                   onPressed: () async {
-                                    await controller.rePostItem(item, index);
+                                    // await controller.rePostItem(item, index);
                                   },
                                 ),
                                 IconButton(

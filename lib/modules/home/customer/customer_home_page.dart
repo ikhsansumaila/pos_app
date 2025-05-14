@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/cart/view/cart_page.dart';
-import 'package:pos_app/modules/common/widgets/confirmation_dialog.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/home/customer/customer_listing_product_widget.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 // Import halaman lain kalau ada
@@ -48,9 +48,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             return ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: double.infinity, // full width
-                minHeight:
-                    MediaQuery.of(context).size.height * 0.1 +
-                    20, // tinggi dinamis + 30
+                minHeight: MediaQuery.of(context).size.height * 0.1 + 20, // tinggi dinamis + 30
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -59,7 +57,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     leading: const Icon(Icons.logout, color: Colors.red),
                     title: const Text("Logout"),
                     onTap: () async {
-                      bool confirmResult = await showConfirmationDialog(
+                      bool confirmResult = await AppDialog.showConfirmationDialog(
                         context,
                         "Logout",
                         const Text('Anda yakin ingin Logout?'),
@@ -83,11 +81,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Colors.transparent, // biar transparan dan ikut body child
-      body: SafeArea(
-        child: IndexedStack(index: _selectedIndex, children: _pages),
-      ),
+      backgroundColor: Colors.transparent, // biar transparan dan ikut body child
+      body: SafeArea(child: IndexedStack(index: _selectedIndex, children: _pages)),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: AppColors.primary, // warna aktif
         unselectedItemColor: Colors.grey, // warna tidak aktif
@@ -95,14 +90,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         onTap: _onNavTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Beranda'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Keranjang',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Pengaturan',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Keranjang'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Pengaturan'),
         ],
       ),
     );

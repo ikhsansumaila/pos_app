@@ -37,6 +37,10 @@ class TransactionLocalDataSource extends GetxController {
     await LocalStorageService.updateFromRemote<TransactionModel>(box: cacheBox, apiData: trx);
   }
 
+  Future<void> addToCache(TransactionModel trx) async {
+    await cacheBox.add(trx);
+  }
+
   void addToQueue(TransactionCreateModel item) {
     queueHelper.addToQueue(item);
   }

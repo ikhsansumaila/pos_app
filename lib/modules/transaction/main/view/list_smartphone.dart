@@ -35,12 +35,19 @@ class SmartphoneLayout extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: AppSearchBar(controller: productController.searchController, hintText: 'Cari Barang...'),
+                child: AppSearchBar(
+                  controller: productController.searchController,
+                  hintText: 'Cari Barang...',
+                ),
               ),
               Expanded(
                 child: Obx(() {
                   if (productController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)));
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ),
+                    );
                   }
 
                   return Padding(
@@ -80,11 +87,14 @@ class SmartphoneLayout extends StatelessWidget {
       elevation: 8,
       shadowColor: Colors.black26,
       child: Container(
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(circularRadius)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(circularRadius),
+        ),
         child: GetBuilder(
           init: trxController,
           builder: (data) {
-            final quantity = data.getQuantity(product.idBrg);
+            final quantity = data.getQuantity(product.idBrg ?? 0);
             int stock = 10;
 
             bool buttonAddEnabled = stock > 0 && quantity < stock;
@@ -105,12 +115,26 @@ class SmartphoneLayout extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(product.namaBrg, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8, color: Colors.black87)),
                             Text(
-                              AppFormatter.currency(product.hargaJual.toDouble()),
-                              style: TextStyle(color: AppColors.priceColor, fontSize: 10, fontWeight: FontWeight.bold),
+                              product.namaBrg ?? '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 8,
+                                color: Colors.black87,
+                              ),
                             ),
-                            Text('Stok: ${product.stok}', style: TextStyle(color: Colors.black87, fontSize: 8)),
+                            Text(
+                              AppFormatter.currency((product.hargaJual ?? 0).toDouble()),
+                              style: TextStyle(
+                                color: AppColors.priceColor,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Stok: ${product.stok ?? 0}',
+                              style: TextStyle(color: Colors.black87, fontSize: 8),
+                            ),
                           ],
                         ),
                       ),
@@ -129,9 +153,19 @@ class SmartphoneLayout extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.call_split, color: stock == 0 ? Colors.grey : AppColors.primary, size: 12),
+                            Icon(
+                              Icons.call_split,
+                              color: stock == 0 ? Colors.grey : AppColors.primary,
+                              size: 12,
+                            ),
                             const SizedBox(width: 2), // spasi minimal
-                            Text('Pecah Stok', style: TextStyle(color: stock == 0 ? Colors.grey : AppColors.primary, fontSize: 8)),
+                            Text(
+                              'Pecah Stok',
+                              style: TextStyle(
+                                color: stock == 0 ? Colors.grey : AppColors.primary,
+                                fontSize: 8,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -146,7 +180,13 @@ class SmartphoneLayout extends StatelessWidget {
                             size: 12,
                           ),
                           const SizedBox(width: 8),
-                          Text(quantity.toString(), style: TextStyle(fontSize: 8, color: stock == 0 ? Colors.grey : Colors.black87)),
+                          Text(
+                            quantity.toString(),
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: stock == 0 ? Colors.grey : Colors.black87,
+                            ),
+                          ),
                           const SizedBox(width: 8),
                           AppIconButton(
                             onPressed: buttonAddEnabled ? () => data.addItem(product) : null,

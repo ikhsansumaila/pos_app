@@ -22,13 +22,13 @@ class UserDetailPage extends StatelessWidget {
         padding: EdgeInsets.all(16),
         children: [
           buildInfoTile('User ID', user.id.toString()),
-          buildInfoTile('Nama', user.nama),
-          buildInfoTile('Email', user.email),
-          buildInfoTile('Role', user.role),
+          buildInfoTile('Nama', user.nama ?? '-'),
+          buildInfoTile('Email', user.email ?? '-'),
+          buildInfoTile('Role', user.roleName ?? '-'),
           buildInfoTile('Status', user.status == 1 ? 'Aktif' : 'Nonaktif'),
           buildInfoTile('ID Toko', user.storeId.toString()),
           buildInfoTile('Nama Toko', user.storeName ?? '-'),
-          buildInfoTile('Tanggal Dibuat', user.createdAt),
+          buildInfoTile('Tanggal Dibuat', user.createdAt ?? '-'),
         ],
       ),
     );

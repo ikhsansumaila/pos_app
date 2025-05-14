@@ -37,7 +37,13 @@ class _StockMutationPageState extends State<StockMutationPage> {
           _buildProductCard(title: "Barang Asal", product: sourceProduct, includeInput: true),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Center(child: Icon(Icons.swap_vert_rounded, size: 48, color: const Color.fromARGB(255, 24, 142, 30))),
+            child: Center(
+              child: Icon(
+                Icons.swap_vert_rounded,
+                size: 48,
+                color: const Color.fromARGB(255, 24, 142, 30),
+              ),
+            ),
           ),
           _buildTargetProductCard(),
         ],
@@ -59,7 +65,11 @@ class _StockMutationPageState extends State<StockMutationPage> {
     );
   }
 
-  Widget _buildProductCard({required String title, required ProductModel product, bool includeInput = false}) {
+  Widget _buildProductCard({
+    required String title,
+    required ProductModel product,
+    bool includeInput = false,
+  }) {
     return Card(
       color: Colors.white.withValues(alpha: 0.95),
       elevation: 6,
@@ -80,17 +90,27 @@ class _StockMutationPageState extends State<StockMutationPage> {
                   Text("Kode: ${product.kodeBrg}", style: TextStyle(fontSize: 16)),
                   Text("Nama: ${product.namaBrg}", style: TextStyle(fontSize: 16)),
                   Text("Satuan: ${product.satuan}", style: TextStyle(fontSize: 16)),
-                  Text('Stok: ${product.stok}', style: TextStyle(fontSize: 16)), // TODO: pakai stok aktual
                   Text(
-                    "Harga: ${AppFormatter.currency(product.hargaJual.toDouble())}",
-                    style: TextStyle(color: AppColors.priceColor, fontSize: 16, fontWeight: FontWeight.bold),
+                    'Stok: ${product.stok ?? 0}',
+                    style: TextStyle(fontSize: 16),
+                  ), // TODO: pakai stok aktual
+                  Text(
+                    "Harga: ${AppFormatter.currency((product.hargaJual ?? 0).toDouble())}",
+                    style: TextStyle(
+                      color: AppColors.priceColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   if (includeInput) ...[
                     SizedBox(height: 12),
                     TextField(
                       controller: jumlahController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: "Jumlah yang akan dipecah", border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: "Jumlah yang akan dipecah",
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ],
                 ],
@@ -117,10 +137,13 @@ class _StockMutationPageState extends State<StockMutationPage> {
             Autocomplete<ProductModel>(
               optionsBuilder: (TextEditingValue textEditingValue) {
                 return productController.products.where((ProductModel p) {
-                  return p.namaBrg.toLowerCase().contains(textEditingValue.text.toLowerCase()) && p.idBrg != sourceProduct.idBrg;
+                  return (p.namaBrg ?? '').toLowerCase().contains(
+                        textEditingValue.text.toLowerCase(),
+                      ) &&
+                      p.idBrg != sourceProduct.idBrg;
                 });
               },
-              displayStringForOption: (ProductModel option) => option.namaBrg,
+              displayStringForOption: (ProductModel option) => option.namaBrg ?? '',
               onSelected: (ProductModel selection) {
                 setState(() {
                   selectedTargetProduct = selection;
@@ -131,7 +154,10 @@ class _StockMutationPageState extends State<StockMutationPage> {
                   controller: controller,
                   focusNode: focusNode,
                   onEditingComplete: onEditingComplete,
-                  decoration: InputDecoration(labelText: "Cari nama barang tujuan", border: OutlineInputBorder()),
+                  decoration: InputDecoration(
+                    labelText: "Cari nama barang tujuan",
+                    border: OutlineInputBorder(),
+                  ),
                 );
               },
             ),
@@ -146,20 +172,39 @@ class _StockMutationPageState extends State<StockMutationPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Kode: ${selectedTargetProduct!.kodeBrg}", style: TextStyle(fontSize: 16)),
-                        Text("Nama: ${selectedTargetProduct!.namaBrg}", style: TextStyle(fontSize: 16)),
-                        Text("Satuan: ${selectedTargetProduct!.satuan}", style: TextStyle(fontSize: 16)),
-                        Text('Stok: ${selectedTargetProduct!.stok}', style: TextStyle(fontSize: 16)), // TODO: pakai stok aktual
                         Text(
-                          "Harga: ${AppFormatter.currency(selectedTargetProduct!.hargaJual.toDouble())}",
-                          style: TextStyle(color: AppColors.priceColor, fontSize: 16, fontWeight: FontWeight.bold),
+                          "Kode: ${selectedTargetProduct!.kodeBrg}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          "Nama: ${selectedTargetProduct!.namaBrg}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          "Satuan: ${selectedTargetProduct!.satuan}",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          'Stok: ${selectedTargetProduct!.stok}',
+                          style: TextStyle(fontSize: 16),
+                        ), // TODO: pakai stok aktual
+                        Text(
+                          "Harga: ${AppFormatter.currency((selectedTargetProduct?.hargaJual ?? 0).toDouble())}",
+                          style: TextStyle(
+                            color: AppColors.priceColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
 
                         SizedBox(height: 12),
                         TextField(
                           controller: jumlahController,
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(labelText: "Jumlah yang akan dipecah", border: OutlineInputBorder()),
+                          decoration: InputDecoration(
+                            labelText: "Jumlah yang akan dipecah",
+                            border: OutlineInputBorder(),
+                          ),
                         ),
                       ],
                     ),
@@ -180,8 +225,10 @@ class _StockMutationPageState extends State<StockMutationPage> {
         width: 70,
         height: 70,
         errorBuilder:
-            (context, error, stackTrace) =>
-                Container(color: Colors.grey.shade200, child: Icon(Icons.broken_image, size: 40, color: Colors.grey)),
+            (context, error, stackTrace) => Container(
+              color: Colors.grey.shade200,
+              child: Icon(Icons.broken_image, size: 40, color: Colors.grey),
+            ),
       ),
     );
   }

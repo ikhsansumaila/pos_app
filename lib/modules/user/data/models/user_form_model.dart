@@ -1,53 +1,38 @@
-// import 'package:hive/hive.dart';
-// import 'package:pos_app/utils/constants/hive_key.dart';
-
-// part 'user_create_model.g.dart';
-
-// @HiveType(typeId: HiveTypeIds.userCreate)
-// class UserCreateModel extends HiveObject {
-//   @HiveField(0)
+// class UserFormModel {
 //   int cacheId;
-
-//   @HiveField(1)
 //   String nama;
-
-//   @HiveField(2)
 //   String email;
-
-//   @HiveField(3)
 //   String password;
-
-//   @HiveField(4)
 //   int roleId;
-
-//   @HiveField(5)
+//   String roleName;
 //   int storeId;
-
-//   @HiveField(6)
+//   String storeName;
 //   int status;
-
-//   @HiveField(7)
 //   int userid;
 
-//   UserCreateModel({
+//   UserFormModel({
 //     required this.cacheId,
 //     required this.nama,
 //     required this.email,
 //     required this.password,
 //     required this.roleId,
+//     required this.roleName,
 //     required this.storeId,
+//     this.storeName = '',
 //     required this.status,
 //     required this.userid,
 //   });
 
-//   factory UserCreateModel.fromJson(Map<String, dynamic> json) {
-//     return UserCreateModel(
+//   factory UserFormModel.fromJson(Map<String, dynamic> json) {
+//     return UserFormModel(
 //       cacheId: json['cache_id'],
 //       nama: json['nama'],
 //       email: json['email'],
 //       password: json['password'],
 //       roleId: json['role_id'],
+//       roleName: json['role_name'],
 //       storeId: json['store_id'],
+//       storeName: json['store_name'],
 //       status: json['status'],
 //       userid: json['userid'],
 //     );
@@ -59,8 +44,20 @@
 //     'email': email,
 //     'password': password,
 //     'role_id': roleId,
+//     'role_name': roleName,
 //     'store_id': storeId,
+//     'store_name': storeName,
 //     'status': status,
 //     'userid': userid,
 //   };
+
+//   // Map<String, dynamic> toJsonCreate() => {
+//   //   'cache_id': cacheId,
+//   //   'nama': nama,
+//   //   'email': email,
+//   //   'password': password,
+//   //   'role_id': roleId,
+//   //   'store_id': storeId,
+//   //   'userid': userid,
+//   // };
 // }

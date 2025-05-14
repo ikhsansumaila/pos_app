@@ -14,19 +14,6 @@ class TransactionController extends GetxController {
   var trxItems = <int, CartItemModel>{}.obs;
   var totalItems = 0.obs;
   var totalPrice = 0.obs;
-  // var isUpdate = false.obs;
-
-  // @override
-  // void onInit() async {
-  //   super.onInit();
-  //   // await Hive.deleteBoxFromDisk('cartBox');
-
-  //   // Open the Hive box for CartItemModel
-  //   // _cartBox = await Hive.openBox<CartItemModel>('cartBox');
-
-  //   // Load cart from Hive
-  //   // _loadCart();
-  // }
 
   @override
   void onClose() {
@@ -54,13 +41,10 @@ class TransactionController extends GetxController {
     final productId = product.idBrg;
 
     if (trxItems.containsKey(productId)) {
-      trxItems.update(
-        productId,
-        (item) => item.copyWith(quantity: item.quantity + 1),
-      );
+      trxItems.update(productId ?? 0, (item) => item.copyWith(quantity: item.quantity + 1));
     } else {
       // new item
-      trxItems[productId] = CartItemModel(product: product, quantity: 1);
+      trxItems[productId ?? 0] = CartItemModel(product: product, quantity: 1);
     }
 
     _updateTotal();
@@ -75,10 +59,7 @@ class TransactionController extends GetxController {
     if (!trxItems.containsKey(productId)) return;
 
     if (trxItems[productId]!.quantity > 1) {
-      trxItems.update(
-        productId,
-        (item) => item.copyWith(quantity: item.quantity - 1),
-      );
+      trxItems.update(productId ?? 0, (item) => item.copyWith(quantity: item.quantity - 1));
     } else {
       //1 item left
       trxItems.remove(productId);
@@ -101,15 +82,12 @@ class TransactionController extends GetxController {
   void _setTotalPrice() {
     totalPrice.value = trxItems.values.fold(
       0,
-      (sum, item) => sum + item.product.hargaJual * item.quantity,
+      (sum, item) => sum + (item.product.hargaJual ?? 0) * (item.quantity ?? 0),
     );
   }
 
   void _setTotalItems() {
-    totalItems.value = trxItems.values.fold(
-      0,
-      (sum, item) => sum + item.quantity,
-    );
+    totalItems.value = trxItems.values.fold(0, (sum, item) => sum + item.quantity);
   }
 
   void clearItems() {
@@ -120,5 +98,9 @@ class TransactionController extends GetxController {
 
   Future<void> createTransaction(TransactionCreateModel data) async {
     await repository.postTransaction(data);
+  }
+
+  int generateNextCacheId() {
+    return repository.generateNextCacheId();
   }
 }

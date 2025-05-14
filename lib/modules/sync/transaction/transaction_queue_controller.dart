@@ -14,11 +14,7 @@ class TransactionQueueController extends GetxController {
   final TransactionRemoteDataSource remote;
   final SyncLogService logService;
 
-  TransactionQueueController({
-    required this.local,
-    required this.remote,
-    required this.logService,
-  });
+  TransactionQueueController({required this.local, required this.remote, required this.logService});
 
   List<TransactionCreateModel> getQueuedItems() {
     return local.getQueuedItems();
@@ -28,15 +24,12 @@ class TransactionQueueController extends GetxController {
     int totalFailed = 0;
     int totalSuccess = 0;
 
-    Get.dialog(
-      Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-    );
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
 
     // for (var item in items) {
     for (int i = 0; i < items.length; i++) {
       var item = items[i];
-      var response = await remote.postTransaction(item);
+      var response = await remote.postTransaction(item.toJson());
       bool isSuccess = response.statusCode == 200 || response.statusCode == 201;
 
       if (isSuccess) {
@@ -50,8 +43,7 @@ class TransactionQueueController extends GetxController {
         SyncLog(
           type: 'transaction',
           success: isSuccess,
-          message:
-              isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
+          message: isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
           data: response.data,
           timestamp: DateTime.now(),
         ),
@@ -67,12 +59,9 @@ class TransactionQueueController extends GetxController {
   }
 
   Future<void> rePostItem(TransactionCreateModel item, int queueIndex) async {
-    Get.dialog(
-      Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-    );
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
 
-    var response = await remote.postTransaction(item);
+    var response = await remote.postTransaction(item.toJson());
     bool isSuccess = response.statusCode == 200 || response.statusCode == 201;
     if (isSuccess) {
       await local.deleteQueueAt(queueIndex); // Hapus data yg sukses
@@ -83,8 +72,7 @@ class TransactionQueueController extends GetxController {
       SyncLog(
         type: 'transaction',
         success: isSuccess,
-        message:
-            isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
+        message: isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
         data: response.data,
         timestamp: DateTime.now(),
       ),
@@ -109,9 +97,8 @@ class TransactionQueueController extends GetxController {
 
         // Re-send pending data
         log('trying to send ${item.toJson()}');
-        var response = await remote.postTransaction(item);
-        bool isSuccess =
-            response.statusCode == 200 || response.statusCode == 201;
+        var response = await remote.postTransaction(item.toJson());
+        bool isSuccess = response.statusCode == 200 || response.statusCode == 201;
 
         // Jika berhasil, hapus data dari queue
         if (isSuccess) {
@@ -123,10 +110,7 @@ class TransactionQueueController extends GetxController {
           SyncLog(
             type: 'transaction',
             success: isSuccess,
-            message:
-                isSuccess
-                    ? 'Transactions synced'
-                    : 'Failed syncing transactions',
+            message: isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
             data: response.data,
             timestamp: DateTime.now(),
           ),

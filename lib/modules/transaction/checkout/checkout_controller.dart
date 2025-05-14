@@ -8,7 +8,10 @@ class CheckoutController extends GetxController {
   var isLoading = false.obs;
 
   double get totalHarga {
-    return trxController.items.fold(0, (total, item) => total + (item.product.hargaJual * item.quantity));
+    return trxController.items.fold(
+      0,
+      (total, item) => total + ((item.product.hargaJual ?? 0) * (item.quantity ?? 0)),
+    );
   }
 
   void clear() {

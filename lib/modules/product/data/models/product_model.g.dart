@@ -17,55 +17,67 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProductModel(
-      idBrg: fields[0] as int,
-      kodeBrg: fields[1] as String,
-      namaBrg: fields[2] as String,
-      satuan: fields[3] as String,
-      hargaBeli: fields[4] as int,
-      margin: fields[5] as int,
-      hargaJual: fields[6] as int,
-      gambar: fields[7] as String?,
-      status: fields[8] as String,
-      createdAt: fields[9] as String,
-      userid: fields[10] as int,
-      stok: fields[11] as int,
-      storeId: fields[12] as int,
-      storeName: fields[13] as String,
+      idBrg: fields[0] as int?,
+      cacheId: fields[1] as int?,
+      kodeBrg: fields[2] as String?,
+      namaBrg: fields[3] as String?,
+      satuan: fields[4] as String?,
+      hargaBeli: fields[5] as int?,
+      margin: fields[6] as int?,
+      hargaJual: fields[7] as int?,
+      gambar: fields[8] as String?,
+      status: fields[9] as String?,
+      createdAt: fields[10] as String?,
+      userid: fields[11] as int?,
+      nama: fields[12] as String?,
+      stok: fields[13] as int?,
+      stokUpdatedAt: fields[14] as String?,
+      storeId: fields[15] as int?,
+      storeName: fields[16] as String?,
+      barcodeUrl: fields[17] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProductModel obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(18)
       ..writeByte(0)
       ..write(obj.idBrg)
       ..writeByte(1)
-      ..write(obj.kodeBrg)
+      ..write(obj.cacheId)
       ..writeByte(2)
-      ..write(obj.namaBrg)
+      ..write(obj.kodeBrg)
       ..writeByte(3)
-      ..write(obj.satuan)
+      ..write(obj.namaBrg)
       ..writeByte(4)
-      ..write(obj.hargaBeli)
+      ..write(obj.satuan)
       ..writeByte(5)
-      ..write(obj.margin)
+      ..write(obj.hargaBeli)
       ..writeByte(6)
-      ..write(obj.hargaJual)
+      ..write(obj.margin)
       ..writeByte(7)
-      ..write(obj.gambar)
+      ..write(obj.hargaJual)
       ..writeByte(8)
-      ..write(obj.status)
+      ..write(obj.gambar)
       ..writeByte(9)
-      ..write(obj.createdAt)
+      ..write(obj.status)
       ..writeByte(10)
-      ..write(obj.userid)
+      ..write(obj.createdAt)
       ..writeByte(11)
-      ..write(obj.stok)
+      ..write(obj.userid)
       ..writeByte(12)
-      ..write(obj.storeId)
+      ..write(obj.nama)
       ..writeByte(13)
-      ..write(obj.storeName);
+      ..write(obj.stok)
+      ..writeByte(14)
+      ..write(obj.stokUpdatedAt)
+      ..writeByte(15)
+      ..write(obj.storeId)
+      ..writeByte(16)
+      ..write(obj.storeName)
+      ..writeByte(17)
+      ..write(obj.barcodeUrl);
   }
 
   @override

@@ -7,87 +7,104 @@ part 'product_model.g.dart';
 @HiveType(typeId: HiveTypeIds.product)
 class ProductModel extends HiveObject implements SyncableHiveObject<ProductModel> {
   @HiveField(0)
-  int idBrg;
+  int? idBrg;
 
   @HiveField(1)
-  String kodeBrg;
+  int? cacheId;
 
   @HiveField(2)
-  String namaBrg;
+  String? kodeBrg;
 
   @HiveField(3)
-  String satuan;
+  String? namaBrg;
 
   @HiveField(4)
-  int hargaBeli;
+  String? satuan;
 
   @HiveField(5)
-  int margin;
+  int? hargaBeli;
 
   @HiveField(6)
-  int hargaJual;
+  int? margin;
 
   @HiveField(7)
-  String? gambar;
+  int? hargaJual;
 
   @HiveField(8)
-  String status;
+  String? gambar;
 
   @HiveField(9)
-  String createdAt;
+  String? status;
 
   @HiveField(10)
-  int userid;
+  String? createdAt;
 
   @HiveField(11)
-  int stok;
+  int? userid;
 
   @HiveField(12)
-  int storeId;
+  String? nama;
 
   @HiveField(13)
-  String storeName;
+  int? stok;
 
-  String? barcodeUrl = '';
+  @HiveField(14)
+  String? stokUpdatedAt;
+
+  @HiveField(15)
+  int? storeId;
+
+  @HiveField(16)
+  String? storeName;
+
+  @HiveField(17)
+  String? barcodeUrl;
 
   ProductModel({
-    required this.idBrg,
-    required this.kodeBrg,
-    required this.namaBrg,
-    required this.satuan,
-    required this.hargaBeli,
-    required this.margin,
-    required this.hargaJual,
-    this.gambar,
-    required this.status,
-    required this.createdAt,
-    required this.userid,
-    required this.stok,
-    required this.storeId,
-    required this.storeName,
-    this.barcodeUrl,
+    this.idBrg,
+    this.cacheId,
+    this.kodeBrg,
+    this.namaBrg,
+    this.satuan,
+    this.hargaBeli,
+    this.margin,
+    this.hargaJual,
+    this.gambar = '',
+    this.status,
+    this.createdAt,
+    this.userid,
+    this.nama,
+    this.stok,
+    this.stokUpdatedAt,
+    this.storeId,
+    this.storeName,
+    this.barcodeUrl = '',
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-    idBrg: json['id_brg'] as int,
-    kodeBrg: json['kode_brg'] as String,
-    namaBrg: json['nama_brg'] as String,
-    satuan: json['satuan'] as String,
-    hargaBeli: json['harga_beli'] as int,
-    margin: json['margin'] as int,
-    hargaJual: json['harga_jual'] as int,
+    idBrg: json['id_brg'] as int?,
+    cacheId: json['cache_id'] as int?,
+    kodeBrg: json['kode_brg'] as String?,
+    namaBrg: json['nama_brg'] as String?,
+    satuan: json['satuan'] as String?,
+    hargaBeli: json['harga_beli'] as int?,
+    margin: json['margin'] as int?,
+    hargaJual: json['harga_jual'] as int?,
     gambar: json['gambar'] as String?,
-    status: json['status'] as String,
-    createdAt: json['created_at'] as String,
-    userid: json['userid'] as int,
-    stok: json['stok'] as int,
-    storeId: json['store_id'] as int,
-    storeName: json['store_name'] as String,
+    status: json['status'] as String?,
+    createdAt: json['created_at'] as String?,
+    userid: json['userid'] as int?,
+    nama: json['nama'] as String?,
+    stok: json['stok'] as int?,
+    stokUpdatedAt: json['stok_updated_at'] as String?,
+    storeId: json['store_id'] as int?,
+    storeName: json['store_name'] as String?,
     barcodeUrl: json['barcode_url'] as String?,
   );
 
   Map<String, dynamic> toJson() => {
     'id_brg': idBrg,
+    'cache_id': cacheId,
     'kode_brg': kodeBrg,
     'nama_brg': namaBrg,
     'satuan': satuan,
@@ -98,14 +115,23 @@ class ProductModel extends HiveObject implements SyncableHiveObject<ProductModel
     'status': status,
     'created_at': createdAt,
     'userid': userid,
+    'nama': nama,
     'stok': stok,
+    'stok_updated_at': stokUpdatedAt,
     'store_id': storeId,
     'store_name': storeName,
     'barcode_url': barcodeUrl,
   };
 
+  Map<String, dynamic> toJsonCreate() => {
+    'nama_brg': namaBrg,
+    'satuan': satuan,
+    'harga_beli': hargaBeli,
+    'margin': margin,
+  };
+
   @override
-  int get modelId => idBrg;
+  int get modelId => idBrg ?? 0;
 
   @override
   bool isDifferent(ProductModel other) {
@@ -119,7 +145,9 @@ class ProductModel extends HiveObject implements SyncableHiveObject<ProductModel
         status != other.status ||
         createdAt != other.createdAt ||
         userid != other.userid ||
+        nama != other.nama ||
         stok != other.stok ||
+        stokUpdatedAt != other.stokUpdatedAt ||
         storeId != other.storeId ||
         storeName != other.storeName;
   }

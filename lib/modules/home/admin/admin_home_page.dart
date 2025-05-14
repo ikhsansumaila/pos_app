@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
-import 'package:pos_app/modules/common/widgets/confirmation_dialog.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
@@ -17,31 +17,15 @@ class MenuItem {
 }
 
 final List<MenuItem> _menuItems = [
-  MenuItem(
-    title: 'Buat Transaksi',
-    icon: Icons.point_of_sale,
-    route: AppRoutes.transactions.url,
-  ),
-  MenuItem(
-    title: 'Atur Barang',
-    icon: Icons.list_alt,
-    route: AppRoutes.products.url,
-  ),
+  MenuItem(title: 'Buat Transaksi', icon: Icons.point_of_sale, route: AppRoutes.transactions.url),
+  MenuItem(title: 'Atur Barang', icon: Icons.list_alt, route: AppRoutes.products.url),
   MenuItem(
     title: 'Pesanan',
     icon: Icons.receipt_long,
     route: AppRoutes.orders.url, // order from customer (online)
   ),
-  MenuItem(
-    title: 'Akun Pengguna',
-    icon: Icons.person,
-    route: AppRoutes.users.url,
-  ),
-  MenuItem(
-    title: 'Sinkronisasi Data',
-    icon: Icons.sync,
-    route: AppRoutes.syncPage.url,
-  ),
+  MenuItem(title: 'Akun Pengguna', icon: Icons.person, route: AppRoutes.users.url),
+  MenuItem(title: 'Sinkronisasi Data', icon: Icons.sync, route: AppRoutes.syncPage.url),
 ];
 
 class AdminHomePage extends StatelessWidget {
@@ -51,21 +35,13 @@ class AdminHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = ResponsiveHelper(MediaQuery.of(context).size);
 
-    var padding =
-        responsive.isTablet
-            ? EdgeInsets.fromLTRB(40, 20, 40, 20)
-            : EdgeInsets.all(20);
+    var padding = responsive.isTablet ? EdgeInsets.fromLTRB(40, 20, 40, 20) : EdgeInsets.all(20);
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(
         title: 'Selamat Datang Admin',
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () => _showSettingsMenu(),
-          ),
-        ],
+        actions: [IconButton(icon: Icon(Icons.settings), onPressed: () => _showSettingsMenu())],
       ),
       body: Padding(
         padding: padding,
@@ -99,13 +75,7 @@ class AdminHomePage extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(responsive.isTablet ? 30 : 10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 15,
-            offset: Offset(4, 4),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 15, offset: Offset(4, 4))],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -139,9 +109,7 @@ class AdminHomePage extends StatelessWidget {
             return ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: double.infinity, // full width
-                minHeight:
-                    MediaQuery.of(context).size.height * 0.1 +
-                    30, // tinggi dinamis + 30
+                minHeight: MediaQuery.of(context).size.height * 0.1 + 30, // tinggi dinamis + 30
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -150,7 +118,7 @@ class AdminHomePage extends StatelessWidget {
                     leading: const Icon(Icons.logout, color: Colors.red),
                     title: const Text("Logout"),
                     onTap: () async {
-                      bool confirmResult = await showConfirmationDialog(
+                      bool confirmResult = await AppDialog.showConfirmationDialog(
                         context,
                         "Logout",
                         const Text('Anda yakin ingin Logout?'),

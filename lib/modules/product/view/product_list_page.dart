@@ -23,7 +23,10 @@ class ProductPage extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed: () => Get.toNamed(AppRoutes.addProduct.url)),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => Get.toNamed(AppRoutes.addProduct.url),
+        ),
         appBar: MyAppBar(
           title: 'List Barang',
           // actions: [
@@ -35,7 +38,11 @@ class ProductPage extends StatelessWidget {
         ),
         body: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: AppColors.primaryGradient, begin: Alignment.topLeft, end: Alignment.bottomRight),
+            gradient: LinearGradient(
+              colors: AppColors.primaryGradient,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
           child: Column(
             children: [
@@ -43,7 +50,14 @@ class ProductPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(24),
                 child: Row(
-                  children: [Expanded(child: AppSearchBar(controller: productController.searchController, hintText: 'Cari Barang...'))],
+                  children: [
+                    Expanded(
+                      child: AppSearchBar(
+                        controller: productController.searchController,
+                        hintText: 'Cari Barang...',
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -51,7 +65,11 @@ class ProductPage extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   if (productController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)));
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ),
+                    );
                   }
 
                   return Padding(
@@ -81,7 +99,7 @@ class ProductPage extends StatelessWidget {
 
   Widget _buildProductCard(ProductModel product, ResponsiveHelper responsive) {
     double circularRadius = 10;
-    int stock = product.stok;
+    int stock = product.stok ?? 0;
 
     int maxLines = 3;
     double fontSize = 20;
@@ -116,7 +134,7 @@ class ProductPage extends StatelessWidget {
                 SizedBox(
                   height: fontSize * lineHeight * maxLines,
                   child: Text(
-                    product.namaBrg,
+                    product.namaBrg ?? '',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: responsive.fontSize(fontSize) - 2,
@@ -129,12 +147,24 @@ class ProductPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  AppFormatter.currency(product.hargaJual.toDouble()),
-                  style: TextStyle(color: AppColors.priceColor, fontSize: responsive.fontSize(fontSize), fontWeight: FontWeight.bold),
+                  AppFormatter.currency((product.hargaJual ?? 0).toDouble()),
+                  style: TextStyle(
+                    color: AppColors.priceColor,
+                    fontSize: responsive.fontSize(fontSize),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('(Stok: $stock)', style: TextStyle(color: Colors.black87, fontSize: responsive.fontSize(fontSize) - 4))],
+                  children: [
+                    Text(
+                      '(Stok: $stock)',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: responsive.fontSize(fontSize) - 4,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

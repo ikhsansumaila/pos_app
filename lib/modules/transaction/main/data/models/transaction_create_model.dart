@@ -35,7 +35,11 @@ class TransactionCreateModel extends HiveObject {
   @HiveField(9)
   final List<TransactionItemModel> items;
 
+  @HiveField(10)
+  int cacheId;
+
   TransactionCreateModel({
+    required this.cacheId,
     required this.transType,
     required this.transDate,
     required this.description,
@@ -50,6 +54,7 @@ class TransactionCreateModel extends HiveObject {
 
   factory TransactionCreateModel.fromJson(Map<String, dynamic> json) {
     return TransactionCreateModel(
+      cacheId: json['cache_id'],
       transType: json['trans_type'],
       transDate: json['trans_date'],
       description: json['description'],
@@ -64,6 +69,7 @@ class TransactionCreateModel extends HiveObject {
   }
 
   Map<String, dynamic> toJson() => {
+    'cache_id': cacheId,
     'trans_type': transType,
     'trans_date': transDate,
     'description': description,
@@ -75,6 +81,17 @@ class TransactionCreateModel extends HiveObject {
     'userid': userId,
     'items': items.map((e) => e.toJson()).toList(),
   };
+
+  // Transaction Response detail :
+  // {
+  //   'trans_id': transId,       => n/a in detail
+  //   'trans_code': transCode,   => n/a in detail
+  //   'trans_type': transType,
+  //   'trans_date': transDate,
+  //   'trans_total': transTotal,
+  //   'created_at': createdAt,   => n/a in detail
+  //   'userid': userId,
+  // };
 }
 
 @HiveType(typeId: HiveTypeIds.transactionItem)

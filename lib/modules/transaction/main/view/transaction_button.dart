@@ -78,13 +78,7 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                offset: Offset(0, -2),
-              ),
-            ],
+            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, -2))],
           ),
           child: Column(
             children: [
@@ -98,21 +92,14 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                           Align(
                             alignment: Alignment.center,
                             child: IconButton(
-                              icon: Icon(
-                                isExpanded
-                                    ? Icons.expand_more
-                                    : Icons.expand_less,
-                              ),
+                              icon: Icon(isExpanded ? Icons.expand_more : Icons.expand_less),
                               onPressed: toggleSheetSize,
                             ),
                           ),
                           if (trxController.items.isNotEmpty && isExpanded)
                             ...trxController.items.map(
                               (item) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                  horizontal: 20,
-                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -123,26 +110,19 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                                         TextSpan(
                                           children: [
                                             TextSpan(
-                                              text:
-                                                  '${item.product.namaBrg} (${item.quantity}) - ',
-                                              style: TextStyle(
-                                                fontSize: responsive.fontSize(
-                                                  14,
-                                                ),
-                                              ),
+                                              text: '${item.product.namaBrg} (${item.quantity}) - ',
+                                              style: TextStyle(fontSize: responsive.fontSize(14)),
                                             ),
                                             TextSpan(
                                               text: AppFormatter.currency(
-                                                (item.product.hargaJual *
-                                                        item.quantity)
+                                                ((item.product.hargaJual ?? 0) *
+                                                        (item.quantity ?? 0))
                                                     .toDouble(),
                                               ),
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black54,
-                                                fontSize: responsive.fontSize(
-                                                  14,
-                                                ),
+                                                fontSize: responsive.fontSize(14),
                                               ),
                                             ),
                                           ],
@@ -198,9 +178,7 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           padding: EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                         ),
                         child: Text(
                           'Checkout',

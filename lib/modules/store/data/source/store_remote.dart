@@ -20,14 +20,4 @@ class StoreRemoteDataSource {
     }
     return [];
   }
-
-  // Future<ApiResponse> postUser(UserCreateModel user) async {
-  //   return await dio.post(USER_API_URL, data: user.toJson());
-  // }
-
-  // //TODO: USE IT OR NOT?
-  // Future<void> postBulkUser(List<UserCreateModel> users) async {
-  //   final data = jsonEncode(users.map((u) => u.toJson()).toList());
-  //   await dio.post(USER_API_URL, data: data);
-  // }
 }

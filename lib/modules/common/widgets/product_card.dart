@@ -20,7 +20,10 @@ class ProductCard extends StatelessWidget {
       shadowColor: Colors.black26,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(borderRadius)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,24 +32,40 @@ class ProductCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
                 aspectRatio: 1, // Square image
-                child: AppImage(url: product.gambar, fit: BoxFit.cover, width: double.infinity, height: 120),
+                child: AppImage(
+                  url: product.gambar,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 120,
+                ),
               ),
             ),
             const SizedBox(height: 8),
             // Info produk
             Text(
-              product.namaBrg,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87),
+              product.namaBrg ?? '',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
             Text(
-              AppFormatter.currency(product.hargaJual.toDouble()),
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.priceColor),
+              AppFormatter.currency((product.hargaJual ?? 0).toDouble()),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: AppColors.priceColor,
+              ),
             ),
             const SizedBox(height: 2),
-            Text('Stok: ${product.stok}', style: const TextStyle(fontSize: 12, color: Colors.black54)),
+            Text(
+              'Stok: ${product.stok ?? 0}',
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
+            ),
           ],
         ),
       ),

@@ -20,12 +20,12 @@ class _AddProductPageState extends State<AddProductPage> {
 
   final productController = Get.find<ProductController>();
 
-  final TextEditingController _kodeController = TextEditingController();
+  // final TextEditingController _kodeController = TextEditingController();
   final TextEditingController _namaController = TextEditingController();
   final TextEditingController _satuanController = TextEditingController();
   final TextEditingController _hargaBeliController = TextEditingController();
-  final TextEditingController _hargaJualController = TextEditingController();
-  final TextEditingController _stokController = TextEditingController();
+  // final TextEditingController _hargaJualController = TextEditingController();
+  // final TextEditingController _stokController = TextEditingController();
 
   File? _imageFile;
 
@@ -69,20 +69,21 @@ class _AddProductPageState extends State<AddProductPage> {
   void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       final product = ProductModel(
-        idBrg: DateTime.now().millisecondsSinceEpoch,
-        kodeBrg: _kodeController.text,
+        // idBrg: DateTime.now().millisecondsSinceEpoch,
+        // cacheId: 0,
+        // kodeBrg: _kodeController.text,
         namaBrg: _namaController.text,
         satuan: _satuanController.text,
         hargaBeli: int.parse(_hargaBeliController.text),
         margin: 0,
-        hargaJual: int.parse(_hargaJualController.text),
-        gambar: _imageFile?.path,
-        status: 'active',
-        createdAt: DateTime.now().toIso8601String(),
-        userid: 0,
-        stok: int.parse(_stokController.text),
-        storeId: 1,
-        storeName: 'Toko Default',
+        // hargaJual: int.parse(_hargaJualController.text),
+        // gambar: _imageFile?.path,
+        // status: 'active',
+        // createdAt: DateTime.now().toIso8601String(),
+        // userid: 0,
+        // stok: int.parse(_stokController.text),
+        // storeId: 1,
+        // storeName: 'Toko Default',
       );
 
       await productController.addProduct(product);
@@ -110,11 +111,11 @@ class _AddProductPageState extends State<AddProductPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _kodeController,
-                    decoration: const InputDecoration(labelText: 'Kode Barang'),
-                    validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
-                  ),
+                  // TextFormField(
+                  //   controller: _kodeController,
+                  //   decoration: const InputDecoration(labelText: 'Kode Barang'),
+                  //   validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                  // ),
                   TextFormField(
                     controller: _namaController,
                     decoration: const InputDecoration(labelText: 'Nama Barang'),
@@ -131,18 +132,18 @@ class _AddProductPageState extends State<AddProductPage> {
                     keyboardType: TextInputType.number,
                     validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
                   ),
-                  TextFormField(
-                    controller: _hargaJualController,
-                    decoration: const InputDecoration(labelText: 'Harga Jual'),
-                    keyboardType: TextInputType.number,
-                    validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
-                  ),
-                  TextFormField(
-                    controller: _stokController,
-                    decoration: const InputDecoration(labelText: 'Stok'),
-                    keyboardType: TextInputType.number,
-                    validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
-                  ),
+                  // TextFormField(
+                  //   controller: _hargaJualController,
+                  //   decoration: const InputDecoration(labelText: 'Harga Jual'),
+                  //   keyboardType: TextInputType.number,
+                  //   validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                  // ),
+                  // TextFormField(
+                  //   controller: _stokController,
+                  //   decoration: const InputDecoration(labelText: 'Stok'),
+                  //   keyboardType: TextInputType.number,
+                  //   validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                  // ),
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: _pickImage,
@@ -150,7 +151,10 @@ class _AddProductPageState extends State<AddProductPage> {
                         _imageFile == null
                             ? Container(
                               height: 150,
-                              decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(12)),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                               child: const Center(child: Text('Upload Gambar')),
                             )
                             : ClipRRect(

@@ -29,8 +29,8 @@ class TransactionRemoteDataSource {
     return [];
   }
 
-  Future<ApiResponse> postTransaction(TransactionCreateModel trx) async {
-    return await dio.post(API_URL, data: trx.toJson());
+  Future<ApiResponse> postTransaction(Map<String, dynamic> data) async {
+    return await dio.post(API_URL, data: data);
   }
 
   //TODO: USE IT OR NOT?

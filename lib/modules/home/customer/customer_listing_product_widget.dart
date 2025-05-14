@@ -34,12 +34,19 @@ class CustomerListing extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: AppSearchBar(controller: productController.searchController, hintText: 'Cari Barang...'),
+                child: AppSearchBar(
+                  controller: productController.searchController,
+                  hintText: 'Cari Barang...',
+                ),
               ),
               Expanded(
                 child: Obx(() {
                   if (productController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)));
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ),
+                    );
                   }
 
                   return Padding(
@@ -80,8 +87,8 @@ class CustomerListing extends StatelessWidget {
         child: GetBuilder(
           init: cartController,
           builder: (data) {
-            final quantity = data.getQuantity(product.idBrg);
-            int stock = product.stok;
+            final quantity = data.getQuantity(product.idBrg ?? 0);
+            int stock = product.stok ?? 0;
 
             bool buttonAddEnabled = stock > 0 && quantity < stock;
             bool buttonRemoveEnabled = stock > 0 && quantity > 0;
@@ -97,27 +104,53 @@ class CustomerListing extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppImage(url: product.gambar, width: double.infinity, height: 130, fit: BoxFit.cover),
+                    AppImage(
+                      url: product.gambar,
+                      width: double.infinity,
+                      height: 130,
+                      fit: BoxFit.cover,
+                    ),
                     SizedBox(height: 8),
-                    Text(product.namaBrg, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: Colors.black87)),
                     Text(
-                      AppFormatter.currency(product.hargaJual.toDouble()),
-                      style: TextStyle(color: AppColors.priceColor, fontSize: 14, fontWeight: FontWeight.bold),
+                      product.namaBrg ?? '',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    Text(
+                      AppFormatter.currency((product.hargaJual ?? 0).toDouble()),
+                      style: TextStyle(
+                        color: AppColors.priceColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('(Stok: $stock)', style: TextStyle(color: Colors.black87, fontSize: 10)),
+                        Text(
+                          '(Stok: $stock)',
+                          style: TextStyle(color: Colors.black87, fontSize: 10),
+                        ),
                         Row(
                           children: [
                             AppIconButton(
-                              onPressed: buttonRemoveEnabled ? () => data.removeFromCart(product) : null,
+                              onPressed:
+                                  buttonRemoveEnabled ? () => data.removeFromCart(product) : null,
                               icon: Icons.remove_circle,
                               color: buttonRemoveEnabled ? Colors.red : Colors.grey,
                               size: 14,
                             ),
                             const SizedBox(width: 8),
-                            Text(quantity.toString(), style: TextStyle(fontSize: 10, color: stock == 0 ? Colors.grey : Colors.black87)),
+                            Text(
+                              quantity.toString(),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: stock == 0 ? Colors.grey : Colors.black87,
+                              ),
+                            ),
                             const SizedBox(width: 8),
                             AppIconButton(
                               onPressed: buttonAddEnabled ? () => data.addToCart(product) : null,

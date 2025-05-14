@@ -60,12 +60,15 @@ class CheckoutPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        cartItem.product.namaBrg,
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: responsive.fontSize(18)),
+                                        cartItem.product.namaBrg ?? '',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: responsive.fontSize(18),
+                                        ),
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        'Qty: ${cartItem.quantity} x ${AppFormatter.currency(cartItem.product.hargaJual.toDouble())}',
+                                        'Qty: ${cartItem.quantity} x ${AppFormatter.currency((cartItem.product.hargaJual ?? 0).toDouble())}',
                                         style: TextStyle(fontSize: responsive.fontSize(16)),
                                       ),
                                     ],
@@ -73,7 +76,10 @@ class CheckoutPage extends StatelessWidget {
                                 ),
                                 // Harga di kanan bawah
                                 Text(
-                                  AppFormatter.currency((cartItem.quantity * cartItem.product.hargaJual).toDouble()),
+                                  AppFormatter.currency(
+                                    (cartItem.quantity * (cartItem.product.hargaJual ?? 0))
+                                        .toDouble(),
+                                  ),
                                   style: TextStyle(
                                     fontSize: responsive.fontSize(18),
                                     fontWeight: FontWeight.bold,
@@ -102,7 +108,11 @@ class CheckoutPage extends StatelessWidget {
                       Text('Total', style: TextStyle(fontSize: 18)),
                       Text(
                         AppFormatter.currency(checkoutController.totalHarga),
-                        style: TextStyle(fontSize: responsive.fontSize(22), fontWeight: FontWeight.bold, color: AppColors.priceColor),
+                        style: TextStyle(
+                          fontSize: responsive.fontSize(22),
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.priceColor,
+                        ),
                       ),
                     ],
                   ),
@@ -122,13 +132,13 @@ class CheckoutPage extends StatelessWidget {
 
                       var trxItems =
                           items.map((item) {
-                            var subTotal = item.product.hargaJual.toDouble() * item.quantity;
+                            var subTotal = (item.product.hargaJual ?? 0).toDouble() * item.quantity;
                             return TransactionItemModel(
-                              idBarang: item.product.idBrg,
-                              kodeBarang: item.product.kodeBrg,
+                              idBarang: item.product.idBrg ?? 0,
+                              kodeBarang: item.product.kodeBrg ?? '',
                               description: description,
                               qty: item.quantity,
-                              price: item.product.hargaJual.toDouble(),
+                              price: (item.product.hargaJual ?? 0).toDouble(),
                               subtotal: subTotal,
                               discount: 0.0,
                               total: subTotal,
@@ -136,6 +146,7 @@ class CheckoutPage extends StatelessWidget {
                           }).toList();
 
                       var trxData = TransactionCreateModel(
+                        cacheId: trxController.generateNextCacheId(),
                         transType: transType,
                         transDate: transDate,
                         description: description,
@@ -159,7 +170,10 @@ class CheckoutPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                     ),
-                    child: Text('Bayar Sekarang', style: TextStyle(fontSize: responsive.fontSize(18))),
+                    child: Text(
+                      'Bayar Sekarang',
+                      style: TextStyle(fontSize: responsive.fontSize(18)),
+                    ),
                   ),
                 ],
               ),

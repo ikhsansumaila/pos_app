@@ -131,10 +131,7 @@ class PrintPDF extends StatelessWidget {
   }
 }
 
-Future<void> cetakStrukPDF(
-  List<CartItemModel> cartItems,
-  double totalPayment,
-) async {
+Future<void> cetakStrukPDF(List<CartItemModel> cartItems, double totalPayment) async {
   final pdf = pw.Document();
   var storeName = cartItems[0].product.storeName;
 
@@ -148,16 +145,13 @@ Future<void> cetakStrukPDF(
           children: [
             pw.Center(
               child: pw.Text(
-                storeName,
-                style: pw.TextStyle(
-                  fontSize: 18,
-                  fontWeight: pw.FontWeight.bold,
-                ),
+                storeName ?? '',
+                style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
               ),
             ),
             pw.SizedBox(height: 10),
 
-            pw.Text('Tanggal: ${DateTime.now().toIso8601String()}'),
+            pw.Text('Tanggal: ${AppFormatter.dateTime(DateTime.now())}'),
             pw.Divider(),
             ...cartItems.map((item) {
               return pw.Text(
@@ -170,10 +164,7 @@ Future<void> cetakStrukPDF(
               alignment: pw.Alignment.centerRight,
               child: pw.Text(
                 'Total: Rp${AppFormatter.currency(totalPayment)}',
-                style: pw.TextStyle(
-                  fontSize: 16,
-                  fontWeight: pw.FontWeight.bold,
-                ),
+                style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
               ),
             ),
             pw.SizedBox(height: 20),
@@ -184,7 +175,5 @@ Future<void> cetakStrukPDF(
     ),
   );
 
-  await Printing.layoutPdf(
-    onLayout: (PdfPageFormat format) async => pdf.save(),
-  );
+  await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdf.save());
 }

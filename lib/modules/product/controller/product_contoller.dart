@@ -10,6 +10,7 @@ class ProductController extends GetxController {
   final products = <ProductModel>[].obs;
   final filteredProducts = <ProductModel>[].obs;
   final isLoading = false.obs;
+  final storeId = 1;
 
   final searchController = TextEditingController();
 
@@ -23,7 +24,7 @@ class ProductController extends GetxController {
   void fetchProducts() async {
     isLoading(true);
 
-    final res = await repository.getProducts();
+    final res = await repository.getProducts(storeId);
     products.assignAll(res);
     filteredProducts.assignAll(res);
 
@@ -36,9 +37,7 @@ class ProductController extends GetxController {
     } else {
       final filtered =
           products
-              .where(
-                (p) => p.namaBrg.toLowerCase().contains(query.toLowerCase()),
-              )
+              .where((p) => (p.namaBrg ?? '').toLowerCase().contains(query.toLowerCase()))
               .toList();
       filteredProducts.assignAll(filtered);
     }

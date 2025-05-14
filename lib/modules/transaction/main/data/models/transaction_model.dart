@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/storage/local_storage_service.dart';
+import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 part 'transaction_model.g.dart';
@@ -58,6 +59,18 @@ class TransactionModel extends HiveObject implements SyncableHiveObject<Transact
     'created_at': createdAt,
     'userid': userId,
   };
+
+  factory TransactionModel.setByFormData(TransactionCreateModel trx) {
+    return TransactionModel(
+      transId: 0,
+      transCode: '',
+      transType: '',
+      transDate: '',
+      transTotal: 0,
+      createdAt: '',
+      userId: trx.userId,
+    );
+  }
 
   @override
   int get modelId => transId;

@@ -7,6 +7,7 @@ import 'package:pos_app/modules/transaction/main/data/models/transaction_model.d
 import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
 import 'package:pos_app/modules/transaction/main/data/source/transaction_local.dart';
 import 'package:pos_app/modules/transaction/main/data/source/transaction_remote.dart';
+import 'package:pos_app/utils/cache_helper.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
   final TransactionRemoteDataSource remote;
@@ -20,7 +21,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   });
 
   @override
-  Future<List<TransactionModel>> getUsers() async {
+  Future<List<TransactionModel>> getTranscations() async {
     final isOnline = await connectivity.isConnected();
 
     if (!isOnline) {
@@ -38,17 +39,30 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<void> postTransaction(TransactionCreateModel trx) async {
+  Future<void> postTransaction(TransactionCreateModel trxData) async {
+    // for send to remote/queue
+    TransactionCreateModel trxCreate = TransactionCreateModel.fromJson(trxData.toJson());
+
+    // for updating local cache
+    TransactionModel trxCached = TransactionModel.setByFormData(trxData);
+
     if (await connectivity.isConnected()) {
-      var response = await remote.postTransaction(trx);
+      var response = await remote.postTransaction(trxCreate.toJson());
 
       // if failed, save to local queue
       if (response.statusCode != 200 && response.statusCode != 201) {
-        local.addToQueue(trx); // simpan queue lokal
+        local.addToQueue(trxCreate); // simpan queue lokal
+        await local.addToCache(trxCached);
       }
     } else {
       // if offline mode, save to local queue
-      local.addToQueue(trx);
+      local.addToQueue(trxCreate);
+      await local.addToCache(trxCached);
     }
+  }
+
+  @override
+  int generateNextCacheId() {
+    return CacheHelper.generateNextCacheId(local.cacheBox);
   }
 }

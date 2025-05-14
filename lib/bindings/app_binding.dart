@@ -67,22 +67,12 @@ class AppBinding extends Bindings {
     Get.put(
       UserLocalDataSource(
         userCacheBox: Hive.box(USER_BOX_KEY),
-        userRoleCacheBox: Hive.box(USER_ROLE_BOX_KEY),
-        queueBox: Hive.box(QUEUE_USER_KEY),
+        roleCacheBox: Hive.box(USER_ROLE_BOX_KEY),
       ),
     );
-    Get.put(
-      StoreLocalDataSource(cacheBox: Hive.box(STORE_BOX_KEY), queueBox: Hive.box(QUEUE_STORE_KEY)),
-    );
-    Get.put(
-      ProductLocalDataSource(
-        cacheBox: Hive.box(PRODUCT_BOX_KEY),
-        queueBox: Hive.box(QUEUE_PRODUCT_KEY),
-      ),
-    );
-    Get.put(
-      OrderLocalDataSource(cacheBox: Hive.box(ORDER_BOX_KEY), queueBox: Hive.box(QUEUE_ORDER_KEY)),
-    );
+    Get.put(StoreLocalDataSource(cacheBox: Hive.box(STORE_BOX_KEY)));
+    Get.put(ProductLocalDataSource(cacheBox: Hive.box(PRODUCT_BOX_KEY)));
+    Get.put(OrderLocalDataSource(cacheBox: Hive.box(ORDER_BOX_KEY)));
     Get.put(
       TransactionLocalDataSource(
         cacheBox: Hive.box(TRANSACTION_BOX_KEY),

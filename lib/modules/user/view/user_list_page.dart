@@ -46,10 +46,10 @@ class UserListPage extends StatelessWidget {
             itemBuilder: (_, index) {
               final user = users[index];
               return ListTile(
-                leading: CircleAvatar(child: Text(user.nama[0])),
-                title: Text(user.nama),
-                subtitle: Text(user.email),
-                trailing: Text(user.role),
+                leading: CircleAvatar(child: Text((user.nama ?? '-')[0])),
+                title: Text(user.nama ?? '-'),
+                subtitle: Text(user.email ?? '-'),
+                trailing: Text(user.roleName ?? '-'),
                 onTap: () {
                   Get.to(() => UserDetailPage(user: user));
                   // Navigasi ke detail atau edit jika perlu

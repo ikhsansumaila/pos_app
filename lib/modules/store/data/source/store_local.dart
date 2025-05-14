@@ -7,11 +7,10 @@ import 'package:pos_app/utils/constants/hive_key.dart';
 
 class StoreLocalDataSource {
   final Box cacheBox;
-  final Box queueBox;
 
   // late final SyncQueueDataHelper<UserCreateModel> queueHelper;
 
-  StoreLocalDataSource({required this.cacheBox, required this.queueBox}) {
+  StoreLocalDataSource({required this.cacheBox}) {
     // this sync only for create user
     // queueHelper = SyncQueueDataHelper<UserCreateModel>(
     //   box: queueBox,

@@ -18,6 +18,7 @@ class TransactionCreateModelAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TransactionCreateModel(
+      cacheId: fields[10] as int,
       transType: fields[0] as String,
       transDate: fields[1] as String,
       description: fields[2] as String,
@@ -34,7 +35,7 @@ class TransactionCreateModelAdapter
   @override
   void write(BinaryWriter writer, TransactionCreateModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.transType)
       ..writeByte(1)
@@ -54,7 +55,9 @@ class TransactionCreateModelAdapter
       ..writeByte(8)
       ..write(obj.userId)
       ..writeByte(9)
-      ..write(obj.items);
+      ..write(obj.items)
+      ..writeByte(10)
+      ..write(obj.cacheId);
   }
 
   @override

@@ -1,6 +1,8 @@
 // data/repository/product_repository_impl.dart
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
 import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
@@ -12,11 +14,7 @@ class OrderRepositoryImpl implements OrderRepository {
   final OrderLocalDataSource local;
   final ConnectivityService connectivity;
 
-  OrderRepositoryImpl({
-    required this.remote,
-    required this.local,
-    required this.connectivity,
-  });
+  OrderRepositoryImpl({required this.remote, required this.local, required this.connectivity});
 
   @override
   Future<List<OrderModel>> getOrders() async {
@@ -39,15 +37,40 @@ class OrderRepositoryImpl implements OrderRepository {
   @override
   Future<void> postOrder(OrderModel order) async {
     if (await connectivity.isConnected()) {
-      var response = await remote.postOrder(order);
+      var response = await remote.postOrder(order.toJson());
 
       // if failed, save to local queue
       if (response.statusCode != 200 && response.statusCode != 201) {
-        local.addToQueue(order); // simpan queue lokal
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Terjadi kesalahan'),
+            content: Text('${response.data}'),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+            ],
+          ),
+        );
       }
     } else {
-      // if offline mode, save to local queue
-      local.addToQueue(order);
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Tidak ada koneksi internet'),
+          content: const Text('Harap periksa koneksi internet Anda'),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
+        ),
+      );
     }
   }
 

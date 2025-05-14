@@ -19,16 +19,14 @@ class CartPage extends StatelessWidget {
       body: GetBuilder(
         init: cartController,
         builder: (data) {
-          final cartItems =
-              data.cartItems; // Ganti dengan observasi GetX jika pakai Rx
+          final cartItems = data.cartItems; // Ganti dengan observasi GetX jika pakai Rx
 
           // Group items by store
           final Map<String, List<CartItemModel>> grouped = {};
           for (var item in cartItems.entries) {
             final cartItem = item.value;
 
-            final key =
-                '${cartItem.product.storeId}|${cartItem.product.storeName}';
+            final key = '${cartItem.product.storeId}|${cartItem.product.storeName}';
             grouped.putIfAbsent(key, () => []).add(cartItem);
           }
 
@@ -46,36 +44,25 @@ class CartPage extends StatelessWidget {
                     final items = entry.value;
                     final subtotal = items.fold<int>(
                       0,
-                      (sum, item) =>
-                          sum + (item.quantity * item.product.hargaJual),
+                      (sum, item) => sum + (item.quantity * (item.product.hargaJual ?? 0)),
                     );
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap:
-                              () => Get.toNamed(
-                                AppRoutes.cartDetail.url,
-                                arguments: items,
-                              ),
+                          onTap: () => Get.toNamed(AppRoutes.cartDetail.url, arguments: items),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Toko : $storeName',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 12),
                               Text(
                                 'Total Item: ${items.length}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                               ),
                               Text(
                                 'Subtotal: ${AppFormatter.currency(subtotal.toDouble())}',

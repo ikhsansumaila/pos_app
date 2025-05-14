@@ -47,7 +47,7 @@ class ProductDetailPage extends StatelessWidget {
                         const SizedBox(height: 50),
                         // Product Name
                         Text(
-                          product.namaBrg,
+                          product.namaBrg ?? '',
                           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -56,17 +56,29 @@ class ProductDetailPage extends StatelessWidget {
 
                         // Price
                         Text(
-                          AppFormatter.currency(product.hargaJual.toDouble()),
-                          style: const TextStyle(fontSize: 20, color: AppColors.priceColor, fontWeight: FontWeight.bold),
+                          AppFormatter.currency((product.hargaJual ?? 0).toDouble()),
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: AppColors.priceColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 8),
 
                         // Stock Info
-                        Text('Stok: ${product.stok} unit', style: const TextStyle(fontSize: 14, color: Colors.black54)),
+                        Text(
+                          'Stok: ${product.stok ?? 0} unit',
+                          style: const TextStyle(fontSize: 14, color: Colors.black54),
+                        ),
                         const SizedBox(height: 16),
 
                         // Description Section (Expandable)
-                        Text('Tidak ada deskripsi.', style: const TextStyle(fontSize: 14), maxLines: 3, overflow: TextOverflow.ellipsis),
+                        Text(
+                          'Tidak ada deskripsi.',
+                          style: const TextStyle(fontSize: 14),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         const SizedBox(height: 8),
                         // TextButton(
                         //   onPressed: () {
@@ -78,7 +90,10 @@ class ProductDetailPage extends StatelessWidget {
                         //   ),
                         // ),
                         // Barcode Section
-                        Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: BarcodeImage(barcodeId: product.kodeBrg)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: BarcodeImage(barcodeId: product.kodeBrg ?? ''),
+                        ),
                         const SizedBox(height: 16),
 
                         // Edit Button
@@ -89,7 +104,9 @@ class ProductDetailPage extends StatelessWidget {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {},
-                                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primary,
+                                  ),
                                   child: const Text('Ubah Barang'),
                                 ),
                               ),

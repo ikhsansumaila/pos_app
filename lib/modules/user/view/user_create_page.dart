@@ -60,20 +60,22 @@ class CreateUserPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<int>(
-                  value: controller.selectedRoleId.value,
+                  value: controller.selectedRole.value?.id,
                   decoration: const InputDecoration(labelText: 'Role'),
                   items:
                       controller.userRoles
                           .map((e) => DropdownMenuItem(value: e.id, child: Text(e.role)))
                           .toList(),
                   onChanged: (val) {
-                    controller.selectedRoleId.value = val!;
+                    var selectedRole = controller.userRoles.where((role) => role.id == val).first;
+                    controller.selectedRole.value = selectedRole;
+
                     controller.validateForm();
                   },
                 ),
                 const SizedBox(height: 12),
 
-                if (controller.selectedRoleId.value == 3) // 3 is kasir
+                if (controller.selectedRole.value?.id == 3) // 3 is kasir
                   StoreSearchDropdown(
                     items: controller.storeList,
                     selectedItem: controller.selectedStore.value,

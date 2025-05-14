@@ -17,23 +17,26 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserModel(
-      id: fields[0] as int,
-      storeId: fields[1] as int,
+      id: fields[0] as int?,
+      storeId: fields[1] as int?,
       storeName: fields[2] as String?,
-      nama: fields[3] as String,
-      email: fields[4] as String,
-      roleId: fields[5] as int,
-      role: fields[6] as String,
-      status: fields[7] as int,
-      createdAt: fields[8] as String,
-      cacheId: fields[9] as int,
+      nama: fields[3] as String?,
+      email: fields[4] as String?,
+      password: fields[5] as String?,
+      roleId: fields[6] as int?,
+      role: fields[7] as String?,
+      roleName: fields[8] as String?,
+      status: fields[9] as int?,
+      createdAt: fields[10] as String?,
+      cacheId: fields[11] as int?,
+      userId: fields[12] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -45,15 +48,21 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(4)
       ..write(obj.email)
       ..writeByte(5)
-      ..write(obj.roleId)
+      ..write(obj.password)
       ..writeByte(6)
-      ..write(obj.role)
+      ..write(obj.roleId)
       ..writeByte(7)
-      ..write(obj.status)
+      ..write(obj.role)
       ..writeByte(8)
-      ..write(obj.createdAt)
+      ..write(obj.roleName)
       ..writeByte(9)
-      ..write(obj.cacheId);
+      ..write(obj.status)
+      ..writeByte(10)
+      ..write(obj.createdAt)
+      ..writeByte(11)
+      ..write(obj.cacheId)
+      ..writeByte(12)
+      ..write(obj.userId);
   }
 
   @override

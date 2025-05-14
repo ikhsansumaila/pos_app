@@ -8,7 +8,6 @@ import 'package:pos_app/modules/store/data/models/store_model.dart';
 import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/main/data/models/transaction_model.dart';
 import 'package:pos_app/modules/transaction/order/data/models/order_model.dart';
-import 'package:pos_app/modules/user/data/models/user_create_model.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
 import 'package:pos_app/modules/user/data/models/user_role_model.dart';
 import 'package:pos_app/routes/routes.dart';
@@ -63,7 +62,7 @@ void registerHiveAdapters() {
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(UserRoleModelAdapter());
   Hive.registerAdapter(StoreModelAdapter());
-  Hive.registerAdapter(UserCreateModelAdapter());
+  // Hive.registerAdapter(UserCreateModelAdapter());
   Hive.registerAdapter(ProductModelAdapter());
   Hive.registerAdapter(TransactionModelAdapter());
   Hive.registerAdapter(TransactionCreateModelAdapter());
@@ -80,10 +79,10 @@ Future<void> openBoxes() async {
   await Hive.openBox(SYNC_LOG_BOX_KEY); // will use on AppBinding
 
   // queue post data to server
-  await Hive.openBox(QUEUE_USER_KEY); // will use on AppBinding
-  await Hive.openBox(QUEUE_STORE_KEY); // will use on AppBinding
-  await Hive.openBox(QUEUE_PRODUCT_KEY); // will use on AppBinding
-  await Hive.openBox(QUEUE_ORDER_KEY); // will use on AppBinding
+  // await Hive.openBox(QUEUE_USER_KEY); // will use on AppBinding
+  // await Hive.openBox(QUEUE_STORE_KEY); // will use on AppBinding
+  // await Hive.openBox(QUEUE_PRODUCT_KEY); // will use on AppBinding
+  // await Hive.openBox(QUEUE_ORDER_KEY); // will use on AppBinding
   await Hive.openBox(QUEUE_TRANSACTION_KEY); // will use on AppBinding
 }
 
@@ -97,9 +96,9 @@ Future<void> deleteBoxes() async {
   await Hive.deleteBoxFromDisk(SYNC_LOG_BOX_KEY);
 
   // queue post data to server
-  await Hive.deleteBoxFromDisk(QUEUE_USER_KEY);
-  await Hive.deleteBoxFromDisk(QUEUE_STORE_KEY);
-  await Hive.deleteBoxFromDisk(QUEUE_PRODUCT_KEY);
-  await Hive.deleteBoxFromDisk(QUEUE_ORDER_KEY);
+  // await Hive.deleteBoxFromDisk(QUEUE_USER_KEY);
+  // await Hive.deleteBoxFromDisk(QUEUE_STORE_KEY);
+  // await Hive.deleteBoxFromDisk(QUEUE_PRODUCT_KEY);
+  // await Hive.deleteBoxFromDisk(QUEUE_ORDER_KEY);
   await Hive.deleteBoxFromDisk(QUEUE_TRANSACTION_KEY);
 }

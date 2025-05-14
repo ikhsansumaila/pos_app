@@ -43,7 +43,7 @@ class _CartDetailPageState extends State<CartDetailPage> {
                         var item = cartItems[index];
                         var product = item.product;
                         // var storeName = items.product.storeName;
-                        var subtotal = item.quantity * product.hargaJual;
+                        var subtotal = item.quantity * (product.hargaJual ?? 0);
                         return ListTile(
                           leading: AppImage(
                             url: product.gambar,
@@ -51,14 +51,12 @@ class _CartDetailPageState extends State<CartDetailPage> {
                             height: 60,
                             fit: BoxFit.cover,
                           ),
-                          title: Text(product.namaBrg),
+                          title: Text(product.namaBrg ?? ''),
                           subtitle: Text(
-                            '${AppFormatter.currency(product.hargaJual.toDouble())} x ${item.quantity}',
+                            '${AppFormatter.currency((product.hargaJual ?? 0).toDouble())} x ${item.quantity}',
                           ),
                           trailing: Text(
-                            AppFormatter.currency(
-                              (product.hargaJual * item.quantity).toDouble(),
-                            ),
+                            AppFormatter.currency(subtotal.toDouble()),
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         );

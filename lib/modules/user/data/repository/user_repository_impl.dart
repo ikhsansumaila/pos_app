@@ -1,8 +1,9 @@
 // import 'dart:convert';
 import 'dart:developer';
 
+import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/modules/user/data/models/user_create_model.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
 import 'package:pos_app/modules/user/data/models/user_role_model.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository.dart';
@@ -32,29 +33,50 @@ class UserRepositoryImpl implements UserRepository {
       return users;
     } catch (e, stackTrace) {
       log("Error fetching users: $e", stackTrace: stackTrace);
+      await AppDialog.showGeneralError(content: 'Error: $e');
       return local.getCachedUsers();
     }
   }
 
   @override
-  Future<void> postUser(UserCreateModel user) async {
-    //override id
-    user.cacheId = CacheHelper.generateNextCacheId(local.userCacheBox);
-
+  Future<void> postUser(UserModel user) async {
+    log("user.toJsonCreate() : ${user.toJsonCreate()}");
     if (await connectivity.isConnected()) {
-      var response = await remote.postUser(user);
-
-      // TODO: SET CACHED USER ID BASED ON RESPONSE, IF FAIL SET FROM CACHE ID
-      // if failed, save to local queue
+      var response = await remote.postUser(user.toJsonCreate());
       if (response.statusCode != 200 && response.statusCode != 201) {
-        local.addToQueue(user); // simpan queue lokal
-        await local.addToCache(user);
+        await AppDialog.showGeneralError(content: 'Error: ${response.data}');
+        return;
       }
-    } else {
-      // if offline mode, save to local queue
-      local.addToQueue(user);
-      await local.addToCache(user);
+
+      await AppDialog.showCreateSuccess();
+      Get.back();
+
+      return;
     }
+
+    await AppDialog.showErrorOffline();
+    return;
+
+    // =================================== DELETED SOON =========================================
+    // // for send to remote/queue
+    // UserCreateModel userCreate = UserCreateModel.fromJson(userFormData.toJson());
+
+    // // for updating local cache
+    // UserModel userCache = UserModel.setByFormData(userFormData);
+
+    // if (await connectivity.isConnected()) {
+    //   var response = await remote.postUser(userCreate);
+
+    //   // if failed, save to local queue
+    //   if (response.statusCode != 200 && response.statusCode != 201) {
+    //     local.addToQueue(userCreate); // simpan queue lokal
+    //     await local.addToCache(userCache);
+    //   }
+    // } else {
+    //   // if offline mode, save to local queue
+    //   local.addToQueue(userCreate);
+    //   await local.addToCache(userCache);
+    // }
   }
 
   @override
@@ -73,5 +95,10 @@ class UserRepositoryImpl implements UserRepository {
       log("Error fetching user roles: $e", stackTrace: stackTrace);
       return local.getCachedUserRoles();
     }
+  }
+
+  @override
+  int generateNextCacheId() {
+    return CacheHelper.generateNextCacheId(local.userCacheBox);
   }
 }

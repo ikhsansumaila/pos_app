@@ -31,12 +31,19 @@ class TabletLayout extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: AppSearchBar(controller: productController.searchController, hintText: 'Cari Barang...'),
+                child: AppSearchBar(
+                  controller: productController.searchController,
+                  hintText: 'Cari Barang...',
+                ),
               ),
               Expanded(
                 child: Obx(() {
                   if (productController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)));
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ),
+                    );
                   }
 
                   return Padding(
@@ -77,17 +84,33 @@ class TabletLayout extends StatelessWidget {
             children: [
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: AppImage(url: product.gambar, height: imageSize, width: imageSize, fit: BoxFit.contain),
-                title: Text(product.namaBrg, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black87)),
+                leading: AppImage(
+                  url: product.gambar,
+                  height: imageSize,
+                  width: imageSize,
+                  fit: BoxFit.contain,
+                ),
+                title: Text(
+                  product.namaBrg ?? '',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                ),
                 subtitle: Text(
-                  AppFormatter.currency(product.hargaJual.toDouble()),
-                  style: TextStyle(color: AppColors.priceColor, fontSize: 18, fontWeight: FontWeight.bold),
+                  AppFormatter.currency((product.hargaJual ?? 0).toDouble()),
+                  style: TextStyle(
+                    color: AppColors.priceColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 trailing: GetBuilder(
                   init: trxController,
                   builder: (data) {
-                    final quantity = data.getQuantity(product.idBrg);
-                    int stock = product.stok;
+                    final quantity = data.getQuantity(product.idBrg ?? 0);
+                    int stock = product.stok ?? 0;
 
                     bool buttonAddEnabled = stock > 0 && quantity < stock;
                     bool buttonRemoveEnabled = stock > 0 && quantity > 0;
@@ -104,26 +127,47 @@ class TabletLayout extends StatelessWidget {
                                     : () {
                                       Get.toNamed(AppRoutes.stockMutation.url, arguments: product);
                                     },
-                            icon: Icon(Icons.call_split, color: stock == 0 ? Colors.grey : AppColors.primary),
-                            label: Text('Pecah Stok', style: TextStyle(color: stock == 0 ? Colors.grey : AppColors.primary)),
+                            icon: Icon(
+                              Icons.call_split,
+                              color: stock == 0 ? Colors.grey : AppColors.primary,
+                            ),
+                            label: Text(
+                              'Pecah Stok',
+                              style: TextStyle(color: stock == 0 ? Colors.grey : AppColors.primary),
+                            ),
                           ),
                         ),
-                        Text('(Stok: $stock)', style: TextStyle(color: Colors.black87, fontSize: 16)),
+                        Text(
+                          '(Stok: $stock)',
+                          style: TextStyle(color: Colors.black87, fontSize: 16),
+                        ),
                         SizedBox(width: 12),
 
                         // REMOVE BUTTON
                         IconButton(
                           onPressed: buttonRemoveEnabled ? () => data.removeItem(product) : null,
-                          icon: Icon(Icons.remove_circle, color: buttonRemoveEnabled ? Colors.red : Colors.grey),
+                          icon: Icon(
+                            Icons.remove_circle,
+                            color: buttonRemoveEnabled ? Colors.red : Colors.grey,
+                          ),
                         ),
 
                         // QUANTITY
-                        Text(quantity.toString(), style: TextStyle(color: stock == 0 ? Colors.grey : Colors.black87, fontSize: 16)),
+                        Text(
+                          quantity.toString(),
+                          style: TextStyle(
+                            color: stock == 0 ? Colors.grey : Colors.black87,
+                            fontSize: 16,
+                          ),
+                        ),
 
                         // ADD BUTTON
                         IconButton(
                           onPressed: buttonAddEnabled ? () => data.addItem(product) : null,
-                          icon: Icon(Icons.add_circle, color: buttonAddEnabled ? AppColors.primary : Colors.grey),
+                          icon: Icon(
+                            Icons.add_circle,
+                            color: buttonAddEnabled ? AppColors.primary : Colors.grey,
+                          ),
                         ),
                       ],
                     );
