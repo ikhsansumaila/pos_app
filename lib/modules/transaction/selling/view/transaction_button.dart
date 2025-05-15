@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/transaction/main/controller/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/selling/controller/transaction_controller.dart';
 import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/formatter.dart';

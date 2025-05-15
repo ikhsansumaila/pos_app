@@ -56,13 +56,8 @@ class LoginPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.cyanAccent.shade700,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 100,
-                              vertical: 18,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 100, vertical: 18),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                             elevation: 12,
                             shadowColor: Colors.black54,
                           ),
@@ -95,9 +90,7 @@ class LoginPage extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: Colors.white.withValues(alpha: 0.2),
-        boxShadow: [
-          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4)),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4))],
       ),
       child: TextField(
         controller: controller,
@@ -140,20 +133,12 @@ class _BackgroundPainter extends CustomPainter {
             size.width * 0.5,
             size.height * 0.5,
           )
-          ..quadraticBezierTo(
-            size.width * 0.75,
-            size.height * 0.65,
-            size.width,
-            size.height * 0.6,
-          )
+          ..quadraticBezierTo(size.width * 0.75, size.height * 0.65, size.width, size.height * 0.6)
           ..lineTo(size.width, 0)
           ..lineTo(0, 0)
           ..close();
     paint.shader = LinearGradient(
-      colors: [
-        Colors.white.withValues(alpha: 0.2),
-        Colors.white.withValues(alpha: 0.05),
-      ],
+      colors: [Colors.white.withValues(alpha: 0.2), Colors.white.withValues(alpha: 0.05)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     ).createShader(rect);

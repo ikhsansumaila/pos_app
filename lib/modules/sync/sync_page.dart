@@ -29,15 +29,11 @@ class SyncPage extends StatelessWidget {
                             ? SizedBox(
                               width: 16,
                               height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                             )
                             : Icon(Icons.sync),
                     label: Text("Sinkronisasi Semua"),
-                    onPressed:
-                        controller.syncing.value ? null : controller.manualSync,
+                    onPressed: controller.syncing.value ? null : controller.manualSync,
                   ),
                   SizedBox(width: 10),
                   ElevatedButton.icon(
@@ -48,7 +44,7 @@ class SyncPage extends StatelessWidget {
                               height: 16,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                            : Icon(Icons.download),
+                            : Icon(Icons.visibility),
                     label: Text("Lihat Log"),
                     onPressed: () => Get.to(() => SyncLogDetailPage()),
                   ),
@@ -64,10 +60,7 @@ class SyncPage extends StatelessWidget {
               itemBuilder: (_, i) {
                 final entity = controller.entities[i];
                 return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 6,
-                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   child: ListTile(
                     title: Text(entity.title),
                     trailing: ElevatedButton(

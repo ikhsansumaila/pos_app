@@ -25,11 +25,11 @@ class ProductRepositoryImpl implements ProductRepository {
 
     try {
       final products = await remote.fetchProducts(storeId);
-      await local.updateCache(products);
+      await local.updateCache([products[0], products[1]]);
       return products;
     } catch (e, stackTrace) {
       log("Error fetching products: $e", stackTrace: stackTrace);
-      AppDialog.showGeneralError(content: 'Error: $e');
+      AppDialog.show('Terjadi kesalahan', content: 'Error: $e');
       return local.getCachedProducts();
     }
   }
@@ -39,7 +39,7 @@ class ProductRepositoryImpl implements ProductRepository {
     if (await connectivity.isConnected()) {
       var response = await remote.postProduct(product.toJsonCreate());
       if (response.statusCode != 200 && response.statusCode != 201) {
-        await AppDialog.showGeneralError(content: 'Error: ${response.data}');
+        await AppDialog.show('Terjadi kesalahan', content: 'Error: ${response.data}');
         return;
       }
 

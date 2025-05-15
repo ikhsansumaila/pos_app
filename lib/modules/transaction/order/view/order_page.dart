@@ -36,9 +36,7 @@ class OrdersPage extends StatelessWidget {
                 final order = controller.orders[index];
                 return Card(
                   elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   child: ListTile(
                     contentPadding: EdgeInsets.all(16),
                     title: Text(

@@ -28,12 +28,14 @@ class UserRepositoryImpl implements UserRepository {
 
     try {
       final users = await remote.fetchUsers();
-      await local.updateCache(users);
+      log('users fetched: ${users.length}');
+      final newUser = [users[0], users[1]];
+      await local.updateCache(newUser);
 
-      return users;
+      return newUser;
     } catch (e, stackTrace) {
       log("Error fetching users: $e", stackTrace: stackTrace);
-      await AppDialog.showGeneralError(content: 'Error: $e');
+      await AppDialog.show('Terjadi kesalahan', content: 'Error: $e');
       return local.getCachedUsers();
     }
   }
@@ -44,7 +46,7 @@ class UserRepositoryImpl implements UserRepository {
     if (await connectivity.isConnected()) {
       var response = await remote.postUser(user.toJsonCreate());
       if (response.statusCode != 200 && response.statusCode != 201) {
-        await AppDialog.showGeneralError(content: 'Error: ${response.data}');
+        await AppDialog.show('Terjadi kesalahan', content: 'Error: ${response.data}');
         return;
       }
 

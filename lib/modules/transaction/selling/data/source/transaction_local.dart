@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/services/sync/queue/sync_queue_helper.dart';
 import 'package:pos_app/core/storage/local_storage_service.dart';
-import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
-import 'package:pos_app/modules/transaction/main/data/models/transaction_model.dart';
+import 'package:pos_app/modules/transaction/selling/data/models/transaction_create_model.dart';
+import 'package:pos_app/modules/transaction/selling/data/models/transaction_model.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class TransactionLocalDataSource extends GetxController {

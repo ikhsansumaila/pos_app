@@ -15,18 +15,19 @@ import 'package:pos_app/modules/store/data/repository/store_repository.dart';
 import 'package:pos_app/modules/store/data/repository/store_repository_impl.dart';
 import 'package:pos_app/modules/store/data/source/store_local.dart';
 import 'package:pos_app/modules/store/data/source/store_remote.dart';
+import 'package:pos_app/modules/sync/product/product_sync_controller.dart';
 import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
-import 'package:pos_app/modules/sync/user/user_queue_controller.dart';
-import 'package:pos_app/modules/transaction/main/controller/transaction_controller.dart';
-import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
-import 'package:pos_app/modules/transaction/main/data/repository/transaction_respository_impl.dart';
-import 'package:pos_app/modules/transaction/main/data/source/transaction_local.dart';
-import 'package:pos_app/modules/transaction/main/data/source/transaction_remote.dart';
+import 'package:pos_app/modules/sync/user/user_sync_controller.dart';
 import 'package:pos_app/modules/transaction/order/data/repository/order_repository.dart';
 import 'package:pos_app/modules/transaction/order/data/repository/order_repository_impl.dart';
 import 'package:pos_app/modules/transaction/order/data/source/order_local.dart';
 import 'package:pos_app/modules/transaction/order/data/source/order_remote.dart';
 import 'package:pos_app/modules/transaction/order/order_controller.dart';
+import 'package:pos_app/modules/transaction/selling/controller/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/selling/data/repository/transaction_repository.dart';
+import 'package:pos_app/modules/transaction/selling/data/repository/transaction_respository_impl.dart';
+import 'package:pos_app/modules/transaction/selling/data/source/transaction_local.dart';
+import 'package:pos_app/modules/transaction/selling/data/source/transaction_remote.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository.dart';
 import 'package:pos_app/modules/user/data/repository/user_repository_impl.dart';
 import 'package:pos_app/modules/user/data/source/user_local.dart';
@@ -47,7 +48,7 @@ class AppBinding extends Bindings {
     putDataStorages();
 
     // Inject Queue Controller
-    putQueueController();
+    putSyncController();
 
     // Inject Controller
     putController();
@@ -55,7 +56,9 @@ class AppBinding extends Bindings {
     // Syncronization data to server, run in background/manual mode
     Get.put(
       SyncQueueService(
-        userQueueController: Get.find(),
+        userSyncController: Get.find(),
+        productSyncController: Get.find(),
+        // userQueueController: Get.find(),
         transactionQueueController: Get.find(),
         connectivity: Get.find(),
       ),
@@ -105,8 +108,24 @@ class AppBinding extends Bindings {
     );
   }
 
-  void putQueueController() {
-    Get.put(UserQueueController(local: Get.find(), remote: Get.find(), logService: Get.find()));
+  void putSyncController() {
+    Get.put(
+      UserSyncController(
+        local: Get.find(),
+        remote: Get.find(),
+        logService: Get.find(),
+        connectivity: Get.find(),
+      ),
+    );
+    Get.put(
+      ProductSyncController(
+        local: Get.find(),
+        remote: Get.find(),
+        logService: Get.find(),
+        connectivity: Get.find(),
+      ),
+    );
+    // Get.put(UserQueueController(local: Get.find(), remote: Get.find(), logService: Get.find()));
     Get.put(
       TransactionQueueController(local: Get.find(), remote: Get.find(), logService: Get.find()),
     );

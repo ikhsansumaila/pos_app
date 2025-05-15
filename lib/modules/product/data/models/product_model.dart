@@ -149,6 +149,7 @@ class ProductModel extends HiveObject implements SyncableHiveObject<ProductModel
         stok != other.stok ||
         stokUpdatedAt != other.stokUpdatedAt ||
         storeId != other.storeId ||
-        storeName != other.storeName;
+        storeName != other.storeName ||
+        barcodeUrl != other.barcodeUrl;
   }
 }

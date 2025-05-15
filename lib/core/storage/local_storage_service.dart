@@ -11,8 +11,29 @@ abstract class SyncableRemoteData<T> {
 
 abstract class SyncableHiveObject<T> extends HiveObject implements SyncableRemoteData<T> {}
 
+class LocalStorageUpdateResult {
+  int added;
+  int updated;
+  int deleted;
+  List<String> failedDescriptions;
+
+  LocalStorageUpdateResult({
+    required this.added,
+    required this.updated,
+    required this.deleted,
+    required this.failedDescriptions,
+  });
+
+  toJson() => {
+    'added': added,
+    'updated': updated,
+    'deleted': deleted,
+    'failedDescriptions': failedDescriptions.toString(),
+  };
+}
+
 class LocalStorageService {
-  static Future<void> updateFromRemote<T extends SyncableHiveObject<T>>({
+  static Future<LocalStorageUpdateResult> updateFromRemote<T extends SyncableHiveObject<T>>({
     required Box box,
     required List<T> apiData,
     bool deleteNotExist = false,
@@ -76,10 +97,18 @@ class LocalStorageService {
     }
     log("added $added, updated $updated, deleted $deleted");
 
-    if (failedDescriptions.isNotEmpty) {
-      for (final description in failedDescriptions) {
-        log("failed: $description");
-      }
-    }
+    log("failedDescriptions length: ${failedDescriptions.length}");
+    // if (failedDescriptions.isNotEmpty) {
+    //   for (final description in failedDescriptions) {
+    //     log("failed: $description");
+    //   }
+    // }
+
+    return LocalStorageUpdateResult(
+      added: added,
+      updated: updated,
+      deleted: deleted,
+      failedDescriptions: failedDescriptions,
+    );
   }
 }

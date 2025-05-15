@@ -2,11 +2,11 @@
 import 'dart:developer';
 
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
-import 'package:pos_app/modules/transaction/main/data/models/transaction_model.dart';
-import 'package:pos_app/modules/transaction/main/data/repository/transaction_repository.dart';
-import 'package:pos_app/modules/transaction/main/data/source/transaction_local.dart';
-import 'package:pos_app/modules/transaction/main/data/source/transaction_remote.dart';
+import 'package:pos_app/modules/transaction/selling/data/models/transaction_create_model.dart';
+import 'package:pos_app/modules/transaction/selling/data/models/transaction_model.dart';
+import 'package:pos_app/modules/transaction/selling/data/repository/transaction_repository.dart';
+import 'package:pos_app/modules/transaction/selling/data/source/transaction_local.dart';
+import 'package:pos_app/modules/transaction/selling/data/source/transaction_remote.dart';
 import 'package:pos_app/utils/cache_helper.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {

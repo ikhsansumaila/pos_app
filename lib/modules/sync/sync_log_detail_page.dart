@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/sync/sync_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
@@ -53,19 +54,25 @@ class SyncLogDetailPage extends StatelessWidget {
                 itemCount: controller.logs.length,
                 itemBuilder: (_, i) {
                   final log = controller.logs[i];
+                  IconData statusIcon = Icons.check_circle;
+                  Color statusColor = Colors.green;
+                  String statusText = 'Berhasil';
+
+                  if (log.status == SyncLog.SYNC_STATUS_FAILED) {
+                    statusIcon = Icons.error;
+                    statusColor = Colors.red;
+                    statusText = 'Gagal';
+                  } else if (log.status == SyncLog.SYNC_STATUS_WARNING) {
+                    statusIcon = Icons.warning;
+                    statusColor = Colors.yellow;
+                    statusText = 'Peringatan';
+                  }
+
                   return Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     child: ListTile(
-                      leading: Icon(
-                        log.success ? Icons.check_circle : Icons.error,
-                        color: log.success ? Colors.green : Colors.red,
-                      ),
-                      title: Text(
-                        "${log.type.toUpperCase()} | ${log.success ? 'Berhasil' : 'Gagal'}",
-                      ),
+                      leading: Icon(statusIcon, color: statusColor),
+                      title: Text("${log.entity.toUpperCase()} | $statusText"),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -94,37 +101,21 @@ class SyncLogDetailPage extends StatelessWidget {
                                       icon: Icon(Icons.copy),
                                       tooltip: 'Copy JSON',
                                       onPressed: () {
-                                        Clipboard.setData(
-                                          ClipboardData(text: log.data),
-                                        );
-                                        Get.snackbar(
-                                          'Disalin',
-                                          'Data berhasil disalin',
-                                        );
+                                        Clipboard.setData(ClipboardData(text: log.data));
+                                        Get.snackbar('Disalin', 'Data berhasil disalin');
                                       },
                                     ),
-                                    TextButton(
-                                      onPressed: () => Get.back(),
-                                      child: Text('Tutup'),
-                                    ),
+                                    TextButton(onPressed: () => Get.back(), child: Text('Tutup')),
                                   ],
                                 ),
-                                barrierDismissible:
-                                    true, // klik luar untuk tutup
+                                barrierDismissible: true, // klik luar untuk tutup
                               );
                             },
                             elevation: 2.0,
                             fillColor: AppColors.primary,
                             shape: CircleBorder(),
-                            constraints: BoxConstraints.tightFor(
-                              width: 40.0,
-                              height: 40.0,
-                            ),
-                            child: Icon(
-                              Icons.more_vert,
-                              color: Colors.white,
-                              size: 20,
-                            ),
+                            constraints: BoxConstraints.tightFor(width: 40.0, height: 40.0),
+                            child: Icon(Icons.more_vert, color: Colors.white, size: 20),
                           ),
                         ],
                       ),

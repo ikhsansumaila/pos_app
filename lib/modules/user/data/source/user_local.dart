@@ -32,9 +32,9 @@ class UserLocalDataSource {
     return roleCacheBox.values.map((element) => element as UserRoleModel).toList();
   }
 
-  Future<void> updateCache(List<UserModel> users) async {
+  Future<LocalStorageUpdateResult> updateCache(List<UserModel> users) async {
     // add/update/remove cached
-    await LocalStorageService.updateFromRemote<UserModel>(box: userCacheBox, apiData: users);
+    return await LocalStorageService.updateFromRemote<UserModel>(box: userCacheBox, apiData: users);
   }
 
   Future<void> updateUserRolesCache(List<UserRoleModel> roles) async {

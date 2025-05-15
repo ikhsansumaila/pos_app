@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:pos_app/modules/transaction/main/controller/transaction_controller.dart';
-import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
+import 'package:pos_app/modules/transaction/selling/controller/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/selling/data/models/transaction_create_model.dart';
 
 class CheckoutController extends GetxController {
   final trxController = Get.find<TransactionController>();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/routes/routes.dart';
@@ -11,6 +13,12 @@ class UserData {
 }
 
 class AuthController extends GetxController {
+  @override
+  void onInit() {
+    log("onInit AuthController");
+    super.onInit();
+  }
+
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 

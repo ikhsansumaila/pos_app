@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
 import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
 import 'package:pos_app/core/services/sync/queue/sync_queue_service.dart';
+import 'package:pos_app/modules/sync/product/product_sync_detail.dart';
 import 'package:pos_app/modules/sync/transaction/transaction_queue_detail.dart';
-import 'package:pos_app/modules/sync/user/user_queue_detail.dart';
+import 'package:pos_app/modules/sync/user/user_sync_detail_page.dart';
 
 class SyncEntitiesModel<T> {
   final String title;
@@ -21,11 +22,10 @@ class SyncController extends GetxController {
   var syncing = false.obs;
 
   List<SyncEntitiesModel> entities = [
-    SyncEntitiesModel(title: 'Data User', detailPage: UserQueueDetailPage()),
-    SyncEntitiesModel(
-      title: 'Data Transaksi',
-      detailPage: TransactionQueueDetail(),
-    ),
+    //   SyncEntitiesModel(title: 'Data User', detailPage: UserQueueDetailPage()),
+    SyncEntitiesModel(title: 'Data User', detailPage: UserSyncDetailPage()),
+    SyncEntitiesModel(title: 'Data Barang', detailPage: ProductSyncDetailPage()),
+    SyncEntitiesModel(title: 'Data Transaksi', detailPage: TransactionQueueDetail()),
   ];
 
   SyncController(this.logService, this.syncService);

@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
 import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
 import 'package:pos_app/modules/common/widgets/snackbar.dart';
-import 'package:pos_app/modules/transaction/main/data/models/transaction_create_model.dart';
-import 'package:pos_app/modules/transaction/main/data/source/transaction_local.dart';
-import 'package:pos_app/modules/transaction/main/data/source/transaction_remote.dart';
+import 'package:pos_app/modules/transaction/selling/data/models/transaction_create_model.dart';
+import 'package:pos_app/modules/transaction/selling/data/source/transaction_local.dart';
+import 'package:pos_app/modules/transaction/selling/data/source/transaction_remote.dart';
 
 class TransactionQueueController extends GetxController {
   final TransactionLocalDataSource local;
@@ -41,8 +41,8 @@ class TransactionQueueController extends GetxController {
 
       logService.addLog(
         SyncLog(
-          type: 'transaction',
-          success: isSuccess,
+          entity: 'transaction',
+          status: isSuccess ? SyncLog.SYNC_STATUS_SUCCESS : SyncLog.SYNC_STATUS_FAILED,
           message: isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
           data: response.data,
           timestamp: DateTime.now(),
@@ -70,8 +70,8 @@ class TransactionQueueController extends GetxController {
     // write to log
     logService.addLog(
       SyncLog(
-        type: 'transaction',
-        success: isSuccess,
+        entity: 'transaction',
+        status: isSuccess ? SyncLog.SYNC_STATUS_SUCCESS : SyncLog.SYNC_STATUS_FAILED,
         message: isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
         data: response.data,
         timestamp: DateTime.now(),
@@ -108,8 +108,8 @@ class TransactionQueueController extends GetxController {
         // write to log
         logService.addLog(
           SyncLog(
-            type: 'transaction',
-            success: isSuccess,
+            entity: 'transaction',
+            status: SyncLog.SYNC_STATUS_SUCCESS,
             message: isSuccess ? 'Transactions synced' : 'Failed syncing transactions',
             data: response.data,
             timestamp: DateTime.now(),
@@ -120,8 +120,8 @@ class TransactionQueueController extends GetxController {
         // write to log
         logService.addLog(
           SyncLog(
-            type: 'transaction',
-            success: false,
+            entity: 'transaction',
+            status: SyncLog.SYNC_STATUS_FAILED,
             message: 'Failed syncing transactions',
             data: e.toString(),
             timestamp: DateTime.now(),

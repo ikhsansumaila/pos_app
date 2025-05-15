@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:pos_app/core/network/dio_client.dart';
 import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
@@ -16,7 +14,7 @@ class UserRemoteDataSource {
     if (response.isSuccess && response.data is List) {
       return (response.data as List).map((e) {
         Map<String, dynamic> map = e;
-        log("map data user : $map");
+        // log("map data user : $map");
         return UserModel.fromJson(map);
       }).toList();
     }
@@ -29,7 +27,7 @@ class UserRemoteDataSource {
     if (response.isSuccess && response.data is List) {
       return (response.data as List).map((e) {
         Map<String, dynamic> map = e;
-        log("map data user role : $map");
+        // log("map data user role : $map");
         return UserRoleModel.fromJson(map);
       }).toList();
     }

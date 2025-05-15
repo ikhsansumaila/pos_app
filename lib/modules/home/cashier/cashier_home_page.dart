@@ -15,7 +15,11 @@ class MenuItem {
 }
 
 final List<MenuItem> _menuItems = [
-  MenuItem(title: 'Buat Transaksi', icon: Icons.point_of_sale, route: AppRoutes.transactions.url),
+  MenuItem(
+    title: 'Buat Transaksi',
+    icon: Icons.point_of_sale,
+    route: AppRoutes.transactionSell.url,
+  ),
   MenuItem(title: 'Atur Barang', icon: Icons.list_alt, route: AppRoutes.products.url),
   MenuItem(
     title: 'Pesanan',

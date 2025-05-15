@@ -18,17 +18,22 @@ class SyncLogService {
 
   List<SyncLog> getAllLogs() {
     final raw = logBox.get('logs', defaultValue: []) as List;
-    return raw
-        .map((e) => SyncLog.fromJson(Map<String, dynamic>.from(e)))
-        .toList();
+    return raw.map((e) => SyncLog.fromJson(Map<String, dynamic>.from(e))).toList();
   }
 
   Future<String> exportLogsAsTxt() async {
     final logs = getAllLogs();
     final buffer = StringBuffer();
     for (var log in logs) {
+      String syncStatus = "BERHASIL";
+      if (log.status == SyncLog.SYNC_STATUS_FAILED) {
+        syncStatus = "GAGAL";
+      } else if (log.status == SyncLog.SYNC_STATUS_WARNING) {
+        syncStatus = "PERINGATAN";
+      }
+
       buffer.writeln(
-        "[${log.timestamp}] ${log.type.toUpperCase()} | ${log.success ? "SUCCESS" : "FAILED"}: ${log.message}",
+        "[${log.timestamp}] ${log.entity.toUpperCase()} | $syncStatus : ${log.message}",
       );
     }
 

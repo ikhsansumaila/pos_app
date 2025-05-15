@@ -46,10 +46,10 @@ class AppDialog {
     );
   }
 
-  static Future<void> showGeneralError({required String content}) async {
+  static Future<void> show(String title, {required String content}) async {
     return await Get.dialog(
       AlertDialog(
-        title: const Text('Terjadi kesalahan'),
+        title: Text(title),
         content: Text(content),
         actions: [
           TextButton(
