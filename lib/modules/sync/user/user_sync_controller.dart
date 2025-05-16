@@ -26,11 +26,11 @@ class UserSyncController extends GetxController {
 
   RxList<UserModel> users = <UserModel>[].obs;
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   users.value = local.getCachedUsers();
-  // }
+  @override
+  void onInit() {
+    super.onInit();
+    users.value = local.getCachedUsers();
+  }
 
   List<UserModel> getUsers() {
     users.value = local.getCachedUsers();

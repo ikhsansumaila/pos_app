@@ -6,7 +6,7 @@ import 'package:pos_app/modules/user/view/user_detail_page.dart';
 import 'package:pos_app/routes/routes.dart';
 
 class UserListPage extends StatelessWidget {
-  final controller = Get.put(UserController(repository: Get.find()));
+  final controller = Get.find<UserController>();
 
   UserListPage({super.key});
 

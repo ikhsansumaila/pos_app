@@ -1,9 +1,59 @@
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:pos_app/core/controller_provider.dart';
+import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
+import 'package:pos_app/core/services/sync/queue/sync_queue_service.dart';
+import 'package:pos_app/modules/sync/product/product_sync_controller.dart';
 import 'package:pos_app/modules/sync/sync_controller.dart';
+import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
+import 'package:pos_app/modules/sync/user/user_sync_controller.dart';
+import 'package:pos_app/utils/constants/hive_key.dart';
 
 class SyncBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(SyncController(Get.find(), Get.find()));
+    // Syncronization Log
+    var syncLogService = ControllerProvider.findOrPut(
+      SyncLogService(logBox: Hive.box(SYNC_LOG_BOX_KEY)),
+    );
+
+    var userSyncController = ControllerProvider.findOrPut(
+      UserSyncController(
+        local: Get.find(), // init on app binding
+        remote: Get.find(), // init on app binding
+        logService: syncLogService,
+        connectivity: Get.find(), // init on app binding
+      ),
+    );
+
+    var productSyncController = ControllerProvider.findOrPut(
+      ProductSyncController(
+        local: Get.find(), // init on app binding
+        remote: Get.find(), // init on app binding
+        logService: syncLogService,
+        connectivity: Get.find(), // init on app binding
+      ),
+    );
+
+    var transactionQueueController = ControllerProvider.findOrPut(
+      TransactionQueueController(
+        local: Get.find(), // init on app binding
+        remote: Get.find(), // init on app binding
+        logService: syncLogService,
+      ),
+    );
+
+    // Syncronization Service
+    var syncService = ControllerProvider.findOrPut(
+      SyncService(
+        userSyncController: userSyncController,
+        productSyncController: productSyncController,
+        transactionQueueController: transactionQueueController,
+        connectivity: Get.find(), // init on app binding
+      ),
+    );
+
+    // Syncronization Controller
+    Get.put(SyncController(syncService: syncService, logService: syncLogService));
   }
 }

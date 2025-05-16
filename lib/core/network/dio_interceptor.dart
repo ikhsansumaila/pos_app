@@ -7,6 +7,7 @@ class RequestsInterceptor extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // Tambah token kalau perlu
     // options.headers['Authorization'] = 'Bearer your_token';
+    log('Dio Request: ${options.method} ${options.path}');
     return handler.next(options);
   }
 

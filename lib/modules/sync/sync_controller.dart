@@ -15,7 +15,7 @@ class SyncEntitiesModel<T> {
 
 class SyncController extends GetxController {
   final SyncLogService logService;
-  final SyncQueueService syncService;
+  final SyncService syncService;
 
   var logs = <SyncLog>[].obs;
   var exporting = false.obs;
@@ -28,7 +28,7 @@ class SyncController extends GetxController {
     SyncEntitiesModel(title: 'Data Transaksi', detailPage: TransactionQueueDetail()),
   ];
 
-  SyncController(this.logService, this.syncService);
+  SyncController({required this.logService, required this.syncService});
 
   @override
   void onInit() {

@@ -25,7 +25,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
     try {
       final products = await remote.fetchProducts(storeId);
-      await local.updateCache([products[0], products[1]]);
+      await local.updateCache(products);
       return products;
     } catch (e, stackTrace) {
       log("Error fetching products: $e", stackTrace: stackTrace);

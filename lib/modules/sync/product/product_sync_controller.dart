@@ -26,12 +26,12 @@ class ProductSyncController extends GetxController {
 
   RxList<ProductModel> products = <ProductModel>[].obs;
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   products.value = local.getCachedProducts();
-  //   log("onInit ProductSyncController ${products.length}");
-  // }
+  @override
+  void onInit() {
+    super.onInit();
+    products.value = local.getCachedProducts();
+    log("onInit ProductSyncController ${products.length}");
+  }
 
   List<ProductModel> getProducts() {
     products.value = local.getCachedProducts();

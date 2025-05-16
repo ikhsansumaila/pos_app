@@ -9,18 +9,18 @@ import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.da
 import 'package:pos_app/modules/sync/user/user_sync_controller.dart';
 import 'package:pos_app/utils/constants/rest.dart';
 
-class SyncQueueService {
+class SyncService {
   // final UserQueueController userQueueController;
   final UserSyncController userSyncController;
   final ProductSyncController productSyncController;
   final TransactionQueueController transactionQueueController;
   final ConnectivityService connectivity;
 
-  bool isSyncing = false;
+  // bool isSyncing = false;
   DateTime? lastFailedSync;
   Timer? _retryTimer;
 
-  SyncQueueService({
+  SyncService({
     // required this.userQueueController,
     required this.userSyncController,
     required this.productSyncController,
@@ -29,22 +29,25 @@ class SyncQueueService {
   });
 
   Future<void> syncAllWithDialog() async {
-    if (isSyncing) return;
+    // if (isSyncing) return;
 
-    isSyncing = true;
+    // isSyncing = true;
+    // blocking screen (disable to edit)
     Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
 
     await Future.delayed(Duration(seconds: 3));
     await _runSync();
+    await _runQueue();
 
+    // close blocking screen dialog
     Get.back();
-    isSyncing = false;
+    // isSyncing = false;
 
     // if (!success) {
     //   lastFailedSync = DateTime.now();
 
-    // Run Schedule retry
-    // _scheduleRetry();
+    //   Run Schedule retry
+    //   _scheduleRetry();
     // }
   }
 
@@ -54,10 +57,16 @@ class SyncQueueService {
       if (!online) throw Exception("Offline");
 
       int storeId = 1;
-
-      // Users
       await userSyncController.startSync();
       await productSyncController.startSync(storeId);
+    } catch (_) {}
+  }
+
+  Future<void> _runQueue() async {
+    try {
+      final online = await connectivity.isConnected();
+      if (!online) throw Exception("Offline");
+
       // await userQueueController.processQueue();
       // await transactionQueueController.processQueue();
     } catch (_) {}

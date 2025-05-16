@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:pos_app/core/network/dio_interceptor.dart';
 import 'package:pos_app/core/network/response.dart';
@@ -14,6 +16,7 @@ class DioClient {
       receiveTimeout: TIMEOUT_DURATION,
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     );
+    log("BASE_API_URL : $BASE_API_URL");
 
     dio = Dio(options);
 
@@ -22,11 +25,13 @@ class DioClient {
   }
 
   Future<ApiResponse<dynamic>> get(String path, {Map<String, dynamic>? query}) async {
+    log("request path : $path");
     try {
       final response = await dio.get(path, queryParameters: query);
       // log("response.data dari dio client : ${response.data}");
       return ApiResponse(data: response.data, statusCode: response.statusCode);
     } on DioException catch (e) {
+      log("error dio : $e");
       return ApiResponse(
         data: e.response,
         error: getErrorMessage(e),

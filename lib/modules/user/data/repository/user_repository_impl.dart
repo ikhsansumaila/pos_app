@@ -28,11 +28,9 @@ class UserRepositoryImpl implements UserRepository {
 
     try {
       final users = await remote.fetchUsers();
-      log('users fetched: ${users.length}');
-      final newUser = [users[0], users[1]];
-      await local.updateCache(newUser);
+      await local.updateCache(users);
 
-      return newUser;
+      return users;
     } catch (e, stackTrace) {
       log("Error fetching users: $e", stackTrace: stackTrace);
       await AppDialog.show('Terjadi kesalahan', content: 'Error: $e');
