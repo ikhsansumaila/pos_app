@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:pos_app/core/storage/local_storage_service.dart';
+import 'package:pos_app/modules/sync/service/local_storage_service.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 part 'order_model.g.dart';
@@ -21,7 +21,13 @@ class OrderModel extends HiveObject implements SyncableHiveObject<OrderModel> {
   @HiveField(4)
   int totalPrice;
 
-  OrderModel({required this.id, required this.customerName, required this.orderDate, required this.totalItems, required this.totalPrice});
+  OrderModel({
+    required this.id,
+    required this.customerName,
+    required this.orderDate,
+    required this.totalItems,
+    required this.totalPrice,
+  });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
     id: json['id'] as int,

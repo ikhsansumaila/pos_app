@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_service.dart';
 import 'package:pos_app/modules/user/data/source/user_local.dart';
 import 'package:pos_app/modules/user/data/source/user_remote.dart';
 

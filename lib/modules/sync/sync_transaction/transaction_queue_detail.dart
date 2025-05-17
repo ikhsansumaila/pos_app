@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
-import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
+import 'package:pos_app/modules/sync/sync_transaction/transaction_queue_controller.dart';
 
 class TransactionQueueDetail extends StatelessWidget {
   final TransactionQueueController controller = Get.find();

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
-import 'package:pos_app/modules/sync/user/user_queue_controller.dart';
+import 'package:pos_app/modules/sync/sync_user/user_queue_controller.dart';
 
 class UserQueueDetailPage extends StatelessWidget {
   final UserQueueController controller = Get.find();

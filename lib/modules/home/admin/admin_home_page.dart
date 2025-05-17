@@ -5,32 +5,8 @@ import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_controller.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
-import 'package:pos_app/routes/routes.dart';
+import 'package:pos_app/modules/home/menu.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
-
-class MenuItem {
-  final String title;
-  final IconData icon;
-  final String route;
-
-  MenuItem({required this.title, required this.icon, required this.route});
-}
-
-final List<MenuItem> _menuItems = [
-  MenuItem(
-    title: 'Buat Transaksi',
-    icon: Icons.point_of_sale,
-    route: AppRoutes.transactionSell.url,
-  ),
-  MenuItem(title: 'Atur Barang', icon: Icons.list_alt, route: AppRoutes.products.url),
-  MenuItem(
-    title: 'Pesanan',
-    icon: Icons.receipt_long,
-    route: AppRoutes.orders.url, // order from customer (online)
-  ),
-  MenuItem(title: 'Akun Pengguna', icon: Icons.person, route: AppRoutes.users.url),
-  MenuItem(title: 'Sinkronisasi Data', icon: Icons.sync, route: AppRoutes.syncPage.url),
-];
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({super.key});
@@ -40,6 +16,7 @@ class AdminHomePage extends StatelessWidget {
     final responsive = ResponsiveHelper(MediaQuery.of(context).size);
 
     var padding = responsive.isTablet ? EdgeInsets.fromLTRB(40, 20, 40, 20) : EdgeInsets.all(20);
+    var menu = HomeMenu.getMenuItem('admin');
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -50,7 +27,7 @@ class AdminHomePage extends StatelessWidget {
       body: Padding(
         padding: padding,
         child: GridView.builder(
-          itemCount: _menuItems.length,
+          itemCount: menu.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: responsive.isTablet ? 20 : 10,
@@ -58,7 +35,7 @@ class AdminHomePage extends StatelessWidget {
             childAspectRatio: 2,
           ),
           itemBuilder: (context, index) {
-            final item = _menuItems[index];
+            final item = menu[index];
             log("item.route ${item.route}");
             return GestureDetector(
               onTap: () => Get.toNamed(item.route),

@@ -104,9 +104,6 @@ class _AddProductPageState extends State<AddProductPage> {
         child: GetBuilder(
           init: productController,
           builder: (data) {
-            if (data.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            }
             return Form(
               key: _formKey,
               child: Column(

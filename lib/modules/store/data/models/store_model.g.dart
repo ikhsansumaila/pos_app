@@ -23,7 +23,7 @@ class StoreModelAdapter extends TypeAdapter<StoreModel> {
       createdAt: fields[3] as String,
       userId: fields[4] as String,
       updatedAt: fields[5] as String?,
-      updatedUserId: fields[6] as String,
+      updatedUserId: fields[6] as String?,
     );
   }
 

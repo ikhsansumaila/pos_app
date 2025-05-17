@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
-import 'package:pos_app/modules/sync/product/product_sync_controller.dart';
+import 'package:pos_app/modules/sync/sync_product/product_sync_controller.dart';
 
 class ProductSyncDetailPage extends StatelessWidget {
   final ProductSyncController controller = Get.find();

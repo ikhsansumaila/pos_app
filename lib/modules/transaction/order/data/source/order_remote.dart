@@ -9,7 +9,7 @@ class OrderRemoteDataSource {
   OrderRemoteDataSource({required this.dio});
 
   Future<List<OrderModel>> fetchOrders() async {
-    final response = await dio.get(ORDER_API_URL);
+    final response = await dio.request(path: ORDER_API_URL, method: AppHttpMethod.get);
     if (response.isSuccess) {
       return (response.data as List).map((e) => OrderModel.fromJson(e)).toList();
     }
@@ -18,6 +18,6 @@ class OrderRemoteDataSource {
   }
 
   Future<ApiResponse> postOrder(Map<String, dynamic> data) async {
-    return await dio.post(ORDER_API_URL, data: data);
+    return await dio.request(path: ORDER_API_URL, method: AppHttpMethod.post, data: data);
   }
 }

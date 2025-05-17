@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
-import 'package:pos_app/core/services/sync/queue/sync_queue_service.dart';
-import 'package:pos_app/modules/sync/product/product_sync_detail.dart';
-import 'package:pos_app/modules/sync/transaction/transaction_queue_detail.dart';
-import 'package:pos_app/modules/sync/user/user_sync_detail_page.dart';
+import 'package:pos_app/modules/sync/service/sync_service.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_model.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_service.dart';
+import 'package:pos_app/modules/sync/sync_product/product_sync_detail.dart';
+import 'package:pos_app/modules/sync/sync_transaction/transaction_queue_detail.dart';
+import 'package:pos_app/modules/sync/sync_user/user_sync_detail_page.dart';
 
 class SyncEntitiesModel<T> {
   final String title;

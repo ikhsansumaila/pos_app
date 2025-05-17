@@ -1,7 +1,6 @@
 // import 'dart:convert';
 import 'dart:developer';
 
-import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
@@ -39,23 +38,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<void> postUser(UserModel user) async {
-    log("user.toJsonCreate() : ${user.toJsonCreate()}");
-    if (await connectivity.isConnected()) {
-      var response = await remote.postUser(user.toJsonCreate());
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        await AppDialog.show('Terjadi kesalahan', content: 'Error: ${response.data}');
-        return;
-      }
+  Future<String?> postUser(UserModel user) async {
+    final isOnline = await connectivity.isConnected();
 
-      await AppDialog.showCreateSuccess();
-      Get.back();
-
-      return;
+    if (!isOnline) {
+      return 'Harap periksa koneksi internet Anda';
     }
 
-    await AppDialog.showErrorOffline();
-    return;
+    final response = await remote.postUser(user.toJsonCreate());
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      return 'Error: ${response.data}';
+    }
+
+    return null;
 
     // =================================== DELETED SOON =========================================
     // // for send to remote/queue

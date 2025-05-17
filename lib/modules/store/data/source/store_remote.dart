@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:pos_app/core/network/dio_client.dart';
+import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/store/data/models/store_model.dart';
 import 'package:pos_app/utils/constants/rest.dart';
 
@@ -9,7 +10,7 @@ class StoreRemoteDataSource {
   StoreRemoteDataSource({required this.dio});
 
   Future<List<StoreModel>> fetchStores() async {
-    final response = await dio.get(STORE_API_URL);
+    final response = await dio.request(path: STORE_API_URL, method: AppHttpMethod.get);
 
     if (response.isSuccess && response.data is List) {
       return (response.data as List).map((e) {
@@ -19,5 +20,9 @@ class StoreRemoteDataSource {
       }).toList();
     }
     return [];
+  }
+
+  Future<ApiResponse> postStore(Map<String, dynamic> data) async {
+    return await dio.request(path: STORE_API_URL, method: AppHttpMethod.post, data: data);
   }
 }

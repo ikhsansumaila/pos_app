@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_model.dart';
 
 class SyncLogService {
   final Box logBox;

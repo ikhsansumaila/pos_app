@@ -9,7 +9,10 @@ class ProductRemoteDataSource {
   ProductRemoteDataSource({required this.dio});
 
   Future<List<ProductModel>> fetchProducts(int storeId) async {
-    final response = await dio.get('$PRODUCT_API_URL?store_id=$storeId');
+    final response = await dio.request(
+      path: '$PRODUCT_API_URL?store_id=$storeId',
+      method: AppHttpMethod.get,
+    );
     if (response.isSuccess) {
       return (response.data as List).map((e) {
         Map<String, dynamic> map = e;
@@ -22,6 +25,6 @@ class ProductRemoteDataSource {
   }
 
   Future<ApiResponse> postProduct(Map<String, dynamic> data) async {
-    return await dio.post(PRODUCT_API_URL, data: data);
+    return await dio.request(path: PRODUCT_API_URL, method: AppHttpMethod.post, data: data);
   }
 }

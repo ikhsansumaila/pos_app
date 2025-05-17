@@ -35,19 +35,18 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<void> postProduct(ProductModel product) async {
-    if (await connectivity.isConnected()) {
-      var response = await remote.postProduct(product.toJsonCreate());
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        await AppDialog.show('Terjadi kesalahan', content: 'Error: ${response.data}');
-        return;
-      }
+  Future<String?> postProduct(ProductModel product) async {
+    final isOnline = await connectivity.isConnected();
 
-      await AppDialog.showCreateSuccess();
-      return;
+    if (!isOnline) {
+      return 'Harap periksa koneksi internet Anda';
     }
 
-    await AppDialog.showErrorOffline();
-    return;
+    final response = await remote.postProduct(product.toJsonCreate());
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      return 'Error: ${response.data}';
+    }
+
+    return null;
   }
 }

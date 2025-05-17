@@ -3,13 +3,13 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_service.dart';
-import 'package:pos_app/core/storage/local_storage_service.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/modules/product/data/source/product_local.dart';
 import 'package:pos_app/modules/product/data/source/product_remote.dart';
+import 'package:pos_app/modules/sync/service/local_storage_service.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_model.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_service.dart';
 
 class ProductSyncController extends GetxController {
   final ProductLocalDataSource local;

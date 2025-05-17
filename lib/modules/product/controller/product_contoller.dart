@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/modules/product/data/repository/product_repository.dart';
 
@@ -44,8 +45,14 @@ class ProductController extends GetxController {
   }
 
   Future<void> addProduct(ProductModel product) async {
-    isLoading(true);
-    await repository.postProduct(product);
-    isLoading(false);
+    String? errorPost = await repository.postProduct(product);
+    if (errorPost == null) {
+      await AppDialog.showCreateSuccess();
+      clearForm();
+    } else {
+      await AppDialog.show('Terjadi kesalahan', content: errorPost);
+    }
   }
+
+  void clearForm() {}
 }

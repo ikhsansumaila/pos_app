@@ -31,4 +31,20 @@ class StoreRepositoryImpl implements StoreRepository {
       return local.getCachedStores();
     }
   }
+
+  @override
+  Future<String?> postStore(StoreModel store) async {
+    final isOnline = await connectivity.isConnected();
+
+    if (!isOnline) {
+      return 'Harap periksa koneksi internet Anda';
+    }
+
+    final response = await remote.postStore(store.toJsonCreate());
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      return 'Error: ${response.data}';
+    }
+
+    return null;
+  }
 }

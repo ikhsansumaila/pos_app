@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:pos_app/core/storage/local_storage_service.dart';
+import 'package:pos_app/modules/sync/service/local_storage_service.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
 import 'package:pos_app/modules/user/data/models/user_role_model.dart';
 

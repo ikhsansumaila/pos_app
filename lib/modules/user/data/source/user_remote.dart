@@ -9,7 +9,7 @@ class UserRemoteDataSource {
   UserRemoteDataSource({required this.dio});
 
   Future<List<UserModel>> fetchUsers() async {
-    final response = await dio.get(USER_API_URL);
+    final response = await dio.request(path: USER_API_URL, method: AppHttpMethod.get);
 
     if (response.isSuccess && response.data is List) {
       return (response.data as List).map((e) {
@@ -21,8 +21,12 @@ class UserRemoteDataSource {
     return [];
   }
 
+  Future<ApiResponse> postUser(Map<String, dynamic> data) async {
+    return await dio.request(path: USER_API_URL, method: AppHttpMethod.post, data: data);
+  }
+
   Future<List<UserRoleModel>> fetchUserRoles() async {
-    final response = await dio.get(USER_ROLES_API_URL);
+    final response = await dio.request(path: USER_ROLES_API_URL, method: AppHttpMethod.get);
 
     if (response.isSuccess && response.data is List) {
       return (response.data as List).map((e) {
@@ -32,9 +36,5 @@ class UserRemoteDataSource {
       }).toList();
     }
     return [];
-  }
-
-  Future<ApiResponse> postUser(Map<String, dynamic> data) async {
-    return await dio.post(USER_API_URL, data: data);
   }
 }

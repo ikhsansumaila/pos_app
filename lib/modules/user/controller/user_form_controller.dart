@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/store/data/models/store_model.dart';
 import 'package:pos_app/modules/store/data/repository/store_repository.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
@@ -77,29 +76,6 @@ class UserFormController extends GetxController {
     isFormValid.value = validForm;
   }
 
-  Future<void> createUserIfValid() async {
-    log("Create User");
-    if (!isFormValid.value) return;
-
-    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
-
-    await createUser(
-      UserModel(
-        cacheId: userRepo.generateNextCacheId(),
-        storeId: int.tryParse(selectedStore.value?.id ?? '0') ?? 0,
-        roleName: selectedRole.value?.role ?? '',
-        nama: nameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        roleId: selectedRole.value?.id ?? 0,
-        status: selectedStatus.value,
-        userId: 11,
-      ),
-    );
-
-    Get.back();
-  }
-
   Future<void> fetchUserRoles() async {
     isLoading(true);
 
@@ -118,9 +94,34 @@ class UserFormController extends GetxController {
     isLoading(false);
   }
 
-  Future<void> createUser(UserModel data) async {
-    isLoading(true);
-    await userRepo.postUser(data);
-    isLoading(false);
+  Future<void> createUser() async {
+    UserModel data = UserModel(
+      cacheId: userRepo.generateNextCacheId(),
+      storeId: int.tryParse(selectedStore.value?.id ?? '0') ?? 0,
+      roleName: selectedRole.value?.role ?? '',
+      nama: nameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+      roleId: selectedRole.value?.id ?? 0,
+      status: selectedStatus.value,
+      userId: 11,
+    );
+
+    String? errorPost = await userRepo.postUser(data);
+    if (errorPost == null) {
+      await AppDialog.showCreateSuccess();
+      clearForm();
+    } else {
+      await AppDialog.show('Terjadi kesalahan', content: errorPost);
+    }
+  }
+
+  void clearForm() {
+    selectedRole.value = null;
+    selectedStore.value = null;
+    selectedStatus.value = 1;
+    nameController.clear();
+    emailController.clear();
+    passwordController.clear();
   }
 }

@@ -1,10 +1,20 @@
+// ignore_for_file: non_constant_identifier_names
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart' as getx;
 import 'package:pos_app/core/network/dio_interceptor.dart';
 import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/utils/constants/rest.dart';
 import 'package:requests_inspector/requests_inspector.dart';
+
+enum AppHttpMethod { get, post, put, delete }
+
+final String HTTP_METHOD_GET = 'GET';
+final String HTTP_METHOD_POST = 'POST';
+final String HTTP_METHOD_PUT = 'PUT';
+final String HTTP_METHOD_DELETE = 'DELETE';
 
 class DioClient {
   late final Dio dio;
@@ -24,58 +34,54 @@ class DioClient {
     dio.interceptors.add(RequestsInterceptor());
   }
 
-  Future<ApiResponse<dynamic>> get(String path, {Map<String, dynamic>? query}) async {
-    log("request path : $path");
-    try {
-      final response = await dio.get(path, queryParameters: query);
-      // log("response.data dari dio client : ${response.data}");
-      return ApiResponse(data: response.data, statusCode: response.statusCode);
-    } on DioException catch (e) {
-      log("error dio : $e");
-      return ApiResponse(
-        data: e.response,
-        error: getErrorMessage(e),
-        statusCode: e.response?.statusCode,
-      );
+  Future<ApiResponse<dynamic>> request({
+    required String path,
+    required AppHttpMethod method,
+    Map<String, dynamic>? query,
+    dynamic data,
+    bool showLoading = false,
+  }) async {
+    if (method == AppHttpMethod.get) {
+      return _execute(() => dio.get(path, queryParameters: query), showLoading: showLoading);
+    } else if (method == AppHttpMethod.post) {
+      return _execute(() => dio.post(path, data: data), showLoading: showLoading);
+    } else if (method == AppHttpMethod.put) {
+      return _execute(() => dio.put(path, data: data), showLoading: showLoading);
+    } else if (method == AppHttpMethod.delete) {
+      return _execute(() => dio.delete(path), showLoading: showLoading);
     }
+
+    return ApiResponse(error: 'Method $method is not supported');
   }
 
-  Future<ApiResponse<dynamic>> post(String path, {dynamic data}) async {
-    try {
-      final response = await dio.post(path, data: data);
-      return ApiResponse(data: response, statusCode: response.statusCode);
-    } on DioException catch (e) {
-      return ApiResponse(
-        data: e.response,
-        error: getErrorMessage(e),
-        statusCode: e.response?.statusCode,
-      );
+  Future<ApiResponse<T>> _execute<T>(
+    Future<Response<T>> Function() requestFunc, {
+    bool showLoading = false,
+  }) async {
+    if (showLoading) {
+      await getx.Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
     }
-  }
 
-  Future<ApiResponse<dynamic>> put(String path, {dynamic data}) async {
     try {
-      final response = await dio.put(path, data: data);
-      return ApiResponse(data: response, statusCode: response.statusCode);
-    } on DioException catch (e) {
-      return ApiResponse(
-        data: e.response,
-        error: getErrorMessage(e),
-        statusCode: e.response?.statusCode,
-      );
-    }
-  }
+      final response = await requestFunc();
 
-  Future<ApiResponse<dynamic>> delete(String path) async {
-    try {
-      final response = await dio.delete(path);
-      return ApiResponse(data: response, statusCode: response.statusCode);
+      if (showLoading) getx.Get.back();
+
+      return ApiResponse<T>(data: response.data, statusCode: response.statusCode);
     } on DioException catch (e) {
-      return ApiResponse(
-        data: e.response,
-        error: getErrorMessage(e),
+      log("Dio error: $e");
+
+      if (showLoading) getx.Get.back();
+      return ApiResponse<T>(
+        data: e.response?.data,
         statusCode: e.response?.statusCode,
+        error: getErrorMessage(e),
       );
+    } catch (e) {
+      log("Unexpected error: $e");
+
+      if (showLoading) getx.Get.back();
+      return ApiResponse<T>(error: e.toString());
     }
   }
 

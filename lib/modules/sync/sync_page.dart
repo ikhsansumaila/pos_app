@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/sync/sync_controller.dart';
-import 'package:pos_app/modules/sync/sync_log_detail_page.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_detail_page.dart';
 
 class SyncPage extends StatelessWidget {
   final controller = Get.find<SyncController>();

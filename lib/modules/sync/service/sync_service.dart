@@ -4,9 +4,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
-import 'package:pos_app/modules/sync/product/product_sync_controller.dart';
-import 'package:pos_app/modules/sync/transaction/transaction_queue_controller.dart';
-import 'package:pos_app/modules/sync/user/user_sync_controller.dart';
+import 'package:pos_app/modules/sync/sync_product/product_sync_controller.dart';
+import 'package:pos_app/modules/sync/sync_transaction/transaction_queue_controller.dart';
+import 'package:pos_app/modules/sync/sync_user/user_sync_controller.dart';
 import 'package:pos_app/utils/constants/rest.dart';
 
 class SyncService {

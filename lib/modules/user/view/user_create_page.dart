@@ -21,10 +21,7 @@ class CreateUserPage extends StatelessWidget {
           child: Obx(
             () => ListView(
               children: [
-                const SizedBox(height: 8),
-                Text("Informasi User", style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 12),
-
                 TextFormField(
                   controller: controller.nameController,
                   decoration: InputDecoration(labelText: 'Nama'),
@@ -103,7 +100,7 @@ class CreateUserPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed: controller.isFormValid.value ? controller.createUserIfValid : null,
+                  onPressed: controller.isFormValid.value ? controller.createUser : null,
                 ),
               ],
             ),

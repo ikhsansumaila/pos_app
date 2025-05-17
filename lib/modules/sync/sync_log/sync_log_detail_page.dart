@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pos_app/core/services/sync/log/sync_log_model.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/sync/sync_controller.dart';
+import 'package:pos_app/modules/sync/sync_log/sync_log_model.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 
 class SyncLogDetailPage extends StatelessWidget {

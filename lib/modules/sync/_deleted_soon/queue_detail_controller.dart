@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pos_app/core/services/sync/queue/sync_queue_helper.dart';
+import 'package:pos_app/modules/sync/service/sync_queue_helper.dart';
 
 class SyncQueueDetailController<T> extends GetxController {
   final SyncQueueDataHelper<T> helper;

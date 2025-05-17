@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/login_page.dart';
 import 'package:pos_app/modules/cart/view/cart_detail_page.dart';
@@ -10,6 +12,7 @@ import 'package:pos_app/modules/home/splash_page.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
 import 'package:pos_app/modules/stock/stock_mutation_page.dart';
+import 'package:pos_app/modules/store/view/store_list_page.dart';
 import 'package:pos_app/modules/sync/sync_binding.dart';
 import 'package:pos_app/modules/sync/sync_page.dart';
 import 'package:pos_app/modules/transaction/order/view/order_page.dart';
@@ -29,64 +32,104 @@ class AppRoute {
   }
 }
 
-class AppRoutes {
+class MyRoutes {
   // auth
-  static final login = AppRoute.generate(url: '/login', page: () => LoginPage());
+  final AppRoute login;
 
   // home screen
-  static final splash = AppRoute.generate(url: '/splash', page: () => SplashPage());
-  static final home = AppRoute.generate(url: '/home', page: () => Home());
-  static final cashierHome = AppRoute.generate(url: '/home/cashier', page: () => CashierHomePage());
-  static final customerHome = AppRoute.generate(
-    url: '/home/customer',
-    page: () => CustomerHomePage(),
-    binding: CustomerHomeBinding(),
-  );
+  final AppRoute splash;
+  final AppRoute home;
+  final AppRoute cashierHome;
+  final AppRoute customerHome;
 
   // user
-  static final users = AppRoute.generate(url: '/user', page: () => UserListPage());
-  static final userCreate = AppRoute.generate(url: '/user/create', page: () => CreateUserPage());
+  final AppRoute users;
+  final AppRoute userCreate;
+
+  // store
+  final AppRoute store;
 
   // product
-  static final products = AppRoute.generate(url: '/products', page: () => ProductPage());
-  static final addProduct = AppRoute.generate(url: '/products/add', page: () => AddProductPage());
-  static final stockMutation = AppRoute.generate(
-    url: '/products/stock/mutation',
-    page: () => StockMutationPage(),
-  );
+  final AppRoute products;
+  final AppRoute addProduct;
+  final AppRoute stockMutation;
 
   // transaction
-  static final transactionSell = AppRoute.generate(
-    url: '/transactions/sell',
-    page: () => TransactionSellingPage(),
-  );
-  static final checkout = AppRoute.generate(
-    url: '/transactions/sell/checkout',
-    page: () => CheckoutPage(),
-  );
+  final AppRoute transactionSell;
+  final AppRoute checkout;
 
   // order
-  static final orders = AppRoute.generate(url: '/orders', page: () => OrdersPage());
+  final AppRoute orders;
 
   // cart
-  static final cart = AppRoute.generate(url: '/cart', page: () => CartPage());
-  static final cartDetail = AppRoute.generate(url: '/cart/detail', page: () => CartDetailPage());
+  final AppRoute cart;
+  final AppRoute cartDetail;
 
   // sync
-  static final syncPage = AppRoute.generate(
-    url: '/sync',
-    page: () => SyncPage(),
-    binding: SyncBinding(),
+  final AppRoute syncPage;
+
+  /// Private constructor: semua harus diisi
+  const MyRoutes._({
+    required this.login,
+    required this.splash,
+    required this.home,
+    required this.cashierHome,
+    required this.customerHome,
+    required this.users,
+    required this.userCreate,
+    required this.store,
+    required this.products,
+    required this.addProduct,
+    required this.stockMutation,
+    required this.transactionSell,
+    required this.checkout,
+    required this.orders,
+    required this.cart,
+    required this.cartDetail,
+    required this.syncPage,
+  });
+
+  /// Factory singleton-style yang mengisi semua route
+  static final MyRoutes instance = MyRoutes._(
+    login: AppRoute.generate(url: '/login', page: () => LoginPage()),
+    splash: AppRoute.generate(url: '/splash', page: () => SplashPage()),
+    home: AppRoute.generate(url: '/home', page: () => Home()),
+    cashierHome: AppRoute.generate(url: '/home/cashier', page: () => CashierHomePage()),
+    customerHome: AppRoute.generate(
+      url: '/home/customer',
+      page: () => CustomerHomePage(),
+      binding: CustomerHomeBinding(),
+    ),
+    users: AppRoute.generate(url: '/user', page: () => UserListPage()),
+    userCreate: AppRoute.generate(url: '/user/create', page: () => CreateUserPage()),
+    store: AppRoute.generate(url: '/store', page: () => StoreListPage()),
+    products: AppRoute.generate(url: '/products', page: () => ProductPage()),
+    addProduct: AppRoute.generate(url: '/products/add', page: () => AddProductPage()),
+    stockMutation: AppRoute.generate(
+      url: '/products/stock/mutation',
+      page: () => StockMutationPage(),
+    ),
+    transactionSell: AppRoute.generate(
+      url: '/transactions/sell',
+      page: () => TransactionSellingPage(),
+    ),
+    checkout: AppRoute.generate(url: '/transactions/sell/checkout', page: () => CheckoutPage()),
+    orders: AppRoute.generate(url: '/orders', page: () => OrdersPage()),
+    cart: AppRoute.generate(url: '/cart', page: () => CartPage()),
+    cartDetail: AppRoute.generate(url: '/cart/detail', page: () => CartDetailPage()),
+    syncPage: AppRoute.generate(url: '/sync', page: () => SyncPage(), binding: SyncBinding()),
   );
 
-  static final routes = [
-    splash.page,
+  /// Semua routes sebagai list
+  List<GetPage> get routes => [
     login.page,
+    splash.page,
     home.page,
     cashierHome.page,
     customerHome.page,
     users.page,
     userCreate.page,
+    store.page,
     products.page,
     addProduct.page,
     stockMutation.page,
@@ -98,3 +141,5 @@ class AppRoutes {
     syncPage.page,
   ];
 }
+
+final AppRoutes = MyRoutes.instance;
