@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/snackbar.dart';
 import 'package:pos_app/modules/sync/sync_log/sync_log_model.dart';
 import 'package:pos_app/modules/sync/sync_log/sync_log_service.dart';
-import 'package:pos_app/modules/transaction/selling/data/models/transaction_create_model.dart';
+import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/selling/data/source/transaction_local.dart';
 import 'package:pos_app/modules/transaction/selling/data/source/transaction_remote.dart';
 

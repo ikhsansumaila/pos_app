@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/controller_provider.dart';
+import 'package:pos_app/modules/sync/detail/sync_product/product_sync_controller.dart';
+import 'package:pos_app/modules/sync/detail/sync_transaction/transaction_queue_controller.dart';
+import 'package:pos_app/modules/sync/detail/sync_user/user_sync_controller.dart';
 import 'package:pos_app/modules/sync/service/sync_service.dart';
 import 'package:pos_app/modules/sync/sync_controller.dart';
 import 'package:pos_app/modules/sync/sync_log/sync_log_service.dart';
-import 'package:pos_app/modules/sync/sync_product/product_sync_controller.dart';
-import 'package:pos_app/modules/sync/sync_transaction/transaction_queue_controller.dart';
-import 'package:pos_app/modules/sync/sync_user/user_sync_controller.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
 class SyncBinding extends Bindings {

@@ -16,6 +16,7 @@ import 'package:pos_app/modules/store/view/store_list_page.dart';
 import 'package:pos_app/modules/sync/sync_binding.dart';
 import 'package:pos_app/modules/sync/sync_page.dart';
 import 'package:pos_app/modules/transaction/order/view/order_page.dart';
+import 'package:pos_app/modules/transaction/purchase/view/purchase_list_page.dart';
 import 'package:pos_app/modules/transaction/selling/view/checkout_page.dart';
 import 'package:pos_app/modules/transaction/selling/view/transaction_page.dart';
 import 'package:pos_app/modules/user/view/user_create_page.dart';
@@ -56,6 +57,7 @@ class MyRoutes {
 
   // transaction
   final AppRoute transactionSell;
+  final AppRoute transactionPurchase;
   final AppRoute checkout;
 
   // order
@@ -81,6 +83,7 @@ class MyRoutes {
     required this.products,
     required this.addProduct,
     required this.stockMutation,
+    required this.transactionPurchase,
     required this.transactionSell,
     required this.checkout,
     required this.orders,
@@ -109,6 +112,10 @@ class MyRoutes {
       url: '/products/stock/mutation',
       page: () => StockMutationPage(),
     ),
+    transactionPurchase: AppRoute.generate(
+      url: '/transactions/purchase',
+      page: () => PurchaseListPage(),
+    ),
     transactionSell: AppRoute.generate(
       url: '/transactions/sell',
       page: () => TransactionSellingPage(),
@@ -133,6 +140,7 @@ class MyRoutes {
     products.page,
     addProduct.page,
     stockMutation.page,
+    transactionPurchase.page,
     transactionSell.page,
     checkout.page,
     orders.page,
