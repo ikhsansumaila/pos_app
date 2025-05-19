@@ -7,6 +7,7 @@ import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/formatter.dart';
+import 'package:pos_app/utils/styles.dart';
 
 class StockMutationPage extends StatefulWidget {
   const StockMutationPage({super.key});
@@ -107,9 +108,8 @@ class _StockMutationPageState extends State<StockMutationPage> {
                     TextField(
                       controller: jumlahController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: "Jumlah yang akan dipecah",
-                        border: OutlineInputBorder(),
+                      decoration: AppStyles.textFieldDecoration(
+                        hintText: 'Jumlah yang akan dipecah',
                       ),
                     ),
                   ],
@@ -154,10 +154,7 @@ class _StockMutationPageState extends State<StockMutationPage> {
                   controller: controller,
                   focusNode: focusNode,
                   onEditingComplete: onEditingComplete,
-                  decoration: InputDecoration(
-                    labelText: "Cari nama barang tujuan",
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: AppStyles.textFieldDecoration(hintText: 'Cari nama barang tujuan'),
                 );
               },
             ),
@@ -201,9 +198,8 @@ class _StockMutationPageState extends State<StockMutationPage> {
                         TextField(
                           controller: jumlahController,
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "Jumlah yang akan dipecah",
-                            border: OutlineInputBorder(),
+                          decoration: AppStyles.textFieldDecoration(
+                            hintText: 'Jumlah yang akan ditambah',
                           ),
                         ),
                       ],

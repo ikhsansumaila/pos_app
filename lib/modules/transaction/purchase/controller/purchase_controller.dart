@@ -9,6 +9,7 @@ class PurchaseController extends GetxController {
   var purchaseList = <TransactionCreateModel>[].obs;
   // var currentItems = <TransactionItemModel>[].obs;
 
+  final searchController = TextEditingController();
   final descController = TextEditingController();
   final qtyController = TextEditingController();
   final priceController = TextEditingController();
@@ -25,6 +26,7 @@ class PurchaseController extends GetxController {
     clearProduct();
     trxItems.clear();
     addedProducts.clear();
+    searchController.text = '-';
   }
 
   @override
@@ -35,12 +37,14 @@ class PurchaseController extends GetxController {
     descController.dispose();
     qtyController.dispose();
     priceController.dispose();
+    searchController.dispose();
 
     super.onClose();
   }
 
   void clearProduct() {
     selectedProduct.value = null;
+    searchController.clear();
     qtyController.clear();
     priceController.clear();
   }
@@ -67,6 +71,7 @@ class PurchaseController extends GetxController {
     descController.clear();
     qtyController.clear();
     priceController.clear();
+    selectedProduct.value = null;
   }
 
   void submit() {
