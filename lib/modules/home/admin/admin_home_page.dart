@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_app/modules/auth/login_controller.dart';
+import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/home/menu.dart';

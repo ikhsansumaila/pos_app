@@ -6,40 +6,44 @@ part 'transaction_create_model.g.dart';
 @HiveType(typeId: HiveTypeIds.transactionCreate)
 class TransactionCreateModel extends HiveObject {
   @HiveField(0)
-  final String transType;
+  final int cacheId;
 
   @HiveField(1)
-  final String transDate;
+  final int storeId;
 
   @HiveField(2)
-  final String description;
+  final String transType;
 
   @HiveField(3)
-  final double transSubtotal;
+  final String transDate;
 
   @HiveField(4)
-  final double transDiscount;
+  final String description;
 
   @HiveField(5)
-  final double transTotal;
+  final double transSubtotal;
 
   @HiveField(6)
-  final double transPayment;
+  final double transDiscount;
 
   @HiveField(7)
-  final double transBalance;
+  final double transTotal;
 
   @HiveField(8)
-  final int userId;
+  final double transPayment;
 
   @HiveField(9)
-  final List<TransactionItemModel> items;
+  final double transBalance;
 
   @HiveField(10)
-  int cacheId;
+  final int userId;
+
+  @HiveField(11)
+  final List<TransactionItemModel> items;
 
   TransactionCreateModel({
     required this.cacheId,
+    required this.storeId,
     required this.transType,
     required this.transDate,
     required this.description,
@@ -55,6 +59,7 @@ class TransactionCreateModel extends HiveObject {
   factory TransactionCreateModel.fromJson(Map<String, dynamic> json) {
     return TransactionCreateModel(
       cacheId: json['cache_id'],
+      storeId: json['store_id'],
       transType: json['trans_type'],
       transDate: json['trans_date'],
       description: json['description'],
@@ -70,6 +75,7 @@ class TransactionCreateModel extends HiveObject {
 
   Map<String, dynamic> toJson() => {
     'cache_id': cacheId,
+    'store_id': storeId,
     'trans_type': transType,
     'trans_date': transDate,
     'description': description,

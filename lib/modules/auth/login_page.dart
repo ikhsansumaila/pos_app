@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/utils/validator.dart';
 
-import 'login_controller.dart';
+import 'auth_controller.dart';
 
 class LoginPage extends StatelessWidget {
   final controller = Get.find<AuthController>();
@@ -34,9 +35,10 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: 40),
                   _buildRoundedTextField(
-                    controller: controller.usernameController,
-                    hintText: "Username",
+                    controller: controller.emailController,
+                    hintText: "Email",
                     icon: Icons.person_outline,
+                    validator: (value) => AppValidator.emailValidator(value),
                   ),
                   SizedBox(height: 20),
                   _buildRoundedTextField(
@@ -84,6 +86,7 @@ class LoginPage extends StatelessWidget {
     required TextEditingController controller,
     required String hintText,
     required IconData icon,
+    FormFieldValidator? validator,
     bool obscureText = false,
   }) {
     return Container(
@@ -92,10 +95,12 @@ class LoginPage extends StatelessWidget {
         color: Colors.white.withValues(alpha: 0.2),
         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4))],
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         obscureText: obscureText,
         style: TextStyle(color: Colors.white),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validator,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.white70),
           hintText: hintText,

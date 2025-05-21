@@ -18,46 +18,49 @@ class TransactionCreateModelAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TransactionCreateModel(
-      cacheId: fields[10] as int,
-      transType: fields[0] as String,
-      transDate: fields[1] as String,
-      description: fields[2] as String,
-      transSubtotal: fields[3] as double,
-      transDiscount: fields[4] as double,
-      transTotal: fields[5] as double,
-      transPayment: fields[6] as double,
-      transBalance: fields[7] as double,
-      userId: fields[8] as int,
-      items: (fields[9] as List).cast<TransactionItemModel>(),
+      cacheId: fields[0] as int,
+      storeId: fields[1] as int,
+      transType: fields[2] as String,
+      transDate: fields[3] as String,
+      description: fields[4] as String,
+      transSubtotal: fields[5] as double,
+      transDiscount: fields[6] as double,
+      transTotal: fields[7] as double,
+      transPayment: fields[8] as double,
+      transBalance: fields[9] as double,
+      userId: fields[10] as int,
+      items: (fields[11] as List).cast<TransactionItemModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, TransactionCreateModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
-      ..write(obj.transType)
+      ..write(obj.cacheId)
       ..writeByte(1)
-      ..write(obj.transDate)
+      ..write(obj.storeId)
       ..writeByte(2)
-      ..write(obj.description)
+      ..write(obj.transType)
       ..writeByte(3)
-      ..write(obj.transSubtotal)
+      ..write(obj.transDate)
       ..writeByte(4)
-      ..write(obj.transDiscount)
+      ..write(obj.description)
       ..writeByte(5)
-      ..write(obj.transTotal)
+      ..write(obj.transSubtotal)
       ..writeByte(6)
-      ..write(obj.transPayment)
+      ..write(obj.transDiscount)
       ..writeByte(7)
-      ..write(obj.transBalance)
+      ..write(obj.transTotal)
       ..writeByte(8)
-      ..write(obj.userId)
+      ..write(obj.transPayment)
       ..writeByte(9)
-      ..write(obj.items)
+      ..write(obj.transBalance)
       ..writeByte(10)
-      ..write(obj.cacheId);
+      ..write(obj.userId)
+      ..writeByte(11)
+      ..write(obj.items);
   }
 
   @override

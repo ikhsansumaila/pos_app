@@ -80,7 +80,8 @@ class PurchaseController extends GetxController {
 
     final model = TransactionCreateModel(
       cacheId: 0, //TODO: set null
-      transType: 'purchase',
+      storeId: 0, //TODO: ambil dari auth after login
+      transType: 'IN',
       transDate: DateTime.now().toIso8601String(),
       description: descController.text,
       transSubtotal: subtotal,

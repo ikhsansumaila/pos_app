@@ -147,6 +147,7 @@ class CheckoutPage extends StatelessWidget {
 
                       var trxData = TransactionCreateModel(
                         cacheId: trxController.generateNextCacheId(),
+                        storeId: 0, //TODO: ambil dari auth after login
                         transType: transType,
                         transDate: transDate,
                         description: description,

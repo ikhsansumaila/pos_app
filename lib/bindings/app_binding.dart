@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:pos_app/core/network/connectivity_service.dart';
 import 'package:pos_app/core/network/dio_client.dart';
-import 'package:pos_app/modules/auth/login_controller.dart';
+import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/repository/product_repository.dart';
 import 'package:pos_app/modules/product/data/repository/product_repository_impl.dart';
