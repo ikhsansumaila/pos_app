@@ -24,24 +24,37 @@ class PurchaseFormPage extends StatefulWidget {
 class _PurchaseFormPageState extends State<PurchaseFormPage> {
   final controller = Get.put(PurchaseController());
   final productController = Get.find<ProductController>();
-  bool isNewItem = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(title: 'Pembelian Baru'),
-      body: AppBasePage(
-        bodyColor: Colors.white,
-        mainWidget: Column(
-          children: [
-            SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text("Tanggal: ${AppFormatter.dateTime(DateTime.now())}"),
-            ),
-            _buildSelectProduct(),
-            ..._buildItems(),
-          ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, popCallback) {
+        if (didPop) return;
+
+        Future.microtask(() async {
+          final shouldPop = await _showExitConfirmationDialog(context);
+          if (shouldPop && context.mounted) {
+            controller.clearForm();
+            Get.back();
+          }
+        });
+      },
+      child: Scaffold(
+        appBar: MyAppBar(title: 'Form Pembelian'),
+        body: AppBasePage(
+          bodyColor: Colors.white,
+          mainWidget: Column(
+            children: [
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text("Tanggal: ${AppFormatter.dateTime(DateTime.now())}"),
+              ),
+              _buildSelectProduct(),
+              ..._buildItems(),
+            ],
+          ),
         ),
       ),
     );
@@ -71,13 +84,13 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
               onSelected: (ProductModel selection) {
                 setState(() {
                   controller.selectedProduct.value = selection;
-                  isNewItem = false;
+                  controller.searchController.text = selection.namaBrg ?? '';
+                  controller.priceController.clear();
+                  controller.qtyController.clear();
                 });
               },
               fieldViewBuilder: (context, textFieldController, focusNode, onEditingComplete) {
-                if (isNewItem) {
-                  textFieldController.clear();
-                }
+                textFieldController.text = controller.searchController.text;
 
                 return TextField(
                   controller: textFieldController,
@@ -92,18 +105,20 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
                               icon: Icon(Icons.clear),
                               color: Colors.red,
                               onPressed: () {
-                                controller.clearProduct();
-                                textFieldController.clear();
                                 setState(() {
-                                  isNewItem = true;
+                                  controller.clearProductSearchForm();
+                                  // hilangkan fokus Autocomplete
+                                  FocusScope.of(context).unfocus();
                                 });
                               },
                             )
                             : null,
                   ),
+                  // ON CHANGED TYPING
                   onChanged: (value) {
                     setState(() {
-                      isNewItem = false;
+                      controller.searchController.text = value;
+                      controller.formSearchValidate();
                     });
                   },
                 );
@@ -113,25 +128,21 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
             _selectedProduct(),
             SizedBox(height: 16),
 
-            // add item button
+            // BUTTON ADD ITEMS
             Obx(() {
-              bool buttonAddDisable = false;
-              if (controller.selectedProduct.value == null ||
-                  AppFormatter.parseCurrency(controller.priceController.text) == 0 ||
-                  controller.qtyController.text == '') {
-                buttonAddDisable = true;
-              }
-
               return Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed:
-                      buttonAddDisable
+                      controller.buttonAddEnable.value == false
                           ? null
                           : () {
-                            controller.addItem(controller.selectedProduct.value!);
                             setState(() {
-                              isNewItem = true;
+                              controller.addItem(controller.selectedProduct.value!);
+                              controller.clearProductSearchForm();
+
+                              // hilangkan fokus Autocomplete
+                              FocusScope.of(context).unfocus();
                             });
                           },
                   child: Text("Tambah"),
@@ -182,6 +193,7 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: AppStyles.textFieldDecoration(hintText: 'Qty'),
+              onChanged: (_) => controller.formSearchValidate(),
             ),
             SizedBox(height: 8),
             TextField(
@@ -191,6 +203,7 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
               decoration: AppStyles.textFieldDecoration(hintText: 'Harga Beli'),
               onChanged: (value) {
                 setState(() {
+                  controller.formSearchValidate();
                   controller.priceController.text = AppFormatter.currency(
                     double.tryParse(value) ?? 0,
                   );
@@ -210,7 +223,10 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
     if (controller.trxItems.isNotEmpty) {
       return <Widget>[
         Divider(height: 32, thickness: 1),
-        Text("Daftar Barang Dibeli", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(
+          "Daftar barang yang dibeli",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -279,5 +295,31 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
             ),
       ),
     );
+  }
+
+  Future<bool> _showExitConfirmationDialog(BuildContext context) async {
+    var result =
+        await showDialog<bool>(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: const Text('Keluar Halaman'),
+                content: const Text(
+                  'Data akan terhapus, Anda yakin ingin meninggalkan halaman ini?',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Tidak'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Ya'),
+                  ),
+                ],
+              ),
+        ) ??
+        false;
+    return result;
   }
 }

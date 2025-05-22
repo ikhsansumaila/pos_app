@@ -18,20 +18,21 @@ class PurchaseController extends GetxController {
 
   final selectedProduct = Rx<ProductModel?>(null); // ProductModel.obs
   final addedProducts = <ProductModel>[].obs;
+  final buttonAddEnable = false.obs;
 
   @override
   void onInit() {
     super.onInit();
 
-    clearProduct();
+    clearProductSearchForm();
     trxItems.clear();
     addedProducts.clear();
-    searchController.text = '-';
+    searchController.clear();
   }
 
   @override
   void onClose() {
-    clearProduct();
+    clearProductSearchForm();
     trxItems.clear();
     addedProducts.clear();
     descController.dispose();
@@ -42,11 +43,12 @@ class PurchaseController extends GetxController {
     super.onClose();
   }
 
-  void clearProduct() {
+  void clearProductSearchForm() {
     selectedProduct.value = null;
     searchController.clear();
     qtyController.clear();
     priceController.clear();
+    buttonAddEnable.value = false;
   }
 
   void addItem(ProductModel product) {
@@ -101,5 +103,21 @@ class PurchaseController extends GetxController {
   void removeItem(int index) {
     trxItems.removeAt(index);
     addedProducts.removeAt(index);
+  }
+
+  void clearForm() {
+    clearProductSearchForm();
+    trxItems.clear();
+    addedProducts.clear();
+  }
+
+  void formSearchValidate() {
+    double price = AppFormatter.parseCurrency(priceController.text);
+
+    if (selectedProduct.value == null || price == 0 || qtyController.text == '') {
+      buttonAddEnable.value = false;
+    } else {
+      buttonAddEnable.value = true;
+    }
   }
 }

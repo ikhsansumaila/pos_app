@@ -11,11 +11,6 @@ import 'package:requests_inspector/requests_inspector.dart';
 
 enum AppHttpMethod { get, post, put, delete }
 
-final String HTTP_METHOD_GET = 'GET';
-final String HTTP_METHOD_POST = 'POST';
-final String HTTP_METHOD_PUT = 'PUT';
-final String HTTP_METHOD_DELETE = 'DELETE';
-
 class DioClient {
   late final Dio dio;
 
@@ -26,7 +21,6 @@ class DioClient {
       receiveTimeout: TIMEOUT_DURATION,
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     );
-    log("BASE_API_URL : $BASE_API_URL");
 
     dio = Dio(options);
 

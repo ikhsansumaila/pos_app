@@ -24,7 +24,6 @@ void main() async {
 
   // init hive (local database)
   await initHive();
-  // await Hive.deleteFromDisk();
 
   final isLoggedIn = sharedPrefs.getBool('isLoggedIn');
 
