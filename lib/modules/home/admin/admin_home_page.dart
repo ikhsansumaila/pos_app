@@ -9,14 +9,20 @@ import 'package:pos_app/modules/home/menu.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class AdminHomePage extends StatelessWidget {
-  const AdminHomePage({super.key});
+  AdminHomePage({super.key});
+  final AuthController authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    final user = authController.getUserLoginData();
+    if (user == null) {
+      return const Center(child: Text("Anda tidak memiliki akses"));
+    }
+
     final responsive = ResponsiveHelper(MediaQuery.of(context).size);
 
     var padding = responsive.isTablet ? EdgeInsets.fromLTRB(40, 20, 40, 20) : EdgeInsets.all(20);
-    var menu = HomeMenu.getMenuItem('admin');
+    var menu = authController.getUserMenu();
 
     return Scaffold(
       backgroundColor: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pos_app/routes/routes.dart';
+import 'package:pos_app/utils/constants/constant.dart';
 
 class MenuItem {
   final String title;
@@ -36,7 +37,7 @@ class HomeMenu {
     List<MenuItem> menuItems = [];
 
     switch (role) {
-      case 'admin':
+      case AppUserRole.superAdmin:
         menuItems = [
           allMenu['transaction']!,
           allMenu['purchase']!,
@@ -45,7 +46,26 @@ class HomeMenu {
           allMenu['user']!,
           allMenu['sync']!,
         ];
-      case 'cashier':
+      case AppUserRole.admin:
+        menuItems = [
+          allMenu['transaction']!,
+          allMenu['purchase']!,
+          allMenu['product']!,
+          allMenu['store']!,
+          allMenu['user']!,
+          allMenu['sync']!,
+        ];
+      case AppUserRole.owner:
+        menuItems = [
+          allMenu['transaction']!,
+          allMenu['purchase']!,
+          allMenu['product']!,
+          allMenu['store']!,
+          allMenu['user']!,
+          allMenu['sync']!,
+        ];
+
+      case AppUserRole.cashier:
         menuItems = [
           allMenu['transaction']!,
           allMenu['product']!,
@@ -53,6 +73,7 @@ class HomeMenu {
           allMenu['sync']!,
         ];
     }
+
     return menuItems;
   }
 }

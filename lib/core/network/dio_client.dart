@@ -53,7 +53,7 @@ class DioClient {
     bool showLoading = false,
   }) async {
     if (showLoading) {
-      await getx.Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
+      getx.Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
     }
 
     try {

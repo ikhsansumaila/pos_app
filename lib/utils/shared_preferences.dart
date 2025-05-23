@@ -18,15 +18,15 @@ class MySharedPreferences {
     return value;
   }
 
-  void setKey(String key, String value) {
+  Future<void> setKey(String key, String value) async {
     if (_sharedPrefs != null) {
-      _sharedPrefs!.setString(key, value);
+      await _sharedPrefs!.setString(key, value);
     }
   }
 
-  void remove(String key) {
+  Future<void> remove(String key) async {
     if (_sharedPrefs != null) {
-      _sharedPrefs!.remove(key);
+      await _sharedPrefs!.remove(key);
     }
   }
 }

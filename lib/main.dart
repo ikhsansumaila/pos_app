@@ -25,15 +25,13 @@ void main() async {
   // init hive (local database)
   await initHive();
 
-  final isLoggedIn = sharedPrefs.getBool('isLoggedIn');
-
   runApp(
     RequestsInspector(
       hideInspectorBanner: true,
       child: GetMaterialApp(
         initialBinding: AppBinding(),
         debugShowCheckedModeBanner: false,
-        initialRoute: isLoggedIn ? AppRoutes.home.url : AppRoutes.login.url,
+        initialRoute: AppRoutes.home.url, //isLoggedIn ? AppRoutes.home.url : AppRoutes.login.url,
         getPages: AppRoutes.routes,
         theme: themes,
       ),

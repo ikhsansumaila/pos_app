@@ -1,17 +1,15 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/core/network/response.dart';
+import 'package:pos_app/modules/auth/auth_model.dart';
 import 'package:pos_app/modules/auth/auth_repository.dart';
+import 'package:pos_app/modules/home/menu.dart';
 import 'package:pos_app/routes/routes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-class UserData {
-  String role;
-  String route;
-
-  UserData({required this.role, required this.route});
-}
+import 'package:pos_app/utils/constants/constant.dart';
+import 'package:pos_app/utils/shared_preferences.dart';
 
 class AuthController extends GetxController {
   final repository = Get.put(AuthRepository(Get.find()));
@@ -20,18 +18,15 @@ class AuthController extends GetxController {
   void onInit() {
     log("onInit AuthController");
     super.onInit();
+    _setUserDataFromLocal();
   }
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  var isPasswordVisible = false.obs;
   var isLoading = false.obs;
-
-  // final Map<String, UserData> userData = {
-  //   "admin": UserData(role: "admin", route: AppRoutes.home.url),
-  //   "pelanggan": UserData(role: "pelanggan", route: AppRoutes.home.url),
-  //   "kasir": UserData(role: "kasir", route: AppRoutes.home.url),
-  // };
+  UserLoginModel? _userLoginData;
 
   // TODO: remove this
   // sample_owner@gmail.com
@@ -45,7 +40,6 @@ class AuthController extends GetxController {
   Future<void> login() async {
     final email = emailController.text.trim();
     final password = passwordController.text;
-    // final role = userData[username]!.role;
 
     if (email.isEmpty || password.isEmpty) {
       Get.snackbar("Error", "Email dan password tidak boleh kosong");
@@ -54,38 +48,67 @@ class AuthController extends GetxController {
 
     isLoading.value = true;
 
-    var result = await repository.login({"email": email, "password": password});
+    try {
+      ApiResponse result = await repository.login({"email": email, "password": password});
+      if (!result.isSuccess) {
+        Get.snackbar(
+          "Login Gagal",
+          result.data['message'] ?? "Invalid username/password",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        isLoading.value = false;
+        return;
+      }
 
-    log('login result: ${result.toString()}');
-    if (!result.isSuccess) {
-      Get.snackbar("Login Failed", result.data['message'] ?? "Invalid username/password");
+      Map<String, dynamic> jsonData = result.data['data'];
+      await sharedPrefs.setKey(USER_LOGIN_SP_KEY, jsonEncode(jsonData)); // Save user login data
+      _setUserLoginData(jsonEncode(jsonData)); // set variable _userLoginData
+
+      Get.offAllNamed(AppRoutes.home.url);
+    } catch (e) {
+      log("Error: $e");
       isLoading.value = false;
+      Get.snackbar("Error", "Terjadi kesalahan, silahkan coba lagi");
       return;
     }
-    // final role = result.data['role'] ?? "admin"; // Default to admin if not found
-    // Future.delayed(Duration(seconds: 1)); // simulate API delay
-
-    // if (!userData.containsKey(username)) {
-    //   Get.snackbar("Login Failed", "Invalid username/password");
-    //   isLoading.value = false;
-    //   return;
-    // }
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("isLoggedIn", true); // Save login flag
-    await prefs.setString("role", 'admin');
-
-    Get.offAllNamed(AppRoutes.home.url);
 
     isLoading.value = false;
   }
 
   Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setBool("isLoggedIn", false);
-    await prefs.remove("role");
-
+    await sharedPrefs.remove(USER_LOGIN_SP_KEY);
+    _setUserLoginData("");
     Get.offAllNamed(AppRoutes.login.url);
+  }
+
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
+  void _setUserDataFromLocal() {
+    String sharedPrefsData = sharedPrefs.getString(USER_LOGIN_SP_KEY);
+    _setUserLoginData(sharedPrefsData);
+  }
+
+  void _setUserLoginData(String userLoginData) {
+    if (userLoginData.isEmpty) {
+      _userLoginData = null;
+      return;
+    }
+
+    _userLoginData = UserLoginModel.fromJson(jsonDecode(userLoginData));
+  }
+
+  UserLoginModel? getUserLoginData() {
+    return _userLoginData;
+  }
+
+  List<MenuItem> getUserMenu() {
+    if (_userLoginData == null) {
+      return [];
+    }
+    return HomeMenu.getMenuItem(_userLoginData!.role);
   }
 }

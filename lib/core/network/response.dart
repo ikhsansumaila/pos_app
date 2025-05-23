@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 class ApiResponse<T> {
   final T? data;
@@ -7,14 +8,16 @@ class ApiResponse<T> {
 
   ApiResponse({this.data, this.error, this.statusCode});
 
-  bool get isSuccess => error == null;
+  bool get isError => error != null || (statusCode != null && statusCode! >= 300);
+  bool get isSuccess => !isError;
 
   @override
   String toString() {
+    log("statusCode: $statusCode");
     try {
-      return data != null ? jsonEncode(data) : 'null';
+      return jsonEncode({'statusCode': statusCode, 'error': error, 'data': data});
     } catch (e) {
-      return data.toString(); // fallback ke toString biasa
+      return 'statusCode: $statusCode, error: $error, data: ${data.toString()}';
     }
   }
 

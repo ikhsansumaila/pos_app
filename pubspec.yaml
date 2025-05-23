@@ -50,7 +50,10 @@ dependencies:
   connectivity_plus: ^6.0.3
 
   #dropdown search
-  dropdown_search: ^6.0.2
+  # dropdown_search: ^6.0.2
+
+  #skeleton loading
+  shimmer: ^3.0.0
 
 
 dev_dependencies:

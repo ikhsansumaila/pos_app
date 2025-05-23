@@ -41,37 +41,47 @@ class LoginPage extends StatelessWidget {
                     validator: (value) => AppValidator.emailValidator(value),
                   ),
                   SizedBox(height: 20),
-                  _buildRoundedTextField(
-                    controller: controller.passwordController,
-                    hintText: "Password",
-                    icon: Icons.lock_outline,
-                    obscureText: true,
-                  ),
+                  Obx(() {
+                    return _buildRoundedTextField(
+                      controller: controller.passwordController,
+                      hintText: "Password",
+                      icon: Icons.lock_outline,
+                      obscureText: !controller.isPasswordVisible.value,
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: IconButton(
+                          color: Colors.white70,
+                          icon: Icon(
+                            controller.isPasswordVisible.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: controller.togglePasswordVisibility,
+                        ),
+                      ),
+                    );
+                  }),
                   SizedBox(height: 30),
                   Obx(() {
-                    return controller.isLoading.value
-                        ? CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(Colors.white70),
-                        )
-                        : ElevatedButton(
-                          onPressed: controller.login,
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.cyanAccent.shade700,
-                            padding: EdgeInsets.symmetric(horizontal: 100, vertical: 18),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                            elevation: 12,
-                            shadowColor: Colors.black54,
-                          ),
-                          child: Text(
-                            "LOGIN",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.1,
-                            ),
-                          ),
-                        );
+                    return ElevatedButton(
+                      onPressed: controller.isLoading.value ? null : controller.login,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.cyanAccent.shade700,
+                        padding: EdgeInsets.symmetric(horizontal: 100, vertical: 18),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        elevation: 12,
+                        shadowColor: Colors.black54,
+                      ),
+                      child: Text(
+                        "LOGIN",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.1,
+                        ),
+                      ),
+                    );
                   }),
                 ],
               ),
@@ -88,6 +98,7 @@ class LoginPage extends StatelessWidget {
     required IconData icon,
     FormFieldValidator? validator,
     bool obscureText = false,
+    Widget? suffixIcon,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -107,6 +118,7 @@ class LoginPage extends StatelessWidget {
           hintStyle: TextStyle(color: Colors.white54),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+          suffixIcon: suffixIcon,
         ),
       ),
     );
