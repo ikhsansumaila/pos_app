@@ -33,7 +33,7 @@ class AuthController extends GetxController {
   // ikhsan@gmail.com
   // kasir.ikhsan@gmail.com
   // ikhsan2@mail.com
-  // ikhsan3@mail.com
+  // ikhsan3@mail.com ========> SUPER ADMIN
   // ikhsan.customer@mail.com
   // password : 1234
 

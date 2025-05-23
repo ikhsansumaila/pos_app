@@ -8,6 +8,7 @@ import 'package:pos_app/modules/home/cashier/cashier_home_page.dart';
 import 'package:pos_app/modules/home/customer/customer_binding.dart';
 import 'package:pos_app/modules/home/customer/customer_home_page.dart';
 import 'package:pos_app/modules/home/home.dart';
+import 'package:pos_app/modules/home/owner/owner_home_page.dart';
 import 'package:pos_app/modules/home/splash_page.dart';
 import 'package:pos_app/modules/product/view/product_add_page.dart';
 import 'package:pos_app/modules/product/view/product_list_page.dart';
@@ -42,6 +43,7 @@ class MyRoutes {
   final AppRoute home;
   final AppRoute cashierHome;
   final AppRoute customerHome;
+  final AppRoute ownerDashboard;
 
   // user
   final AppRoute users;
@@ -77,6 +79,7 @@ class MyRoutes {
     required this.home,
     required this.cashierHome,
     required this.customerHome,
+    required this.ownerDashboard,
     required this.users,
     required this.userCreate,
     required this.store,
@@ -103,6 +106,7 @@ class MyRoutes {
       page: () => CustomerHomePage(),
       binding: CustomerHomeBinding(),
     ),
+    ownerDashboard: AppRoute.generate(url: '/home/owner', page: () => OwnerHomePage()),
     users: AppRoute.generate(url: '/user', page: () => UserListPage()),
     userCreate: AppRoute.generate(url: '/user/create', page: () => CreateUserPage()),
     store: AppRoute.generate(url: '/store', page: () => StoreListPage()),
@@ -134,6 +138,7 @@ class MyRoutes {
     home.page,
     cashierHome.page,
     customerHome.page,
+    ownerDashboard.page,
     users.page,
     userCreate.page,
     store.page,

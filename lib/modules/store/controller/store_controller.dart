@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/store/data/models/store_model.dart';
 import 'package:pos_app/modules/store/data/repository/store_repository.dart';
@@ -15,7 +16,7 @@ class StoreController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final addressController = TextEditingController();
-  // final isFormValid = false.obs;
+  final isFormValid = false.obs;
 
   final isLoading = false.obs;
   final stores = <StoreModel>[].obs;
@@ -51,10 +52,17 @@ class StoreController extends GetxController {
   }
 
   Future<void> createStore() async {
+    AuthController authController = Get.find<AuthController>();
+    var userLoginData = authController.getUserLoginData();
+    if (userLoginData == null) {
+      await AppDialog.show('Terjadi kesalahan', content: 'User login tidak ditemukan');
+      return;
+    }
+
     StoreModel store = StoreModel(
       storeName: nameController.text,
       storeAddress: addressController.text,
-      userId: 11.toString(),
+      userId: userLoginData.id.toString(),
     );
     String? errorPost = await repository.postStore(store);
     if (errorPost == null) {
@@ -65,12 +73,10 @@ class StoreController extends GetxController {
     }
   }
 
-  bool get isFormValid => formKey.currentState?.validate() ?? false;
-
-  // void validateForm() {
-  //   // set form valid
-  //   isFormValid.value = nameController.text.isNotEmpty && addressController.text.isNotEmpty;
-  // }
+  void validateForm() {
+    // set form valid
+    isFormValid.value = nameController.text.isNotEmpty && addressController.text.isNotEmpty;
+  }
 
   void clearForm() {
     nameController.clear();

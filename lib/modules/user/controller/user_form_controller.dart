@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/store/data/models/store_model.dart';
 import 'package:pos_app/modules/store/data/repository/store_repository.dart';
@@ -95,6 +96,13 @@ class UserFormController extends GetxController {
   }
 
   Future<void> createUser() async {
+    AuthController authController = Get.find<AuthController>();
+    var userLoginData = authController.getUserLoginData();
+    if (userLoginData == null) {
+      await AppDialog.show('Terjadi kesalahan', content: 'User login tidak ditemukan');
+      return;
+    }
+
     UserModel data = UserModel(
       cacheId: userRepo.generateNextCacheId(),
       storeId: int.tryParse(selectedStore.value?.id ?? '0') ?? 0,
@@ -104,7 +112,7 @@ class UserFormController extends GetxController {
       password: passwordController.text,
       roleId: selectedRole.value?.id ?? 0,
       status: selectedStatus.value,
-      userId: 11,
+      userId: userLoginData.id,
     );
 
     String? errorPost = await userRepo.postUser(data);

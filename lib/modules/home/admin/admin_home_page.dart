@@ -27,7 +27,7 @@ class AdminHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(
-        title: 'Selamat Datang Admin',
+        title: 'Selamat Datang ${user.nama}',
         actions: [IconButton(icon: Icon(Icons.settings), onPressed: () => _showSettingsMenu())],
       ),
       body: Padding(

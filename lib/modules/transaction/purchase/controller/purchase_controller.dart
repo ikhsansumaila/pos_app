@@ -1,13 +1,14 @@
 // controllers/purchase_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/modules/auth/auth_controller.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 import 'package:pos_app/utils/formatter.dart';
 
 class PurchaseController extends GetxController {
   var purchaseList = <TransactionCreateModel>[].obs;
-  // var currentItems = <TransactionItemModel>[].obs;
 
   final searchController = TextEditingController();
   final descController = TextEditingController();
@@ -76,13 +77,20 @@ class PurchaseController extends GetxController {
     selectedProduct.value = null;
   }
 
-  void submit() {
+  Future<void> submit() async {
+    AuthController authController = Get.find<AuthController>();
+    var userLoginData = authController.getUserLoginData();
+    if (userLoginData == null) {
+      AppDialog.show('Terjadi kesalahan', content: 'User login tidak ditemukan');
+      return;
+    }
+
     final subtotal = trxItems.fold(0.0, (sum, i) => sum + i.subtotal);
     final total = trxItems.fold(0.0, (sum, i) => sum + i.total);
 
-    final model = TransactionCreateModel(
+    final createModel = TransactionCreateModel(
       cacheId: 0, //TODO: set null
-      storeId: 0, //TODO: ambil dari auth after login
+      storeId: userLoginData.storeId ?? 0,
       transType: 'IN',
       transDate: DateTime.now().toIso8601String(),
       description: descController.text,
@@ -91,12 +99,17 @@ class PurchaseController extends GetxController {
       transTotal: total,
       transPayment: total,
       transBalance: 0,
-      userId: 11, // TODO: Ganti dengan id user yang sesuai
+      userId: userLoginData.id,
       items: trxItems.toList(),
     );
+    print(createModel.toString());
 
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
+    await Future.delayed(const Duration(seconds: 1));
+    Get.back();
+    await AppDialog.show('Berhasil', content: 'Transaksi berhasil disimpan');
     // Simulasikan kirim atau simpan lokal
-    print(model.toString());
+    clearForm();
     Get.back();
   }
 

@@ -55,6 +55,9 @@ dependencies:
   #skeleton loading
   shimmer: ^3.0.0
 
+  #dashboard charts
+  fl_chart: ^0.63.0
+
 
 dev_dependencies:
   flutter_test:

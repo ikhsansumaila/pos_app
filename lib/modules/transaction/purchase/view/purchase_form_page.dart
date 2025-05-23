@@ -40,21 +40,33 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
           }
         });
       },
-      child: Scaffold(
-        appBar: MyAppBar(title: 'Form Pembelian'),
-        body: AppBasePage(
-          bodyColor: Colors.white,
-          mainWidget: Column(
-            children: [
-              SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text("Tanggal: ${AppFormatter.dateTime(DateTime.now())}"),
+      child: AppBasePage(
+        appBar: MyAppBar(title: "Form Pembelian"),
+        bodyColor: Colors.white,
+        mainWidget: Column(
+          children: [
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text("Tanggal: ${AppFormatter.dateTime(DateTime.now())}"),
+            ),
+            _buildSelectProduct(),
+            ..._buildItems(),
+          ],
+        ),
+        fixedBottomWidget: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(16),
+          child: Obx(() {
+            return ElevatedButton(
+              onPressed: controller.trxItems.isNotEmpty ? controller.submit : null,
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
               ),
-              _buildSelectProduct(),
-              ..._buildItems(),
-            ],
-          ),
+              child: Text('Simpan'),
+            );
+          }),
         ),
       ),
     );
@@ -236,43 +248,52 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
             final product = controller.addedProducts[index];
             final trxItem = controller.trxItems[index];
 
-            return Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(product.namaBrg ?? 'Tidak diketahui'),
-                subtitle: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Text.rich(
-                        textAlign: TextAlign.left,
-                        TextSpan(
-                          children: [
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(product.namaBrg ?? 'Tidak diketahui'),
+                    subtitle: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Text.rich(
+                            textAlign: TextAlign.left,
                             TextSpan(
-                              text: AppFormatter.currency(trxItem.price),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.priceColor,
-                                fontSize: 16,
-                              ),
+                              children: [
+                                TextSpan(
+                                  text: AppFormatter.currency(trxItem.price),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.priceColor,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' x (${trxItem.qty})',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
                             ),
-                            TextSpan(text: ' x (${trxItem.qty})', style: TextStyle(fontSize: 16)),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        controller.removeItem(index);
+                        setState(() {});
+                      },
+                    ),
+                  ),
                 ),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    controller.removeItem(index);
-                    setState(() {});
-                  },
-                ),
-              ),
+                if (index != controller.addedProducts.length - 1)
+                  Divider(height: 0, thickness: 1, color: Colors.grey.shade300),
+              ],
             );
           },
         ),

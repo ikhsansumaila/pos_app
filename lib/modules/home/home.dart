@@ -6,6 +6,7 @@ import 'package:pos_app/modules/auth/login_page.dart';
 import 'package:pos_app/modules/home/admin/admin_home_page.dart';
 import 'package:pos_app/modules/home/cashier/cashier_home_page.dart';
 import 'package:pos_app/modules/home/customer/customer_home_page.dart';
+import 'package:pos_app/modules/home/owner/owner_home_page.dart';
 import 'package:pos_app/utils/constants/constant.dart';
 
 class Home extends StatelessWidget {
@@ -27,7 +28,9 @@ class Home extends StatelessWidget {
     bool isCashier = role == AppUserRole.cashier;
     bool isCustomer = role == AppUserRole.customer;
 
-    if (isSuperAdmin || isAdmin || isOwner) return AdminHomePage();
+    if (isSuperAdmin) return OwnerHomePage();
+    if (isAdmin) return AdminHomePage();
+    if (isOwner) return OwnerHomePage();
     if (isCashier) return CashierHomePage();
     if (isCustomer) return CustomerHomePage();
 
