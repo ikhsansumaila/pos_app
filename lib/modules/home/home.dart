@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/auth_controller.dart';
@@ -27,6 +29,7 @@ class Home extends StatelessWidget {
     bool isOwner = role == AppUserRole.owner;
     bool isCashier = role == AppUserRole.cashier;
     bool isCustomer = role == AppUserRole.customer;
+    log("role $role");
 
     if (isSuperAdmin) return OwnerHomePage();
     if (isAdmin) return AdminHomePage();

@@ -49,7 +49,7 @@ class UserListPage extends StatelessWidget {
                 leading: CircleAvatar(child: Text((user.nama ?? '-')[0])),
                 title: Text(user.nama ?? '-'),
                 subtitle: Text(user.email ?? '-'),
-                trailing: Text(user.roleName ?? '-'),
+                trailing: Text(user.role ?? '-'),
                 onTap: () {
                   Get.to(() => UserDetailPage(user: user));
                   // Navigasi ke detail atau edit jika perlu

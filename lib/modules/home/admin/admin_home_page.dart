@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/auth_controller.dart';
@@ -42,7 +40,6 @@ class AdminHomePage extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             final item = menu[index];
-            log("item.route ${item.route}");
             return GestureDetector(
               onTap: () => Get.toNamed(item.route),
               child: _buildMenuItemCard(item, responsive),

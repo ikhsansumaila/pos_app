@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/user/data/models/user_model.dart';
@@ -22,7 +25,8 @@ class UserController extends GetxController {
   void fetchUsers() async {
     isLoading(true);
 
-    final res = await repository.getUsers();
+    List<UserModel> res = await repository.getUsers();
+    log(jsonEncode(res));
     users.assignAll(res);
     filteredUsers.assignAll(res);
 
