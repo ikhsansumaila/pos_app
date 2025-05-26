@@ -81,7 +81,7 @@ class PurchaseController extends GetxController {
     AuthController authController = Get.find<AuthController>();
     var userLoginData = authController.getUserLoginData();
     if (userLoginData == null) {
-      AppDialog.show('Terjadi kesalahan', content: 'User login tidak ditemukan');
+      await authController.forceLogout();
       return;
     }
 

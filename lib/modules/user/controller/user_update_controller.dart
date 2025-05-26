@@ -131,16 +131,17 @@ class UserUpdateController extends GetxController {
     // isLoading(false);
   }
 
-  Future<void> createUser() async {
+  Future<void> updateUser() async {
     AuthController authController = Get.find<AuthController>();
     var userLoginData = authController.getUserLoginData();
     if (userLoginData == null) {
-      await AppDialog.show('Terjadi kesalahan', content: 'User login tidak ditemukan');
+      await authController.forceLogout();
       return;
     }
 
     UserModel data = UserModel(
-      cacheId: userRepo.generateNextCacheId(),
+      cacheId: selectedUser.cacheId,
+      id: selectedUser.id,
       storeId: int.tryParse(selectedStore.value?.id ?? '0') ?? 0,
       roleName: selectedRole.value?.role ?? '',
       nama: nameController.text,

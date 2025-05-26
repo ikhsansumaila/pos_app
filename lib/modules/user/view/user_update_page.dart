@@ -96,7 +96,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed: controller.isFormValid.value ? controller.createUser : null,
+                  onPressed: controller.isFormValid.value ? controller.updateUser : null,
                 ),
               ],
             ),

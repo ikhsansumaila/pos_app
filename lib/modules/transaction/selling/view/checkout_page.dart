@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
-import 'package:pos_app/modules/common/widgets/print.dart';
-import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/selling/controller/checkout_controller.dart';
 import 'package:pos_app/modules/transaction/selling/controller/transaction_controller.dart';
 import 'package:pos_app/utils/constants/colors.dart';
 import 'package:pos_app/utils/formatter.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
+import 'package:pos_app/utils/styles.dart';
 
 class CheckoutPage extends StatelessWidget {
   final checkoutController = Get.put(CheckoutController());
@@ -101,17 +101,53 @@ class CheckoutPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text('Diskon', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8),
+                  TextField(
+                    controller: checkoutController.discountController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: AppStyles.textFieldDecoration(
+                      hintText: 'Masukkan diskon (misal: 10.000)',
+                      prefixText: 'Rp',
+                    ),
+                    onChanged: (value) {
+                      double discountValue = double.tryParse(value) ?? 0;
+
+                      // Prevent discount from exceeding total
+                      if (discountValue > checkoutController.totalHarga.value) {
+                        discountValue = checkoutController.discount.value;
+                        checkoutController.discountController.text = AppFormatter.currency(
+                          discountValue.toDouble(),
+                          withSymbol: false,
+                        );
+                        return;
+                      }
+
+                      checkoutController.discount.value = discountValue.toDouble();
+                      checkoutController.discountController.text = AppFormatter.currency(
+                        discountValue.toDouble(),
+                        withSymbol: false,
+                      );
+
+                      checkoutController.calculateTotal();
+                    },
+                  ),
+                  SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Total', style: TextStyle(fontSize: 18)),
-                      Text(
-                        AppFormatter.currency(checkoutController.totalHarga),
-                        style: TextStyle(
-                          fontSize: responsive.fontSize(22),
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.priceColor,
+                      Obx(
+                        () => Text(
+                          AppFormatter.currency(checkoutController.totalHarga.value),
+                          style: TextStyle(
+                            fontSize: responsive.fontSize(22),
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.priceColor,
+                          ),
                         ),
                       ),
                     ],
@@ -119,55 +155,10 @@ class CheckoutPage extends StatelessWidget {
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () async {
-                      // Proses pembayaran
-                      var transType = 'Cash';
-                      var transDate = DateTime.now().toIso8601String();
-                      var description = '';
-                      var transSubtotal = checkoutController.totalHarga;
-                      var transDiscount = 0.0;
-                      var transTotal = checkoutController.totalHarga;
-                      var transPayment = checkoutController.totalHarga;
-                      var transBalance = 0.0;
-                      var userId = 1;
-
-                      var trxItems =
-                          items.map((item) {
-                            var subTotal = (item.product.hargaJual ?? 0).toDouble() * item.quantity;
-                            return TransactionItemModel(
-                              idBarang: item.product.idBrg ?? 0,
-                              kodeBarang: item.product.kodeBrg ?? '',
-                              description: description,
-                              qty: item.quantity,
-                              price: (item.product.hargaJual ?? 0).toDouble(),
-                              subtotal: subTotal,
-                              discount: 0.0,
-                              total: subTotal,
-                            );
-                          }).toList();
-
-                      var trxData = TransactionCreateModel(
-                        cacheId: trxController.generateNextCacheId(),
-                        storeId: 0, //TODO: ambil dari auth after login
-                        transType: transType,
-                        transDate: transDate,
-                        description: description,
-                        transSubtotal: transSubtotal,
-                        transDiscount: transDiscount,
-                        transTotal: transTotal,
-                        transPayment: transPayment,
-                        transBalance: transBalance,
-                        userId: userId,
-                        items: trxItems,
-                      );
-                      await checkoutController.createTransaction(trxData);
-
-                      // print pdf after create trx
-                      await cetakStrukPDF(items, checkoutController.totalHarga);
-                      Get.back();
+                      await checkoutController.createTransaction();
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 48),
-                      // backgroundColor: AppColors.primary,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                     ),

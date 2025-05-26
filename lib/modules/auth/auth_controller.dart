@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pos_app/core/network/response.dart';
 import 'package:pos_app/modules/auth/auth_model.dart';
 import 'package:pos_app/modules/auth/auth_repository.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/home/menu.dart';
 import 'package:pos_app/routes/routes.dart';
 import 'package:pos_app/utils/constants/constant.dart';
@@ -110,5 +111,13 @@ class AuthController extends GetxController {
       return [];
     }
     return HomeMenu.getMenuItem(_userLoginData!.role);
+  }
+
+  Future<void> forceLogout() async {
+    await AppDialog.show(
+      'Terjadi kesalahan',
+      content: 'Session login habis/tidak ditemukan, lakukan login ulang',
+    );
+    await logout();
   }
 }

@@ -1,8 +1,11 @@
 import 'package:intl/intl.dart';
 
 class AppFormatter {
-  static String currency(double amount) {
-    return 'Rp${NumberFormat("#,##0", "id_ID").format(amount)}';
+  static String currency(double amount, {bool withSymbol = true}) {
+    if (withSymbol) {
+      return 'Rp${NumberFormat("#,##0.00", "id_ID").format(amount)}';
+    }
+    return NumberFormat("#,##0", "id_ID").format(amount);
   }
 
   static double parseCurrency(String formatted) {

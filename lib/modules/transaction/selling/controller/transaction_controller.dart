@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/selling/data/repository/transaction_repository.dart';
+import 'package:pos_app/utils/constants/constant.dart';
 
 class TransactionController extends GetxController {
   final TransactionRepository repository;
@@ -96,11 +99,62 @@ class TransactionController extends GetxController {
     _setTotalPrice();
   }
 
-  Future<void> createTransaction(TransactionCreateModel data) async {
-    await repository.postTransaction(data);
-  }
+  Future<void> createTransaction(double totalHarga) async {
+    AuthController authController = Get.find<AuthController>();
+    var userLoginData = authController.getUserLoginData();
+    if (userLoginData == null) {
+      await authController.forceLogout();
+      return;
+    }
+    if (userLoginData.role == AppUserRole.cashier && userLoginData.storeId == null) {
+      await AppDialog.show(
+        'Terjadi kesalahan',
+        content: 'User tidak terdaftar di toko, silakan login dengan akun lain',
+      );
+      return;
+    }
 
-  int generateNextCacheId() {
-    return repository.generateNextCacheId();
+    // Proses pembayaran
+    var transType = 'OUT';
+    var transDate = DateTime.now().toIso8601String();
+    var description = '';
+    var transSubtotal = totalHarga;
+    var transDiscount = 0.0;
+    var transTotal = totalHarga;
+    var transPayment = totalHarga;
+    var transBalance = 0.0;
+    var userId = userLoginData.id;
+    var storeId = userLoginData.storeId!;
+
+    var trxItems =
+        items.map((item) {
+          var subTotal = (item.product.hargaJual ?? 0).toDouble() * item.quantity;
+          return TransactionItemModel(
+            idBarang: item.product.idBrg ?? 0,
+            kodeBarang: item.product.kodeBrg ?? '',
+            description: description,
+            qty: item.quantity,
+            price: (item.product.hargaJual ?? 0).toDouble(),
+            subtotal: subTotal,
+            discount: 0.0,
+            total: subTotal,
+          );
+        }).toList();
+
+    var trxData = TransactionCreateModel(
+      cacheId: repository.generateNextCacheId(),
+      storeId: storeId,
+      transType: transType,
+      transDate: transDate,
+      description: description,
+      transSubtotal: transSubtotal,
+      transDiscount: transDiscount,
+      transTotal: transTotal,
+      transPayment: transPayment,
+      transBalance: transBalance,
+      userId: userId,
+      items: trxItems,
+    );
+    await repository.postTransaction(trxData);
   }
 }

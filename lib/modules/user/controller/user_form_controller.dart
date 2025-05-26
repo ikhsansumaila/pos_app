@@ -99,7 +99,7 @@ class UserFormController extends GetxController {
     AuthController authController = Get.find<AuthController>();
     var userLoginData = authController.getUserLoginData();
     if (userLoginData == null) {
-      await AppDialog.show('Terjadi kesalahan', content: 'User login tidak ditemukan');
+      await authController.forceLogout();
       return;
     }
 

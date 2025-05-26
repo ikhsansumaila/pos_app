@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:pos_app/core/network/connectivity_service.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/common/models/transaction_model.dart';
 import 'package:pos_app/modules/transaction/selling/data/repository/transaction_repository.dart';
@@ -44,20 +45,24 @@ class TransactionRepositoryImpl implements TransactionRepository {
     TransactionCreateModel trxCreate = TransactionCreateModel.fromJson(trxData.toJson());
 
     // for updating local cache
-    TransactionModel trxCached = TransactionModel.setByFormData(trxData);
+    // TransactionModel trxCached = TransactionModel.setByFormData(trxData);
 
     if (await connectivity.isConnected()) {
       var response = await remote.postTransaction(trxCreate.toJson());
 
       // if failed, save to local queue
       if (response.statusCode != 200 && response.statusCode != 201) {
-        local.addToQueue(trxCreate); // simpan queue lokal
-        await local.addToCache(trxCached);
+        await AppDialog.show(
+          'Terjadi kesalahan',
+          content: response.error ?? 'Gagal mengirim transaksi. Silakan coba lagi.',
+        );
+        // local.addToQueue(trxCreate); // simpan queue lokal
+        // await local.addToCache(trxCached);
       }
     } else {
       // if offline mode, save to local queue
-      local.addToQueue(trxCreate);
-      await local.addToCache(trxCached);
+      // local.addToQueue(trxCreate);
+      // await local.addToCache(trxCached);
     }
   }
 

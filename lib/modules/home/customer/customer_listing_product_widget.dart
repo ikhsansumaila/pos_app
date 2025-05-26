@@ -141,7 +141,7 @@ class CustomerListing extends StatelessWidget {
                                   buttonRemoveEnabled ? () => data.removeFromCart(product) : null,
                               icon: Icons.remove_circle,
                               color: buttonRemoveEnabled ? Colors.red : Colors.grey,
-                              size: 14,
+                              buttonSize: 14,
                             ),
                             const SizedBox(width: 8),
                             Text(
@@ -156,7 +156,7 @@ class CustomerListing extends StatelessWidget {
                               onPressed: buttonAddEnabled ? () => data.addToCart(product) : null,
                               icon: Icons.add_circle,
                               color: buttonAddEnabled ? AppColors.primary : Colors.grey,
-                              size: 14,
+                              buttonSize: 14,
                             ),
                           ],
                         ),

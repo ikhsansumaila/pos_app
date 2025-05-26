@@ -27,7 +27,12 @@ class TransactionRemoteDataSource {
   }
 
   Future<ApiResponse> postTransaction(Map<String, dynamic> data) async {
-    return await dio.request(path: API_URL, method: AppHttpMethod.post, data: data);
+    return await dio.request(
+      path: API_URL,
+      method: AppHttpMethod.post,
+      data: data,
+      showLoading: true,
+    );
   }
 
   //TODO: USE IT OR NOT?

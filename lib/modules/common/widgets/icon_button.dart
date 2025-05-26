@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 
 class AppIconButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final IconData icon;
+  final Color color;
+  final double iconSize;
+  final double buttonSize;
+
   const AppIconButton({
     super.key,
+    required this.onPressed,
     required this.icon,
-    this.onPressed,
-    this.color,
-    this.size,
+    required this.color,
+    this.iconSize = 24,
+    this.buttonSize = 36,
   });
-
-  final IconData icon;
-  final VoidCallback? onPressed;
-  final Color? color;
-  final double? size;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size ?? 24,
-      height: size ?? 24,
+      width: buttonSize,
+      height: buttonSize,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(buttonSize / 2),
           onTap: onPressed,
-          child: Center(child: Icon(icon, size: 14, color: color)),
+          child: Center(child: Icon(icon, size: iconSize, color: color)),
         ),
       ),
     );
