@@ -139,12 +139,12 @@ class CheckoutPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Total', style: TextStyle(fontSize: 18)),
+                      Text('Sub Total', style: TextStyle(fontSize: 14)),
                       Obx(
                         () => Text(
-                          AppFormatter.currency(checkoutController.totalHarga.value),
+                          AppFormatter.currency(checkoutController.subtotal.value),
                           style: TextStyle(
-                            fontSize: responsive.fontSize(22),
+                            fontSize: responsive.fontSize(20),
                             fontWeight: FontWeight.bold,
                             color: AppColors.priceColor,
                           ),
@@ -152,11 +152,41 @@ class CheckoutPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Diskon', style: TextStyle(fontSize: 14)),
+                      Obx(
+                        () => Text(
+                          AppFormatter.currency(checkoutController.discount.value),
+                          style: TextStyle(
+                            fontSize: responsive.fontSize(20),
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.priceColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Total', style: TextStyle(fontSize: 14)),
+                      Obx(
+                        () => Text(
+                          AppFormatter.currency(checkoutController.totalHarga.value),
+                          style: TextStyle(
+                            fontSize: responsive.fontSize(20),
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.priceColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 35),
                   ElevatedButton(
-                    onPressed: () async {
-                      await checkoutController.createTransaction();
-                    },
+                    onPressed: () async => await checkoutController.doPayment(context),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 48),
                       padding: EdgeInsets.symmetric(vertical: 16),

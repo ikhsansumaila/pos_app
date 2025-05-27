@@ -131,8 +131,9 @@ class SmartphoneLayout extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(height: 10),
                     Text('(Stok: $stock)', style: TextStyle(color: Colors.black87, fontSize: 11)),
-                    SizedBox(height: 8),
+                    SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

@@ -79,4 +79,37 @@ class AppDialog {
       ),
     );
   }
+
+  static Future<bool> showExitConfirmationDialog(BuildContext context) async {
+    var result =
+        await showDialog<bool>(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: const Text('Keluar Halaman'),
+                content: const Text(
+                  'Data akan terhapus, Anda yakin ingin meninggalkan halaman ini?',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Tidak'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Ya'),
+                  ),
+                ],
+              ),
+        ) ??
+        false;
+    return result;
+  }
+
+  static Future<void> showLoading() async {
+    return await Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+  }
 }

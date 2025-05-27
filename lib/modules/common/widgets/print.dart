@@ -131,9 +131,17 @@ class PrintPDF extends StatelessWidget {
   }
 }
 
-Future<void> cetakStrukPDF(List<CartItemModel> cartItems, double totalPayment) async {
+Future<void> cetakStrukPDF(
+  List<CartItemModel> cartItems, {
+  required String userName,
+  required String storeName,
+  required String storeAddress,
+  required double subTotal,
+  required double discount,
+  required double totalPayment,
+}) async {
   final pdf = pw.Document();
-  var storeName = cartItems[0].product.storeName;
+  // var storeName = cartItems[0].product.storeName;
 
   pdf.addPage(
     pw.Page(
@@ -141,34 +149,118 @@ Future<void> cetakStrukPDF(List<CartItemModel> cartItems, double totalPayment) a
       pageFormat: PdfPageFormat.roll80, // Ukuran struk thermal
       build: (context) {
         return pw.Column(
+          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Center(
               child: pw.Text(
-                storeName ?? '',
-                style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
+                storeName,
+                textAlign: pw.TextAlign.center,
+                style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
               ),
             ),
-            pw.SizedBox(height: 10),
-
-            pw.Text('Tanggal: ${AppFormatter.dateTime(DateTime.now())}'),
-            pw.Divider(),
-            ...cartItems.map((item) {
-              return pw.Text(
-                '${item.product.namaBrg}     x${item.quantity}    Rp${item.product.hargaJual}',
-              );
-            }),
-            pw.Divider(),
-
-            pw.Align(
-              alignment: pw.Alignment.centerRight,
+            pw.SizedBox(height: 5),
+            pw.Center(
               child: pw.Text(
-                'Total: Rp${AppFormatter.currency(totalPayment)}',
-                style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+                storeAddress,
+                textAlign: pw.TextAlign.center,
+                style: pw.TextStyle(fontSize: 7),
               ),
             ),
             pw.SizedBox(height: 20),
-            pw.Center(child: pw.Text('Terima Kasih!')),
+            pw.Divider(),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text(
+                  'Kasir: $userName',
+                  textAlign: pw.TextAlign.center,
+                  style: pw.TextStyle(fontSize: 8),
+                ),
+                pw.Text(AppFormatter.dateTime(DateTime.now()), style: pw.TextStyle(fontSize: 7)),
+              ],
+            ),
+            pw.Divider(),
+            pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Expanded(flex: 2, child: pw.Text('Qty', style: pw.TextStyle(fontSize: 8))),
+                pw.Expanded(
+                  flex: 4,
+                  child: pw.Text('Nama Barang', style: pw.TextStyle(fontSize: 8)),
+                ),
+                pw.Expanded(child: pw.Text('Harga', style: pw.TextStyle(fontSize: 8))),
+              ],
+            ),
+
+            pw.Divider(),
+            ...cartItems.map((item) {
+              return pw.Container(
+                margin: const pw.EdgeInsets.only(bottom: 4),
+                child: pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Expanded(
+                      flex: 1,
+                      child: pw.Text(item.quantity.toString(), style: pw.TextStyle(fontSize: 7)),
+                    ),
+
+                    // Nama Barang (kiri) - bisa multiline
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Text(
+                        item.product.namaBrg!,
+                        style: pw.TextStyle(fontSize: 7),
+                        maxLines: 3,
+                        overflow: pw.TextOverflow.clip,
+                      ),
+                    ),
+
+                    // Qty dan Harga (kanan)
+                    pw.SizedBox(width: 8), // spasi antara nama dan info kanan
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: pw.CrossAxisAlignment.end,
+                      children: [
+                        pw.Text(
+                          AppFormatter.currency(item.product.hargaJual!.toDouble()),
+                          style: pw.TextStyle(fontSize: 7),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }),
+
+            pw.Divider(),
+
+            pw.SizedBox(height: 10),
+            pw.Text('Jumlah Item: ${cartItems.length}', style: pw.TextStyle(fontSize: 8)),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    pw.Text('Subtotal:', style: pw.TextStyle(fontSize: 8)),
+                    pw.Text('Diskon:', style: pw.TextStyle(fontSize: 8)),
+                    pw.Text('Total:', style: pw.TextStyle(fontSize: 8)),
+                  ],
+                ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    pw.Text(AppFormatter.currency(subTotal), style: pw.TextStyle(fontSize: 8)),
+                    pw.Text(AppFormatter.currency(discount), style: pw.TextStyle(fontSize: 8)),
+                    pw.Text(AppFormatter.currency(totalPayment), style: pw.TextStyle(fontSize: 8)),
+                  ],
+                ),
+              ],
+            ),
+            pw.SizedBox(height: 30),
+            pw.Center(child: pw.Text('Terima Kasih')),
           ],
         );
       },

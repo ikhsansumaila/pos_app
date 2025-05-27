@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/transaction/selling/controller/transaction_controller.dart';
 import 'package:pos_app/modules/transaction/selling/view/list_smartphone.dart';
@@ -27,7 +28,7 @@ class TransactionSellingPage extends StatelessWidget {
         if (didPop) return;
 
         Future.microtask(() async {
-          final shouldPop = await _showExitConfirmationDialog(context);
+          final shouldPop = await AppDialog.showExitConfirmationDialog(context);
           if (shouldPop && context.mounted) {
             trxController.clearItems();
             Get.back();
@@ -35,31 +36,5 @@ class TransactionSellingPage extends StatelessWidget {
         });
       },
     );
-  }
-
-  Future<bool> _showExitConfirmationDialog(BuildContext context) async {
-    var result =
-        await showDialog<bool>(
-          context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text('Keluar Halaman'),
-                content: const Text(
-                  'Data akan terhapus, Anda yakin ingin meninggalkan halaman ini?',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text('Tidak'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text('Ya'),
-                  ),
-                ],
-              ),
-        ) ??
-        false;
-    return result;
   }
 }

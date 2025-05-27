@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/common/scrollable_page.dart';
 import 'package:pos_app/modules/common/widgets/app_bar.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/common/widgets/image.dart';
 import 'package:pos_app/modules/product/controller/product_contoller.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
@@ -33,7 +34,7 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
         if (didPop) return;
 
         Future.microtask(() async {
-          final shouldPop = await _showExitConfirmationDialog(context);
+          final shouldPop = await AppDialog.showExitConfirmationDialog(context);
           if (shouldPop && context.mounted) {
             controller.clearForm();
             Get.back();
@@ -316,31 +317,5 @@ class _PurchaseFormPageState extends State<PurchaseFormPage> {
             ),
       ),
     );
-  }
-
-  Future<bool> _showExitConfirmationDialog(BuildContext context) async {
-    var result =
-        await showDialog<bool>(
-          context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text('Keluar Halaman'),
-                content: const Text(
-                  'Data akan terhapus, Anda yakin ingin meninggalkan halaman ini?',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text('Tidak'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text('Ya'),
-                  ),
-                ],
-              ),
-        ) ??
-        false;
-    return result;
   }
 }
