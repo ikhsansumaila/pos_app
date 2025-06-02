@@ -237,27 +237,33 @@ Future<void> cetakStrukPDF(
             pw.Divider(),
 
             pw.SizedBox(height: 10),
-            pw.Text('Jumlah Item: ${cartItems.length}', style: pw.TextStyle(fontSize: 8)),
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.end,
-                  children: [
-                    pw.Text('Subtotal:', style: pw.TextStyle(fontSize: 8)),
-                    pw.Text('Diskon:', style: pw.TextStyle(fontSize: 8)),
-                    pw.Text('Total:', style: pw.TextStyle(fontSize: 8)),
-                  ],
-                ),
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.end,
-                  children: [
-                    pw.Text(AppFormatter.currency(subTotal), style: pw.TextStyle(fontSize: 8)),
-                    pw.Text(AppFormatter.currency(discount), style: pw.TextStyle(fontSize: 8)),
-                    pw.Text(AppFormatter.currency(totalPayment), style: pw.TextStyle(fontSize: 8)),
-                  ],
-                ),
-              ],
+            pw.Align(
+              alignment: pw.Alignment.centerRight,
+              child: pw.Text('Jumlah Item: ${cartItems.length}', style: pw.TextStyle(fontSize: 8)),
+            ),
+            pw.SizedBox(height: 10),
+            pw.Align(
+              alignment: pw.Alignment.centerRight,
+              child: pw.Text(
+                'Subtotal: ${AppFormatter.currency(subTotal)}',
+                style: pw.TextStyle(fontSize: 8),
+              ),
+            ),
+            pw.SizedBox(height: 2),
+            pw.Align(
+              alignment: pw.Alignment.centerRight,
+              child: pw.Text(
+                'Diskon: ${AppFormatter.currency(discount)}',
+                style: pw.TextStyle(fontSize: 8),
+              ),
+            ),
+            pw.SizedBox(height: 2),
+            pw.Align(
+              alignment: pw.Alignment.centerRight,
+              child: pw.Text(
+                'Total: ${AppFormatter.currency(totalPayment)}',
+                style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+              ),
             ),
             pw.SizedBox(height: 30),
             pw.Center(child: pw.Text('Terima Kasih')),

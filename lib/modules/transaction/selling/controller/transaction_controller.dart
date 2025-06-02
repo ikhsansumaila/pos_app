@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/cart/model/cart_item_model.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
@@ -13,32 +12,9 @@ class TransactionController extends GetxController {
 
   TransactionController({required this.repository});
 
-  Box<CartItemModel>? _cartBox;
   var trxItems = <int, CartItemModel>{}.obs;
   var totalItems = 0.obs;
   var totalPrice = 0.obs;
-
-  @override
-  void onClose() {
-    super.onClose();
-    // Close the Hive box when the controller is disposed
-    _cartBox?.close();
-  }
-
-  // Load cart items from Hive
-  // void _loadCart() {
-  //   for (var cartItem in _cartBox?.values) {
-  //     cartItems[cartItem.product.idBrg] = cartItem;
-  //   }
-  // }
-
-  // Save cart items to Hive
-  // void _saveCart() {
-  //   for (var cartItem in cartItems.values) {
-  //     log("save cart ${cartItem.toString()}");
-  //     _cartBox?.put(cartItem.product.idBrg, cartItem);
-  //   }
-  // }
 
   void addItem(ProductModel product) {
     final productId = product.idBrg;
@@ -99,22 +75,22 @@ class TransactionController extends GetxController {
     _setTotalPrice();
   }
 
-  Future<void> createTransaction(double totalHarga) async {
+  Future<bool> createTransaction(double totalHarga) async {
     AuthController authController = Get.find<AuthController>();
     var userLoginData = authController.getUserLoginData();
     if (userLoginData == null) {
       await authController.forceLogout();
-      return;
+      return false;
     }
+
     if (userLoginData.role == AppUserRole.cashier && userLoginData.storeId == null) {
       await AppDialog.show(
         'Terjadi kesalahan',
         content: 'User tidak terdaftar di toko, silakan login dengan akun lain',
       );
-      return;
+      return false;
     }
 
-    // Proses pembayaran
     var transType = 'OUT';
     var transDate = DateTime.now().toIso8601String();
     var description = '';
@@ -155,6 +131,7 @@ class TransactionController extends GetxController {
       userId: userId,
       items: trxItems,
     );
-    await repository.postTransaction(trxData);
+
+    return await repository.postTransaction(trxData);
   }
 }

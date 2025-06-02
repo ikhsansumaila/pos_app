@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hive/hive.dart';
 import 'package:pos_app/utils/constants/hive_key.dart';
 
@@ -87,6 +89,8 @@ class TransactionCreateModel extends HiveObject {
     'userid': userId,
     'items': items.map((e) => e.toJson()).toList(),
   };
+
+  toJsonObject() => jsonEncode(toJson());
 
   // Transaction Response detail :
   // {

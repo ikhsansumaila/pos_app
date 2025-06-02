@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:pos_app/core/controller_provider.dart';
 import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/auth/auth_model.dart';
-import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/common/widgets/print.dart';
 import 'package:pos_app/modules/store/controller/store_controller.dart';
 import 'package:pos_app/modules/store/data/models/store_model.dart';
@@ -130,19 +129,18 @@ class CheckoutController extends GetxController {
       },
     );
     if (result != null) {
-      AppDialog.showLoading();
-      await Future.delayed(Duration(seconds: 1)); // Simulate loading
-      // await createTransaction();
-      Get.back();
-      await AppDialog.showCreateSuccess();
-      await printOut();
-    }
-  }
+      // AppDialog.showLoading();
+      // await Future.delayed(Duration(seconds: 1)); // Simulate loading
+      // Get.back();
+      // await AppDialog.showCreateSuccess();
 
-  Future<void> createTransaction() async {
-    isLoading(true);
-    await trxController.createTransaction(totalHarga.value);
-    isLoading(false);
+      isLoading(true);
+      final result = await trxController.createTransaction(totalHarga.value);
+      isLoading(false);
+      if (result) {
+        await printOut();
+      }
+    }
   }
 
   Future<void> printOut() async {
