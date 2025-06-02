@@ -40,7 +40,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<void> postTransaction(TransactionCreateModel trxData) async {
+  Future<bool> postTransaction(TransactionCreateModel trxData) async {
     // for send to remote/queue
     TransactionCreateModel trxCreate = TransactionCreateModel.fromJson(trxData.toJson());
 
@@ -58,12 +58,15 @@ class TransactionRepositoryImpl implements TransactionRepository {
         );
         // local.addToQueue(trxCreate); // simpan queue lokal
         // await local.addToCache(trxCached);
+        return false;
       }
     } else {
       // if offline mode, save to local queue
       // local.addToQueue(trxCreate);
       // await local.addToCache(trxCached);
+      return false;
     }
+    return true;
   }
 
   @override

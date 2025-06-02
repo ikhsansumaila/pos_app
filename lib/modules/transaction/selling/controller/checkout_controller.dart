@@ -8,9 +8,11 @@ import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/common/widgets/print.dart';
 import 'package:pos_app/modules/store/controller/store_controller.dart';
 import 'package:pos_app/modules/store/data/models/store_model.dart';
+import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 // import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/selling/controller/transaction_controller.dart';
 import 'package:pos_app/utils/common_helper.dart';
+import 'package:pos_app/utils/constants/constant.dart';
 import 'package:pos_app/utils/formatter.dart';
 
 class CheckoutController extends GetxController {
@@ -130,19 +132,82 @@ class CheckoutController extends GetxController {
       },
     );
     if (result != null) {
-      AppDialog.showLoading();
-      await Future.delayed(Duration(seconds: 1)); // Simulate loading
-      // await createTransaction();
-      Get.back();
+      isLoading(true);
+      final result = await createTransaction();
+      isLoading(false);
+
+      if (!result) {
+        await AppDialog.show(
+          'Terjadi kesalahan',
+          content: 'Gagal membuat transaksi. Silakan coba lagi.',
+        );
+        return;
+      }
+
       await AppDialog.showCreateSuccess();
-      await printOut();
+      // await printOut();
     }
   }
 
-  Future<void> createTransaction() async {
-    isLoading(true);
-    await trxController.createTransaction(totalHarga.value);
-    isLoading(false);
+  Future<bool> createTransaction() async {
+    AuthController authController = Get.find<AuthController>();
+    var userLoginData = authController.getUserLoginData();
+    if (userLoginData == null) {
+      await authController.forceLogout();
+      return false;
+    }
+
+    if (userLoginData.role == AppUserRole.cashier && userLoginData.storeId == null) {
+      await AppDialog.show(
+        'Terjadi kesalahan',
+        content: 'User tidak terdaftar di toko, silakan login dengan akun lain',
+      );
+      return false;
+    }
+
+    // Proses pembayaran
+    var transType = 'OUT';
+    var transDate = DateTime.now().toIso8601String();
+    var description = descriptionController.text;
+    var transSubtotal = totalHarga.value;
+    var transDiscount = discount.value;
+    var transTotal = totalHarga.value;
+    var transPayment = totalHarga.value;
+    var transBalance = 0.0;
+    var userId = userLoginData.id;
+    var storeId = userLoginData.storeId!;
+
+    var trxItems =
+        trxController.items.map((item) {
+          var subTotal = (item.product.hargaJual ?? 0).toDouble() * item.quantity;
+          return TransactionItemModel(
+            idBarang: item.product.idBrg ?? 0,
+            kodeBarang: item.product.kodeBrg ?? '',
+            description: '',
+            qty: item.quantity,
+            price: (item.product.hargaJual ?? 0).toDouble(),
+            subtotal: subTotal,
+            discount: 0.0,
+            total: subTotal,
+          );
+        }).toList();
+
+    var trxData = TransactionCreateModel(
+      cacheId: trxController.repository.generateNextCacheId(),
+      storeId: storeId,
+      transType: transType,
+      transDate: transDate,
+      description: description,
+      transSubtotal: transSubtotal,
+      transDiscount: transDiscount,
+      transTotal: transTotal,
+      transPayment: transPayment,
+      transBalance: transBalance,
+      userId: userId,
+      items: trxItems,
+    );
+
+    return await trxController.createTransaction(trxData);
   }
 
   Future<void> printOut() async {

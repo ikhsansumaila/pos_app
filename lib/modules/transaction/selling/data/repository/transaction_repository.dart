@@ -3,6 +3,6 @@ import 'package:pos_app/modules/transaction/common/models/transaction_model.dart
 
 abstract class TransactionRepository {
   Future<List<TransactionModel>> getTranscations();
-  Future<void> postTransaction(TransactionCreateModel transaction);
+  Future<bool> postTransaction(TransactionCreateModel transaction);
   int generateNextCacheId();
 }
