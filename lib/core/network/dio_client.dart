@@ -24,8 +24,7 @@ class DioClient {
 
     dio = Dio(options);
 
-    dio.interceptors.add(RequestsInspectorInterceptor());
-    dio.interceptors.add(RequestsInterceptor());
+    dio.interceptors.addAll([RequestsInspectorInterceptor(), RequestsInterceptor()]);
   }
 
   Future<ApiResponse<dynamic>> request({

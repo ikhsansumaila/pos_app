@@ -4,12 +4,16 @@ import 'package:get/get.dart';
 import 'package:pos_app/core/controller_provider.dart';
 import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/auth/auth_model.dart';
+import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/common/widgets/print.dart';
 import 'package:pos_app/modules/store/controller/store_controller.dart';
 import 'package:pos_app/modules/store/data/models/store_model.dart';
+import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 // import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
 import 'package:pos_app/modules/transaction/selling/controller/transaction_controller.dart';
+import 'package:pos_app/modules/transaction/selling/view/transaction_success_page.dart';
 import 'package:pos_app/utils/common_helper.dart';
+import 'package:pos_app/utils/constants/constant.dart';
 import 'package:pos_app/utils/formatter.dart';
 
 class CheckoutController extends GetxController {
@@ -129,18 +133,91 @@ class CheckoutController extends GetxController {
       },
     );
     if (result != null) {
-      // AppDialog.showLoading();
-      // await Future.delayed(Duration(seconds: 1)); // Simulate loading
-      // Get.back();
-      // await AppDialog.showCreateSuccess();
-
       isLoading(true);
-      final result = await trxController.createTransaction(totalHarga.value);
+      final result = await createTransaction();
       isLoading(false);
-      if (result) {
-        await printOut();
+
+      if (!result) {
+        await AppDialog.show(
+          'Terjadi kesalahan',
+          content: 'Gagal membuat transaksi. Silakan coba lagi.',
+        );
+        return;
       }
+
+      await Get.to(
+        () => TransactionSuccessPage(
+          amountPaid: AppFormatter.parseCurrency(amountPaidController.text),
+          totalPrice: totalHarga.value,
+          transactionDate: AppFormatter.dateTime(DateTime.now()),
+          onPrintPressed: () async {
+            await printOut();
+            // clear();
+          },
+        ),
+      );
     }
+  }
+
+  Future<bool> createTransaction() async {
+    AuthController authController = Get.find<AuthController>();
+    var userLoginData = authController.getUserLoginData();
+    if (userLoginData == null) {
+      await authController.forceLogout();
+      return false;
+    }
+
+    if (userLoginData.role == AppUserRole.cashier && userLoginData.storeId == null) {
+      await AppDialog.show(
+        'Terjadi kesalahan',
+        content: 'User tidak terdaftar di toko, silakan login dengan akun lain',
+      );
+      return false;
+    }
+
+    // Proses pembayaran
+    var transType = 'OUT';
+    var transDate = DateTime.now().toIso8601String();
+    var description = descriptionController.text;
+    var transSubtotal = totalHarga.value;
+    var transDiscount = discount.value;
+    var transTotal = totalHarga.value;
+    var transPayment = totalHarga.value;
+    var transBalance = 0.0;
+    var userId = userLoginData.id;
+    var storeId = userLoginData.storeId!;
+
+    var trxItems =
+        trxController.items.map((item) {
+          var subTotal = (item.product.hargaJual ?? 0).toDouble() * item.quantity;
+          return TransactionItemModel(
+            idBarang: item.product.idBrg ?? 0,
+            kodeBarang: item.product.kodeBrg ?? '',
+            description: '',
+            qty: item.quantity,
+            price: (item.product.hargaJual ?? 0).toDouble(),
+            subtotal: subTotal,
+            discount: 0.0,
+            total: subTotal,
+          );
+        }).toList();
+
+    var trxData = TransactionCreateModel(
+      cacheId: trxController.repository.generateNextCacheId(),
+      storeId: storeId,
+      transType: transType,
+      transDate: transDate,
+      description: description,
+      transSubtotal: transSubtotal,
+      transDiscount: transDiscount,
+      transTotal: transTotal,
+      transPayment: transPayment,
+      transBalance: transBalance,
+      userId: userId,
+      items: trxItems,
+    );
+
+    return await trxController.createTransaction(trxData);
   }
 
   Future<void> printOut() async {
@@ -150,7 +227,7 @@ class CheckoutController extends GetxController {
       (s) => s.id == userLoginData?.storeId?.toString(),
     );
     printJson(store);
-    await cetakStrukPDF(
+    return await cetakStrukPDF(
       trxController.items,
       userName: userLoginData?.nama ?? '-',
       storeName: store?.storeName ?? '-',

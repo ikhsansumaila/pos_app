@@ -67,7 +67,6 @@ class TransactionRepositoryImpl implements TransactionRepository {
       // await local.addToCache(trxCached);
       return false;
     }
-
     return true;
   }
 
