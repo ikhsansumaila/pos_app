@@ -5,7 +5,6 @@ import 'package:pos_app/modules/auth/auth_controller.dart';
 import 'package:pos_app/modules/common/widgets/app_dialog.dart';
 import 'package:pos_app/modules/product/data/models/product_model.dart';
 import 'package:pos_app/modules/transaction/common/models/transaction_create_model.dart';
-import 'package:pos_app/utils/formatter.dart';
 
 class PurchaseController extends GetxController {
   var purchaseList = <TransactionCreateModel>[].obs;
@@ -13,7 +12,13 @@ class PurchaseController extends GetxController {
   final searchController = TextEditingController();
   final descController = TextEditingController();
   final qtyController = TextEditingController();
-  final priceController = TextEditingController();
+  final discountController = TextEditingController();
+
+  // final priceController = TextEditingController();
+
+  var totalHarga = 0.0.obs;
+  var discount = 0.0.obs;
+  var subtotal = 0.0.obs;
 
   final trxItems = <TransactionItemModel>[].obs;
 
@@ -38,7 +43,7 @@ class PurchaseController extends GetxController {
     addedProducts.clear();
     descController.dispose();
     qtyController.dispose();
-    priceController.dispose();
+    // priceController.dispose();
     searchController.dispose();
 
     super.onClose();
@@ -48,13 +53,14 @@ class PurchaseController extends GetxController {
     selectedProduct.value = null;
     searchController.clear();
     qtyController.clear();
-    priceController.clear();
+    // priceController.clear();
     buttonAddEnable.value = false;
   }
 
   void addItem(ProductModel product) {
     final qty = int.tryParse(qtyController.text) ?? 0;
-    final price = AppFormatter.parseCurrency(priceController.text);
+    // final price = AppFormatter.parseCurrency(priceController.text);
+    final price = (selectedProduct.value?.hargaBeli ?? 0).toDouble();
     final subtotal = qty * price;
 
     trxItems.add(
@@ -71,9 +77,11 @@ class PurchaseController extends GetxController {
     );
     addedProducts.add(product);
 
+    calculateTotal();
+
     descController.clear();
     qtyController.clear();
-    priceController.clear();
+    // priceController.clear();
     selectedProduct.value = null;
   }
 
@@ -116,6 +124,7 @@ class PurchaseController extends GetxController {
   void removeItem(int index) {
     trxItems.removeAt(index);
     addedProducts.removeAt(index);
+    calculateTotal();
   }
 
   void clearForm() {
@@ -125,12 +134,26 @@ class PurchaseController extends GetxController {
   }
 
   void formSearchValidate() {
-    double price = AppFormatter.parseCurrency(priceController.text);
+    // double price = AppFormatter.parseCurrency(priceController.text);
+    double price = (selectedProduct.value?.hargaBeli ?? 0).toDouble();
 
     if (selectedProduct.value == null || price == 0 || qtyController.text == '') {
       buttonAddEnable.value = false;
     } else {
       buttonAddEnable.value = true;
     }
+  }
+
+  void calculateTotal() {
+    // final sub = trxItems.fold<double>(
+    //   0,
+    //   (sum, item) => sum + (item.qty * (item ?? 0)),
+    // );
+    final sub = trxItems.fold<double>(0, (sum, item) => sum + item.subtotal);
+
+    subtotal.value = sub;
+
+    // final discount = int.tryParse(discountController.text) ?? 0;
+    totalHarga.value = (sub - discount.value).clamp(0, double.infinity).toDouble();
   }
 }

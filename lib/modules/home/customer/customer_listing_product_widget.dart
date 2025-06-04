@@ -19,7 +19,7 @@ class CustomerListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    final responsive = ResponsiveHelper(context);
     return Stack(
       children: [
         Container(

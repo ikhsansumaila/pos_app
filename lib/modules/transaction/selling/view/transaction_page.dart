@@ -16,7 +16,7 @@ class TransactionSellingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    final responsive = ResponsiveHelper(context);
     return PopScope(
       canPop: false,
       child: Scaffold(

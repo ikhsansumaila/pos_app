@@ -64,7 +64,7 @@ class _TransactionDetailSheetState extends State<TransactionDetailSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    final responsive = ResponsiveHelper(context);
     isTabletLandscape = responsive.isTablet && responsive.isLandscape;
 
     return DraggableScrollableSheet(

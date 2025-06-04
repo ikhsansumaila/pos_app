@@ -18,7 +18,7 @@ class CheckoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    final responsive = ResponsiveHelper(context);
     return Scaffold(
       appBar: MyAppBar(title: 'Checkout'),
       body: Obx(() {

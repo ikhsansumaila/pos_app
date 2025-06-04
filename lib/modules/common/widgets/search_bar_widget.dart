@@ -3,18 +3,14 @@ import 'package:pos_app/modules/common/widgets/barcode/barcode_scanner.dart';
 import 'package:pos_app/utils/responsive_helper.dart';
 
 class AppSearchBar extends StatelessWidget {
-  const AppSearchBar({
-    super.key,
-    required this.controller,
-    required this.hintText,
-  });
+  const AppSearchBar({super.key, required this.controller, required this.hintText});
 
   final TextEditingController controller;
   final String hintText;
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    ResponsiveHelper responsive = ResponsiveHelper(context);
 
     return SizedBox(
       child: Container(
@@ -25,28 +21,16 @@ class AppSearchBar extends StatelessWidget {
         ),
         child: TextField(
           controller: controller,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: responsive.fontSize(20),
-          ),
+          style: TextStyle(color: Colors.black, fontSize: responsive.fontSize(20)),
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: TextStyle(
-              color: Colors.blueGrey,
-              fontSize: responsive.fontSize(20),
-            ),
+            hintStyle: TextStyle(color: Colors.blueGrey, fontSize: responsive.fontSize(20)),
             prefixIcon: Icon(Icons.search, color: Colors.blueAccent),
             suffixIcon: IconButton(
-              icon: Icon(
-                Icons.qr_code_scanner_outlined,
-                color: Colors.blueAccent,
-              ),
+              icon: Icon(Icons.qr_code_scanner_outlined, color: Colors.blueAccent),
               onPressed: () {
                 // Navigasi ke halaman BarcodeScanner
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const BarcodeScanner()),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const BarcodeScanner()));
               },
             ),
             border: InputBorder.none,

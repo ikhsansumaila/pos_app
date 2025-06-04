@@ -15,7 +15,7 @@ class ProductDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    final responsive = ResponsiveHelper(context);
 
     return AppBasePage(
       appBar: MyAppBar(title: 'Detail Barang'),

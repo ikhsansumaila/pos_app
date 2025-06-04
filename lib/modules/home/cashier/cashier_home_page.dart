@@ -17,7 +17,7 @@ class CashierHomePage extends StatelessWidget {
       return const Center(child: Text("Anda tidak memiliki akses"));
     }
 
-    final responsive = ResponsiveHelper(MediaQuery.of(context).size);
+    final responsive = ResponsiveHelper(context);
 
     var padding = responsive.isTablet ? EdgeInsets.fromLTRB(40, 20, 40, 20) : EdgeInsets.all(20);
     var menu = authController.getUserMenu();

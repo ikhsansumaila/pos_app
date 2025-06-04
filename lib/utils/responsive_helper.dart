@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Case on Samsung Galaxy Tab A9:
 
@@ -11,14 +12,15 @@ import 'package:flutter/material.dart';
 // 800 physical px / 1.45 dpr ≈ 552 logical px.
 
 class ResponsiveHelper {
-  final Size screenSize;
+  late Size screenSize;
+  final BuildContext context;
 
-  ResponsiveHelper(this.screenSize);
+  ResponsiveHelper(this.context) : screenSize = MediaQuery.of(context).size;
 
   double get width => screenSize.width;
   double get height => screenSize.height;
 
-  bool get isLandscape => width > height;
+  bool get isLandscape => context.isLandscape;
   bool get isTablet {
     if (isLandscape) {
       // Dalam landscape, short side bisa kecil karena dpi, jadi pakai pendekatan lebar
